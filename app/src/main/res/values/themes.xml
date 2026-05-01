@@ -1,9 +1,393 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    themes.xml
+    ─────────────────────────────────────────────────────────────────────
+    Night Tech — Material 3 Single Theme
+    • Dark mode DISABLED (forced dark-night-tech palette at all times)
+    • Global Inter font family injected via textAppearance overrides
+    • Status bar & navigation bar fully styled
+    • All M3 color roles mapped to Night Tech palette
+    • 3D elevation + surface tinting enabled
+    ─────────────────────────────────────────────────────────────────────
+    In AndroidManifest.xml, set on <application>:
+        android:theme="@style/Theme.NightTech"
+    To permanently disable dark mode, add in MainActivity.onCreate()
+    BEFORE setContentView():
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+    ─────────────────────────────────────────────────────────────────────
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ROOT APPLICATION THEME
+         Parent: Material3 (NOT DayNight — prevents system dark toggling)
+    ═══════════════════════════════════════════════════════════════════ -->
     <style name="Base.Theme.SajhaPulse" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- ── Core M3 Color Roles ──────────────────────────────── -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary_container</item>
+
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="colorSecondaryContainer">@color/secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_secondary_container</item>
+
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorOnTertiary">@color/on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/on_tertiary_container</item>
+
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/on_error</item>
+        <item name="colorErrorContainer">@color/error_container</item>
+        <item name="colorOnErrorContainer">@color/on_error_container</item>
+
+        <!-- ── Surface & Background ─────────────────────────────── -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+        <item name="colorSurfaceTint">@color/surface_tint</item>
+
+        <!-- ── Outline ───────────────────────────────────────────── -->
+        <item name="colorOutline">@color/outline</item>
+        <item name="colorOutlineVariant">@color/outline_variant</item>
+
+        <!-- ── Scrim ─────────────────────────────────────────────── -->
+        <item name="colorScrim">@color/scrim</item>
+
+        <!-- ── System Bars ───────────────────────────────────────── -->
+
+        <!-- This sets the background of the status bar to your brand primary color -->
+        <item name="android:statusBarColor">@color/primary</item>
+
+        <!-- Crucial: Set to FALSE to make status bar icons (Time, Battery, WiFi) WHITE.
+             If set to true, icons would be dark/black. -->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+
+        <!-- Optional: Styling the Navigation Bar (Bottom bar) to match surface -->
+        <item name="android:navigationBarColor">@color/surface</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+
+        <!-- ── Window ────────────────────────────────────────────── -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!-- ── Global Typography — Inter font injected ───────────── -->
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="fontFamily">@font/main_font_family</item>
+
+        <!-- Override all M3 text appearances with Inter -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.NightTech.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.NightTech.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.NightTech.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.NightTech.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.NightTech.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.NightTech.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.NightTech.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.NightTech.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.NightTech.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.NightTech.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.NightTech.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.NightTech.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.NightTech.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.NightTech.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.NightTech.LabelSmall</item>
+
+        <!-- ── Material Components Global Styles ─────────────────── -->
+        <item name="materialButtonStyle">@style/Widget.NightTech.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.NightTech.CardView</item>
+        <item name="toolbarStyle">@style/Widget.NightTech.Toolbar</item>
+        <item name="bottomNavigationStyle">@style/Widget.NightTech.BottomNavigation</item>
+
+        <!-- ── Elevation & Shadows ───────────────────────────────── -->
+        <!-- Enable surface tint overlays for elevated surfaces (M3 spec) -->
+        <item name="elevationOverlayEnabled">true</item>
+        <item name="elevationOverlayColor">@color/surface_tint</item>
+
+        <!-- ── Ripple ─────────────────────────────────────────────── -->
+        <item name="colorControlHighlight">@color/cyan_20</item>
+        <item name="rippleColor">@color/cyan_30</item>
+
+        <!-- ── Shapes ─────────────────────────────────────────────── -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.NightTech.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.NightTech.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.NightTech.Large</item>
+
+        <!-- ── Scroll Bars ────────────────────────────────────────── -->
+        <item name="android:scrollbarThumbVertical">@color/outline</item>
+
     </style>
 
+    <!-- ═══════════════════════════════════════════════════════════════
+         SPLASH SCREEN THEME
+         Used as the initial launch theme before MainActivity inflates
+    ═══════════════════════════════════════════════════════════════════ -->
     <style name="Theme.SajhaPulse" parent="Base.Theme.SajhaPulse" />
+
+    <style name="Theme.SajhaPulse.Splash" parent="Base.Theme.SajhaPulse">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TYPOGRAPHY SCALE — M3 roles mapped to Inter weights
+    ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- Display — Hero numbers (rate values, big stats) -->
+    <style name="TextAppearance.NightTech.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">900</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:letterSpacing">-0.025</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">900</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textColor">@color/on_surface</item>
+    </style>
+
+    <!-- Headline — Section titles, card headers -->
+    <style name="TextAppearance.NightTech.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:letterSpacing">-0.015</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textColor">@color/on_surface</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/on_surface</item>
+    </style>
+
+    <!-- Title — Toolbar, card titles -->
+    <style name="TextAppearance.NightTech.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textColor">@color/toolbar_title</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/on_surface</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/on_surface_variant</item>
+    </style>
+
+    <!-- Body — General content, descriptions -->
+    <style name="TextAppearance.NightTech.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:lineSpacingMultiplier">1.5</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">@color/on_surface_variant</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">@color/on_surface_variant</item>
+    </style>
+
+    <!-- Label — Buttons, chips, badges -->
+    <style name="TextAppearance.NightTech.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:letterSpacing">0.015</item>
+    </style>
+
+    <style name="TextAppearance.NightTech.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/main_font_family</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SHAPE APPEARANCES — M3 Rounded corners
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style name="ShapeAppearance.NightTech.Small" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.NightTech.Medium" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="ShapeAppearance.NightTech.Large" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <style name="ShapeAppearance.NightTech.Hero" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         WIDGET STYLES
+    ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- Toolbar -->
+    <style name="Widget.NightTech.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/toolbar_background</item>
+        <item name="android:elevation">8dp</item>
+        <item name="titleTextAppearance">@style/TextAppearance.NightTech.TitleLarge</item>
+        <item name="titleTextColor">@color/toolbar_title</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+    <!-- Primary Button -->
+    <style name="Widget.NightTech.Button" parent="Widget.Material3.Button">
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="backgroundTint">@color/secondary</item>
+        <item name="android:textColor">@color/on_secondary</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <!-- Outlined Button variant -->
+    <style name="Widget.NightTech.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="strokeColor">@color/outline</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <!-- Card View -->
+    <style name="Widget.NightTech.CardView" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/surface_elevation_2</item>
+        <item name="cardElevation">8dp</item>
+        <item name="cardMaxElevation">16dp</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="strokeColor">@color/outline_variant</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- Hero Card — Larger elevation for 3D depth -->
+    <style name="Widget.NightTech.CardView.Hero" parent="Widget.NightTech.CardView">
+        <item name="cardElevation">16dp</item>
+        <item name="cardMaxElevation">24dp</item>
+        <item name="cardCornerRadius">28dp</item>
+        <item name="strokeColor">@color/highlight_rim</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- Bottom Navigation -->
+    <style name="Widget.NightTech.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/surface</item>
+        <item name="itemIconTint">@color/on_surface_variant</item>
+        <item name="itemTextColor">@color/on_surface_variant</item>
+        <item name="itemActiveIndicatorColor">@color/secondary_container</item>
+        <item name="android:elevation">16dp</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         DIALOG THEME
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style name="Theme.NightTech.Dialog" parent="ThemeOverlay.Material3.Dialog">
+        <item name="colorSurface">@color/surface_variant</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SNACKBAR THEME
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style name="Widget.NightTech.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="android:background">@color/surface_variant</item>
+        <item name="backgroundTint">@color/surface_variant</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         BADGE / CHIP STYLES
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style name="Widget.NightTech.Chip.Success" parent="Widget.Material3.Chip.Suggestion">
+        <item name="chipBackgroundColor">@color/success_container</item>
+        <item name="android:textColor">@color/on_success_container</item>
+        <item name="chipStrokeColor">@color/success</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+    </style>
+
+    <style name="Widget.NightTech.Chip.Warning" parent="Widget.Material3.Chip.Suggestion">
+        <item name="chipBackgroundColor">@color/warning_container</item>
+        <item name="android:textColor">@color/on_warning_container</item>
+        <item name="chipStrokeColor">@color/warning</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:fontFamily">@font/main_font_family</item>
+    </style>
+
+    <!-- Google Sign-In Button -->
+    <style name="Widget.NightTech.Button.Google" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/google_btn_background</item>
+        <item name="android:textColor">@color/google_btn_text</item>
+        <item name="iconTint">@color/google_btn_text</item>
+        <item name="strokeColor">@color/google_btn_stroke</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
 </resources>

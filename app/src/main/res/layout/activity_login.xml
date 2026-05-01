@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    activity_login.xml
+    ─────────────────────────────────────────────────────────────────────
+    LoginActivity layout — Night Tech / SajhaPulse
+    • Full-bleed hero area (top 55%) with gradient + decorative elements
+    • 3D MaterialCardView login container (bottom sheet style, high elevation)
+    • "Continue with Google" button — 24dp corner radius, branded icon
+    • "Continue as Guest" text link below
+    • Terms notice at very bottom
+    ─────────────────────────────────────────────────────────────────────
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".LoginActivity">
+
+    <!-- ══════════════════════════════════════════════════════════
+         HERO SECTION — Top visual area
+    ══════════════════════════════════════════════════════════════ -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/login_hero_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
+        <!-- Background gradient overlay -->
+        <View
+            android:id="@+id/hero_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_login_hero_gradient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHeight_percent="0.55" />
+
+        <!-- Top-right decorative glow orb -->
+        <View
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:alpha="0.22"
+            android:background="@drawable/bg_radial_glow"
+            android:layout_marginEnd="-50dp"
+            android:layout_marginTop="-40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Logo mark in hero -->
+        <ImageView
+            android:id="@+id/login_logo"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="56dp"
+            android:contentDescription="@string/app_name"
+            android:elevation="6dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Hero title -->
+        <TextView
+            android:id="@+id/login_hero_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="32dp"
+            android:fontFamily="@font/main_font_family"
+            android:gravity="center"
+            android:letterSpacing="-0.015"
+            android:lineSpacingMultiplier="1.15"
+            android:text="@string/login_hero_title"
+            android:textColor="@color/on_surface"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_logo" />
+
+        <!-- Hero subtitle -->
+        <TextView
+            android:id="@+id/login_hero_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="40dp"
+            android:fontFamily="@font/main_font_family"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/login_hero_subtitle"
+            android:textColor="@color/on_surface_variant"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_hero_title" />
+
+        <!-- ══════════════════════════════════════════════════════
+             3D LOGIN CARD — Elevated MaterialCardView
+             Overlaps hero section for "bottom sheet" feel
+        ══════════════════════════════════════════════════════════ -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/login_card"
+            style="@style/Widget.NightTech.CardView.Hero"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="24dp"
+            app:cardMaxElevation="32dp"
+            app:layout_constraintBottom_toTopOf="@id/login_terms"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="24dp">
+
+                <!-- Card title -->
+                <TextView
+                    android:id="@+id/card_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/main_font_family"
+                    android:letterSpacing="-0.01"
+                    android:text="@string/login_card_title"
+                    android:textColor="@color/on_surface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Card subtitle -->
+                <TextView
+                    android:id="@+id/card_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/main_font_family"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.4"
+                    android:text="@string/login_card_subtitle"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_title" />
+
+                <!-- Divider line -->
+                <View
+                    android:id="@+id/card_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/outline_variant"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_subtitle" />
+
+                <!-- Continue with Google button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_google_sign_in"
+                    style="@style/Widget.NightTech.Button.Google"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/main_font_family"
+                    android:text="@string/btn_continue_google"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="24dp"
+                    app:icon="@drawable/ic_google_logo"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    app:iconSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_divider" />
+
+                <!-- OR row -->
+                <LinearLayout
+                    android:id="@+id/or_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_google_sign_in">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/outline_variant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:fontFamily="@font/main_font_family"
+                        android:text="@string/or"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/outline_variant" />
+
+                </LinearLayout>
+
+                <!-- Continue as Guest button (outlined style) -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_guest"
+                    style="@style/Widget.NightTech.Button.Outlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/main_font_family"
+                    android:text="@string/btn_continue_guest"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="14sp"
+                    app:cornerRadius="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/or_row" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Terms notice — pinned to bottom -->
+        <TextView
+            android:id="@+id/login_terms"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/main_font_family"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.4"
+            android:text="@string/login_terms_notice"
+            android:textColor="@color/text_tertiary"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Loading overlay — shown during auth -->
+    <FrameLayout
+        android:id="@+id/login_loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_60"
+        android:visibility="gone">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/login_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:indicatorColor="@color/secondary"
+            app:trackColor="@color/outline_variant"
+            app:indicatorSize="48dp" />
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

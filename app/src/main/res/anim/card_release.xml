@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    anim/card_release.xml
+    ─────────────────────────────────────────────────────────────────────
+    Companion to card_click.xml — Release / Bounce-back phase
+    Used immediately after card_click animation ends.
+    ─────────────────────────────────────────────────────────────────────
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="false"
+    android:shareInterpolator="false">
+
+    <!--
+        RELEASE BOUNCE — Scale back with overshoot
+        Overshoot interpolator snaps past 100% then settles
+        Creating the satisfying "click" sensation
+    -->
+    <scale
+        android:duration="280"
+        android:fromXScale="0.95"
+        android:fromYScale="0.95"
+        android:interpolator="@android:anim/overshoot_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="0"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
+
+    <!--
+        BRIGHTNESS RESTORE — Fade back to full brightness
+    -->
+    <alpha
+        android:duration="200"
+        android:fromAlpha="0.88"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:startOffset="0"
+        android:toAlpha="1.0" />
+
+</set>

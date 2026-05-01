@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    anim/success_bounce.xml
+    ────────────────────────
+    Celebratory bounce animation for success states (post data-fetch).
+    Scale: 0 → 1.2 → 0.9 → 1.05 → 1.0  with fade-in.
+    Duration: 500ms  |  Use on success icons, badges, or confirmation cards.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true"
+    android:shareInterpolator="false">
+
+    <!-- Fade in fast -->
+    <alpha
+        android:duration="200"
+        android:fromAlpha="0.0"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:startOffset="0"
+        android:toAlpha="1.0" />
+
+    <!-- Scale up: 0 → 1.2 -->
+    <scale
+        android:duration="220"
+        android:fromXScale="0.0"
+        android:fromYScale="0.0"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="0"
+        android:toXScale="1.2"
+        android:toYScale="1.2" />
+
+    <!-- Scale back: 1.2 → 0.9 -->
+    <scale
+        android:duration="100"
+        android:fromXScale="1.2"
+        android:fromYScale="1.2"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="220"
+        android:toXScale="0.9"
+        android:toYScale="0.9" />
+
+    <!-- Settle: 0.9 → 1.0 -->
+    <scale
+        android:duration="100"
+        android:fromXScale="0.9"
+        android:fromYScale="0.9"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="320"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
+
+</set>

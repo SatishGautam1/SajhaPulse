@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    activity_splash.xml
+    ─────────────────────────────────────────────────────────────────────
+    SplashActivity layout — Night Tech / SajhaPulse
+    • Minimalist centred logo with tagline
+    • Background matches @color/background (forced dark)
+    • Logo pulses via ObjectAnimator in Java (no Lottie dependency)
+    • Version badge anchored to bottom-centre
+    ─────────────────────────────────────────────────────────────────────
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/splash_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.SplashActivity">
+
+    <!-- ── Decorative top-right glow orb ─────────────────────────── -->
+    <View
+        android:id="@+id/splash_glow_top"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:alpha="0.18"
+        android:background="@drawable/bg_radial_glow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="-60dp"
+        android:layout_marginTop="-60dp" />
+
+    <!-- ── Decorative bottom-left glow orb ───────────────────────── -->
+    <View
+        android:id="@+id/splash_glow_bottom"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:alpha="0.12"
+        android:background="@drawable/bg_glow_circle_purple"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="-50dp"
+        android:layout_marginBottom="-50dp" />
+
+    <!-- ══════════════════════════════════════════════════════════
+         LOGO GROUP — vertically centred, horizontally centred
+    ══════════════════════════════════════════════════════════════ -->
+
+    <!-- Pulse ring 1 — largest, most transparent -->
+    <View
+        android:id="@+id/splash_ring_1"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:alpha="0"
+        android:background="@drawable/bg_pulse_ring"
+        app:layout_constraintBottom_toTopOf="@id/splash_logo_guide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/splash_logo_guide" />
+
+    <!-- Pulse ring 2 — medium -->
+    <View
+        android:id="@+id/splash_ring_2"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:alpha="0"
+        android:background="@drawable/bg_pulse_ring"
+        app:layout_constraintBottom_toTopOf="@id/splash_logo_guide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/splash_logo_guide" />
+
+    <!-- Logo ImageView — the vector drawable -->
+    <ImageView
+        android:id="@+id/splash_logo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toTopOf="@id/splash_logo_guide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/splash_logo_guide" />
+
+    <!-- Invisible guideline at 42% from top — centres logo above midpoint -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/splash_logo_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.42" />
+
+    <!-- App name -->
+    <TextView
+        android:id="@+id/splash_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:fontFamily="@font/main_font_family"
+        android:letterSpacing="-0.02"
+        android:text="@string/app_name"
+        android:textColor="@color/on_surface"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splash_logo" />
+
+    <!-- Tagline -->
+    <TextView
+        android:id="@+id/splash_tagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:fontFamily="@font/main_font_family"
+        android:letterSpacing="0.04"
+        android:text="@string/splash_tagline"
+        android:textAllCaps="true"
+        android:textColor="@color/secondary"
+        android:textSize="11sp"
+        android:textStyle="normal"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splash_app_name" />
+
+    <!-- ── Loading indicator — thin cyan line at bottom of logo group -->
+    <View
+        android:id="@+id/splash_divider"
+        android:layout_width="40dp"
+        android:layout_height="2dp"
+        android:alpha="0"
+        android:background="@color/secondary"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splash_tagline" />
+
+    <!-- ══════════════════════════════════════════════════════════
+         BOTTOM VERSION BADGE
+    ══════════════════════════════════════════════════════════════ -->
+    <TextView
+        android:id="@+id/splash_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:fontFamily="@font/main_font_family"
+        android:text="@string/app_version"
+        android:textColor="@color/on_surface_variant"
+        android:textSize="12sp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

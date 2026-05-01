@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    anim/card_click.xml
+    ─────────────────────────────────────────────────────────────────────
+    Premium Card Click Animation — Scale Press + Release
+    Simulates a physical "press down" interaction for 3D tactile feel.
+
+    Usage pattern in Java (two-phase: press then release):
+
+        // Define the "press" animation
+        private void animateCardClick(View card, Runnable onComplete) {
+            Animation pressAnim = AnimationUtils.loadAnimation(
+                    this, R.anim.card_click);
+            pressAnim.setAnimationListener(new Animation.AnimationListener() {
+                @Override public void onAnimationStart(Animation a) {}
+                @Override public void onAnimationRepeat(Animation a) {}
+                @Override public void onAnimationEnd(Animation a) {
+                    // Release: scale back to original with overshoot bounce
+                    Animation releaseAnim = AnimationUtils.loadAnimation(
+                            MainActivity.this, R.anim.card_release);
+                    releaseAnim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override public void onAnimationStart(Animation a) {}
+                        @Override public void onAnimationRepeat(Animation a) {}
+                        @Override public void onAnimationEnd(Animation a) {
+                            if (onComplete != null) onComplete.run();
+                        }
+                    });
+                    card.startAnimation(releaseAnim);
+                }
+            });
+            card.startAnimation(pressAnim);
+        }
+
+    ─────────────────────────────────────────────────────────────────────
+    Design notes:
+    • Scales down to 95% — noticeable but not alarming
+    • 120ms press — must feel instant (< 150ms threshold for "touch feel")
+    • Pivot center — card compresses inward uniformly
+    • Elevation shadow changes handled in Java via ObjectAnimator
+    ─────────────────────────────────────────────────────────────────────
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true"
+    android:shareInterpolator="false">
+
+    <!--
+        PRESS DOWN — Scale compress to 95%
+        Fast acceleration curve (like pressing a physical button)
+    -->
+    <scale
+        android:duration="120"
+        android:fromXScale="1.0"
+        android:fromYScale="1.0"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="0"
+        android:toXScale="0.95"
+        android:toYScale="0.95" />
+
+    <!--
+        BRIGHTNESS DIM — Subtle darkening on press
+        Simulates shadow depth change / surface depression
+    -->
+    <alpha
+        android:duration="120"
+        android:fromAlpha="1.0"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:startOffset="0"
+        android:toAlpha="0.88" />
+
+</set>

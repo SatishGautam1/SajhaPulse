@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    AndroidManifest.xml
+    SajhaPulse — Night Tech
+    Declares all activities, permissions, Firebase config, and intent filters.
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- ── Permissions ──────────────────────────────────────────── -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
+        android:name=".SajhaPulseApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -10,16 +21,77 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SajhaPulse">
+        android:theme="@style/Theme.SajhaPulse"
+        tools:targetApi="31">
+
+        <!-- ══ SPLASH ACTIVITY ════════════════════════════════════ -->
+        <!--
+            Launcher entry point. Uses its own splash theme so the window
+            background matches before the layout inflates.
+            SplashActivity then decides: go to LoginActivity or MainActivity.
+        -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".ui.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SajhaPulse.Splash"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <!-- ══ LOGIN ACTIVITY ════════════════════════════════════ -->
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SajhaPulse"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ══ MAIN ACTIVITY ══════════════════════════════════════ -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SajhaPulse"
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTop" />
+
+        <!-- ══ FIREBASE CLOUD MESSAGING ══════════════════════════ -->
+        <service
+            android:name=".service.SajhaPulseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- FCM default notification channel metadata -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="sajhapulse_alerts" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notifications" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/secondary" />
+
+        <!-- ══ GOOGLE SIGN-IN — Web Client ID ════════════════════ -->
+        <!--
+            Replace YOUR_WEB_CLIENT_ID with the OAuth 2.0 Web Client ID
+            from Firebase Console → Authentication → Sign-in Method → Google.
+        -->
+        <meta-data
+            android:name="com.google.android.gms.auth.api.signin.WebClientId"
+            android:value="@string/default_web_client_id" />
+
     </application>
 
 </manifest>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    font/main_font_family.xml
+    ─────────────────────────────────────────────────────────────────────
+    Inter Font Family — Full weight mapping for Night Tech UI
+    Download Inter from: https://fonts.google.com/specimen/Inter
+    Updated to use 18pt optical size variants available in project.
+    ─────────────────────────────────────────────────────────────────────
+-->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--
+        Regular — 400
+        Used for: Body text, input fields, captions, hints
+    -->
+    <font
+        android:font="@font/inter_18pt_regular"
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        app:font="@font/inter_18pt_regular"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
+
+    <!--
+        Regular Italic — 400 Italic
+        Used for: Quotes, emphasis body text
+    -->
+    <font
+        android:font="@font/inter_18pt_italic"
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        app:font="@font/inter_18pt_italic"
+        app:fontStyle="italic"
+        app:fontWeight="400" />
+
+    <!--
+        Medium — 500
+        Used for: Button labels, list item titles, tab labels
+    -->
+    <font
+        android:font="@font/inter_18pt_medium"
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        app:font="@font/inter_18pt_medium"
+        app:fontStyle="normal"
+        app:fontWeight="500" />
+
+    <!--
+        SemiBold — 600
+        Used for: Card headings, section headers, badge text
+    -->
+    <font
+        android:font="@font/inter_18pt_semibold"
+        android:fontStyle="normal"
+        android:fontWeight="600"
+        app:font="@font/inter_18pt_semibold"
+        app:fontStyle="normal"
+        app:fontWeight="600" />
+
+    <!--
+        Bold — 700
+        Used for: Primary headings, toolbar title, emphasis text,
+                  rate values, hero numbers
+    -->
+    <font
+        android:font="@font/inter_18pt_bold"
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        app:font="@font/inter_18pt_bold"
+        app:fontStyle="normal"
+        app:fontWeight="700" />
+
+    <!--
+        Bold Italic — 700 Italic
+        Used for: Pull quotes, branded taglines
+    -->
+    <font
+        android:font="@font/inter_18pt_bolditalic"
+        android:fontStyle="italic"
+        android:fontWeight="700"
+        app:font="@font/inter_18pt_bolditalic"
+        app:fontStyle="italic"
+        app:fontWeight="700" />
+
+    <!--
+        Black — 900
+        Used for: Hero display numbers (exchange rates, prices),
+                  marketing banners, splash screen branding
+    -->
+    <font
+        android:font="@font/inter_18pt_black"
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        app:font="@font/inter_18pt_black"
+        app:fontStyle="normal"
+        app:fontWeight="900" />
+
+</font-family>

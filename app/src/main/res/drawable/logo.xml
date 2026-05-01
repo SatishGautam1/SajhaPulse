@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    drawable/logo.xml
+    ─────────────────────────────────────────────────────────────────────
+    SajhaPulse App Logo — Night Tech Brand
+    Concept: A stylised ECG/pulse waveform inside a rounded-square
+    badge. The waveform doubles as the letter "S" concept and echoes
+    the app's core value — real-time market pulse data.
+
+    Dimensions: 200 × 200 dp (square — safe for all usages)
+    Colours: pulled exclusively from colors.xml (Night Tech palette)
+    ─────────────────────────────────────────────────────────────────────
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- ── Outer glow ring (very subtle, creates 3-D depth halo) ─── -->
+    <path
+        android:fillColor="#1A0EA5E9"
+        android:pathData="
+            M100,4
+            C148.6,4 188,43.4 188,92
+            L188,108
+            C188,156.6 148.6,196 100,196
+            C51.4,196 12,156.6 12,108
+            L12,92
+            C12,43.4 51.4,4 100,4 Z" />
+
+    <!-- ── Badge background — deep space navy rounded square ──────── -->
+    <path
+        android:fillColor="#0C1B2E"
+        android:pathData="
+            M100,12
+            C145.8,12 184,50.2 184,96
+            L184,104
+            C184,149.8 145.8,188 100,188
+            C54.2,188 16,149.8 16,104
+            L16,96
+            C16,50.2 54.2,12 100,12 Z" />
+
+    <!-- ── Inner badge surface — slight elevation tint ──────────── -->
+    <path
+        android:fillColor="#101F36"
+        android:pathData="
+            M100,22
+            C140.3,22 174,55.7 174,96
+            L174,104
+            C174,144.3 140.3,178 100,178
+            C59.7,178 26,144.3 26,104
+            L26,96
+            C26,55.7 59.7,22 100,22 Z" />
+
+    <!-- ── Cyan accent ring (partial arc — top right) ────────────── -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="
+            M100,26
+            A74,74 0 0,1 164,80"
+        android:strokeColor="#0EA5E9"
+        android:strokeLineCap="round"
+        android:strokeWidth="2.5" />
+
+    <!-- ── Purple accent arc (bottom left) ──────────────────────── -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="
+            M36,120
+            A74,74 0 0,0 100,174"
+        android:strokeColor="#7C3AED"
+        android:strokeLineCap="round"
+        android:strokeWidth="2.5" />
+
+    <!-- ════════════════════════════════════════════════════════════
+         PULSE WAVEFORM — The core logo mark
+         ECG-style line that sweeps left to right across centre.
+         Baseline Y = 100 (vertical center of 200px viewport).
+
+         Path breakdown:
+           • Flat lead-in segment
+           • Small pre-deflection dip
+           • Steep QRS spike (the "pulse" peak)
+           • Return to baseline
+           • Flat tail
+
+         Stroke: Electric Cyan  #0EA5E9  width 5.5dp  round caps
+    ════════════════════════════════════════════════════════════════ -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="
+            M 38,100
+            L 62,100
+            L 68,100
+            L 72,110
+            L 76,88
+            L 82,126
+            L 88,72
+            L 94,104
+            L 98,100
+            L 108,100
+            L 112,92
+            L 116,108
+            L 120,100
+            L 162,100"
+        android:strokeColor="#0EA5E9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="5.5" />
+
+    <!-- ── Waveform glow duplicate (thicker, very low alpha) ──────── -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="
+            M 38,100
+            L 62,100
+            L 68,100
+            L 72,110
+            L 76,88
+            L 82,126
+            L 88,72
+            L 94,104
+            L 98,100
+            L 108,100
+            L 112,92
+            L 116,108
+            L 120,100
+            L 162,100"
+        android:strokeColor="#380EA5E9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="12" />
+
+    <!-- ── Peak dot — bright accent node at the spike tip ────────── -->
+    <path
+        android:fillColor="#0EA5E9"
+        android:pathData="
+            M 88,72
+            m -5,0
+            a 5,5 0 1,0 10,0
+            a 5,5 0 1,0 -10,0" />
+
+    <!-- ── Peak dot glow ─────────────────────────────────────────── -->
+    <path
+        android:fillColor="#400EA5E9"
+        android:pathData="
+            M 88,72
+            m -9,0
+            a 9,9 0 1,0 18,0
+            a 9,9 0 1,0 -18,0" />
+
+    <!-- ── "SP" monogram — bottom-right corner ───────────────────── -->
+    <!-- S letterform -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="
+            M 118,138
+            C 118,134 121,132 125,132
+            C 129,132 132,134 132,137
+            C 132,140 129,141.5 125,143
+            C 121,144.5 118,146 118,149
+            C 118,152 121,154 125,154
+            C 129,154 132,152 132,148"
+        android:strokeColor="#7A94B0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="2.8" />
+
+    <!-- P letterform -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="
+            M 138,132
+            L 138,154
+            M 138,132
+            L 143,132
+            C 147,132 150,134.5 150,138
+            C 150,141.5 147,144 143,144
+            L 138,144"
+        android:strokeColor="#7A94B0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="2.8" />
+
+</vector>

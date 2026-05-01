@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    anim/success_pop.xml
+    ─────────────────────────────────────────────────────────────────────
+    Success State Animation — Used after successful data fetch
+    Triggered in MainActivity.triggerSuccessAnimation()
+    Creates a "pulse pop" effect on a success icon or badge
+    ─────────────────────────────────────────────────────────────────────
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="false"
+    android:shareInterpolator="false">
+
+    <!-- Phase 1: Quick scale-up burst (0-180ms) -->
+    <scale
+        android:duration="180"
+        android:fromXScale="0.0"
+        android:fromYScale="0.0"
+        android:interpolator="@android:anim/overshoot_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="0"
+        android:toXScale="1.15"
+        android:toYScale="1.15" />
+
+    <!-- Phase 2: Settle to 100% (180-320ms) -->
+    <scale
+        android:duration="140"
+        android:fromXScale="1.15"
+        android:fromYScale="1.15"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="180"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
+
+    <!-- Fade in across full duration -->
+    <alpha
+        android:duration="200"
+        android:fromAlpha="0.0"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:startOffset="0"
+        android:toAlpha="1.0" />
+
+    <!-- Phase 3: Gentle pulse glow (320-600ms) — scale up slightly then back -->
+    <scale
+        android:duration="280"
+        android:fromXScale="1.0"
+        android:fromYScale="1.0"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:repeatCount="1"
+        android:repeatMode="reverse"
+        android:startOffset="320"
+        android:toXScale="1.08"
+        android:toYScale="1.08" />
+
+</set>

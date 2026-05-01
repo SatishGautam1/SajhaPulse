@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">SajhaPulse</string>
+    <string name="login_hero_title">Stay Updated with Real-time Rates</string>
+    <string name="login_hero_subtitle">The most accurate market and currency data for Nepal, right at your fingertips.</string>
+    <string name="login_card_title">Welcome to SajhaPulse</string>
+    <string name="login_card_subtitle">Sign in to sync your preferences and alerts across devices.</string>
+    <string name="btn_continue_google">Continue with Google</string>
+    <string name="btn_continue_guest">Continue as Guest</string>
+    <string name="login_terms_notice">By continuing, you agree to our Terms of Service and Privacy Policy.</string>
+    <string name="or">OR</string>
+    <string name="splash_tagline">Your Pulse on Nepal\'s Pulse</string>
+    <string name="app_version">v1.0.0</string>
+    <!-- Replace with your actual Web Client ID from Firebase Console -->
+    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID</string>
 </resources>

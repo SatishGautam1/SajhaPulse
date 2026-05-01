@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    anim/slide_up_fade.xml
+    ─────────────────────────────────────────────────────────────────────
+    Premium Entry Animation — Slide Up + Fade In
+    Usage in Java:
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.slide_up_fade);
+        view.startAnimation(anim);
+    Or in XML (for Activity transitions):
+        android:animateLayoutChanges="true" on parent layout, then
+        call view.setVisibility(View.VISIBLE) to trigger.
+    ─────────────────────────────────────────────────────────────────────
+    Design notes:
+    • Starts 60dp below its final position (translateY from 8% offset)
+    • Overshoot interpolator gives tactile "bounce settle" on arrival
+    • 380ms total — fast enough to feel snappy, slow enough to notice
+    • Stagger children by offsetting startOffset in code (see MainActivity)
+    ─────────────────────────────────────────────────────────────────────
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/decelerate_interpolator"
+    android:shareInterpolator="false">
+
+    <!--
+        PHASE 1: Translate Y — Slide up from 60dp below
+        Uses percentage-based fromYDelta for responsiveness
+    -->
+    <translate
+        android:duration="420"
+        android:fromYDelta="8%p"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:startOffset="0"
+        android:toYDelta="0" />
+
+    <!--
+        PHASE 2: Alpha — Fade in from invisible to full opacity
+        Slightly shorter than translate to create "pop through" effect
+    -->
+    <alpha
+        android:duration="360"
+        android:fromAlpha="0.0"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:startOffset="0"
+        android:toAlpha="1.0" />
+
+    <!--
+        PHASE 3: Scale — Subtle scale-up from 96% to 100%
+        Adds depth perception — feels like card "arriving" from behind
+        Pivots from bottom-center to give lift effect
+    -->
+    <scale
+        android:duration="420"
+        android:fromXScale="0.96"
+        android:fromYScale="0.96"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="100%"
+        android:startOffset="0"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
+
+</set>
