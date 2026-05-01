@@ -1,13 +1,15 @@
 package com.nighttech.sajhapulse.auth;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowInsetsController;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,40 +42,32 @@ import java.util.Map;
  *
  * On success, creates/updates a user document in Firestore and
  * navigates to MainActivity.
- *
- * Dependencies (build.gradle :app):
- *   implementation 'com.google.firebase:firebase-auth'
- *   implementation 'com.google.firebase:firebase-firestore'
- *   implementation 'com.google.android.gms:play-services-auth:21.x.x'
  */
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
-    // ── Firebase ───────────────────────────────────────────────────
     private FirebaseAuth      mAuth;
     private FirebaseFirestore mFirestore;
     private GoogleSignInClient mGoogleSignInClient;
 
-    // ── Views ──────────────────────────────────────────────────────
     private MaterialButton btnGoogleSignIn;
     private MaterialButton btnGuest;
     private View           loadingOverlay;
 
-    // ── Google Sign-In Result Launcher (replaces deprecated onActivityResult) ──
     private final ActivityResultLauncher<Intent> googleSignInLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
-                    result -> handleGoogleSignInResult(result)
+                    this::handleGoogleSignInResult
             );
-
-    // ── Lifecycle ──────────────────────────────────────────────────
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        applySystemBarStyling();
 
         mAuth      = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
@@ -83,20 +77,49 @@ public class LoginActivity extends AppCompatActivity {
         setClickListeners();
     }
 
-    // ── Google Sign-In Configuration ──────────────────────────────
+    // ── System Bar Styling ─────────────────────────────────────────
 
     /**
-     * Builds a GoogleSignInOptions using the Web Client ID stored in
-     * google-services.json (referenced via @string/default_web_client_id).
-     * requestIdToken() is required for Firebase credential exchange.
+     * Ensures the status bar and navigation bar have white (light) icons
+     * to match the app's forced dark theme.
      */
+    private void applySystemBarStyling() {
+        Window window = getWindow();
+
+        window.setStatusBarColor(getResources().getColor(R.color.background, getTheme()));
+        window.setNavigationBarColor(getResources().getColor(R.color.background, getTheme()));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowInsetsController controller = window.getInsetsController();
+            if (controller != null) {
+                controller.setSystemBarsAppearance(
+                        0,
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                );
+                controller.setSystemBarsAppearance(
+                        0,
+                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                );
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            View decorView = window.getDecorView();
+            int flags = decorView.getSystemUiVisibility();
+            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
+            decorView.setSystemUiVisibility(flags);
+        }
+    }
+
+    // ── Google Sign-In Configuration ──────────────────────────────
+
     private void configureGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .requestProfile()
                 .build();
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
@@ -117,17 +140,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void launchGoogleSignIn() {
         showLoading(true);
-        // Sign out first to always show account picker
         mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             googleSignInLauncher.launch(signInIntent);
         });
     }
 
-    /**
-     * Receives the result from Google's account picker.
-     * Extracts the GoogleSignInAccount and exchanges it for a Firebase credential.
-     */
     private void handleGoogleSignInResult(ActivityResult result) {
         Task<GoogleSignInAccount> task =
                 GoogleSignIn.getSignedInAccountFromIntent(result.getData());
@@ -135,6 +153,9 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount account = task.getResult(ApiException.class);
             if (account != null) {
                 firebaseAuthWithGoogle(account.getIdToken());
+            } else {
+                showLoading(false);
+                showToast("Google sign-in cancelled.");
             }
         } catch (ApiException e) {
             Log.e(TAG, "Google sign-in failed: " + e.getStatusCode(), e);
@@ -143,10 +164,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Exchanges a Google ID token for a Firebase credential and signs in.
-     * On success: saves user to Firestore, navigates to MainActivity.
-     */
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -166,10 +183,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // ── Guest / Anonymous Sign-In ──────────────────────────────────
 
-    /**
-     * Signs in anonymously via Firebase Anonymous Auth.
-     * Guest sessions are tracked in Firestore with isGuest = true.
-     */
     private void signInAsGuest() {
         showLoading(true);
         mAuth.signInAnonymously()
@@ -188,17 +201,8 @@ public class LoginActivity extends AppCompatActivity {
     // ── Firestore User Document ────────────────────────────────────
 
     /**
-     * Creates or updates the user's document in:
-     * Firestore → "users" collection → uid document
-     *
-     * Schema:
-     *   uid        : String
-     *   displayName: String
-     *   email      : String (null for guests)
-     *   photoUrl   : String (null for guests)
-     *   isGuest    : boolean
-     *   createdAt  : Server timestamp (set only on new users)
-     *   lastLogin  : Server timestamp (always updated)
+     * Creates or updates the user document in Firestore.
+     * Uses SetOptions.merge() so existing fields are preserved.
      */
     private void saveUserToFirestore(FirebaseUser user, boolean isNewUser, boolean isGuest) {
         if (user == null) {
@@ -227,18 +231,16 @@ public class LoginActivity extends AppCompatActivity {
                     navigateToMain();
                 })
                 .addOnFailureListener(e -> {
-                    // Firestore save failed — still let the user in
                     Log.w(TAG, "Firestore user save failed, proceeding anyway", e);
                     navigateToMain();
                 });
     }
 
-    /** Returns a map of sensible default user preferences for new accounts. */
     private Map<String, Object> buildDefaultPreferences() {
         Map<String, Object> prefs = new HashMap<>();
-        prefs.put("baseCurrency",       "USD");
+        prefs.put("baseCurrency",         "NPR");
         prefs.put("notificationsEnabled", true);
-        prefs.put("rateAlerts",          false);
+        prefs.put("rateAlerts",           false);
         return prefs;
     }
 
@@ -256,9 +258,11 @@ public class LoginActivity extends AppCompatActivity {
     // ── UI Helpers ─────────────────────────────────────────────────
 
     private void showLoading(boolean show) {
-        loadingOverlay.setVisibility(show ? View.VISIBLE : View.GONE);
-        btnGoogleSignIn.setEnabled(!show);
-        btnGuest.setEnabled(!show);
+        if (loadingOverlay != null) {
+            loadingOverlay.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+        if (btnGoogleSignIn != null) btnGoogleSignIn.setEnabled(!show);
+        if (btnGuest != null)        btnGuest.setEnabled(!show);
     }
 
     private void showToast(String message) {

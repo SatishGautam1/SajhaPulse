@@ -3,11 +3,6 @@
     activity_main.xml
     ─────────────────────────────────────────────────────────────────────
     MainActivity layout — Night Tech / SajhaPulse
-    • DrawerLayout root (Navigation Drawer sidebar)
-    • CoordinatorLayout content (AppBarLayout + NestedScrollView)
-    • MaterialToolbar with menu icon and avatar
-    • Dashboard cards with 3D elevation + translationZ
-    • NavigationView sidebar (header + menu items)
     ─────────────────────────────────────────────────────────────────────
 -->
 <androidx.drawerlayout.widget.DrawerLayout
@@ -18,26 +13,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".MainActivity"
+    tools:context=".ui.MainActivity"
     tools:openDrawer="start">
 
-    <!-- ══════════════════════════════════════════════════════════════
-         MAIN CONTENT — CoordinatorLayout with collapsing toolbar
-    ══════════════════════════════════════════════════════════════════ -->
+    <!-- ══ MAIN CONTENT ════════════════════════════════════════════ -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         android:fitsSystemWindows="true">
 
-        <!-- ── AppBarLayout with MaterialToolbar ──────────────────── -->
+        <!-- ── AppBarLayout ──────────────────────────────────────── -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/toolbar_background"
-            android:elevation="8dp"
             app:liftOnScroll="true"
             app:liftOnScrollTargetViewId="@id/main_scroll">
 
@@ -47,10 +38,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_menu"
-                app:navigationIconTint="@color/on_surface"
-                app:titleTextAppearance="@style/TextAppearance.NightTech.TitleLarge">
+                app:navigationIconTint="@color/on_surface">
 
-                <!-- Greeting text inside toolbar (left side, after nav icon) -->
+                <!-- Greeting text -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,15 +65,14 @@
                         android:textColor="@color/toolbar_title"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-
                 </LinearLayout>
 
-                <!-- Avatar / notification icon (right-aligned) -->
+                <!-- Avatar / Notification -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginEnd="8dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
@@ -100,81 +89,74 @@
                         android:id="@+id/toolbar_avatar"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:contentDescription="User Profile"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_account_circle"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.NightTech.Hero"
                         app:strokeColor="@color/secondary"
                         app:strokeWidth="1.5dp" />
-
                 </LinearLayout>
-
             </com.google.android.material.appbar.MaterialToolbar>
-
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- ── Scrollable Dashboard Content ─────────────────────── -->
+        <!-- ── Scrollable Dashboard ──────────────────────────────── -->
         <androidx.core.widget.NestedScrollView
             android:id="@+id/main_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingBottom="24dp"
+            android:paddingBottom="88dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="16dp">
+                android:padding="16dp">
 
-                <!-- ══ LIVE RATE HERO CARD ════════════════════════ -->
+                <!-- Live Rate Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_live_rate"
                     style="@style/Widget.NightTech.CardView.Hero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:translationZ="8dp"
+                    android:layout_marginBottom="24dp"
                     app:cardCornerRadius="24dp"
-                    app:cardElevation="16dp">
+                    app:cardElevation="8dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="20dp">
 
-                        <!-- Live indicator dot -->
                         <View
                             android:id="@+id/live_dot"
                             android:layout_width="8dp"
                             android:layout_height="8dp"
                             android:background="@drawable/bg_live_dot"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@+id/live_text"/>
 
                         <TextView
+                            android:id="@+id/live_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
                             android:fontFamily="@font/main_font_family"
-                            android:letterSpacing="0.06"
                             android:text="LIVE"
                             android:textColor="@color/success"
                             android:textSize="10sp"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@id/live_dot"
                             app:layout_constraintStart_toEndOf="@id/live_dot"
-                            app:layout_constraintTop_toTopOf="@id/live_dot" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <!-- Rate label -->
                         <TextView
                             android:id="@+id/rate_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="16dp"
                             android:fontFamily="@font/main_font_family"
                             android:text="USD / NPR"
                             android:textColor="@color/on_surface_variant"
@@ -182,14 +164,12 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/live_dot" />
 
-                        <!-- Rate value — big hero number -->
                         <TextView
                             android:id="@+id/rate_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/main_font_family"
-                            android:letterSpacing="-0.025"
                             android:text="—"
                             android:textColor="@color/on_surface"
                             android:textSize="40sp"
@@ -197,19 +177,16 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rate_label" />
 
-                        <!-- Change badge -->
                         <com.google.android.material.chip.Chip
                             android:id="@+id/rate_change_chip"
                             style="@style/Widget.NightTech.Chip.Success"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="+0.00%"
-                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@id/rate_value"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/rate_value" />
 
-                        <!-- Last updated -->
                         <TextView
                             android:id="@+id/rate_last_updated"
                             android:layout_width="wrap_content"
@@ -223,38 +200,34 @@
                             app:layout_constraintTop_toBottomOf="@id/rate_value" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- ══ SECTION HEADER — Quick Stats ══════════════ -->
+                <!-- Quick Stats Section -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:fontFamily="@font/main_font_family"
-                    android:letterSpacing="-0.01"
                     android:text="Quick Stats"
                     android:textColor="@color/on_surface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- ══ STATS CARD ROW — side by side ════════════ -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="24dp"
                     android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:baselineAligned="false">
 
-                    <!-- Gold Rate Card -->
+                    <!-- Gold Card -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_gold"
                         style="@style/Widget.NightTech.CardView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:translationZ="4dp">
+                        android:layout_weight="1">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -266,7 +239,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/main_font_family"
-                                android:letterSpacing="0.04"
                                 android:text="GOLD"
                                 android:textColor="@color/warning"
                                 android:textSize="10sp"
@@ -290,20 +262,17 @@
                                 android:text="NPR / tola"
                                 android:textColor="@color/on_surface_variant"
                                 android:textSize="11sp" />
-
                         </LinearLayout>
-
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Silver Rate Card -->
+                    <!-- Silver Card -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_silver"
                         style="@style/Widget.NightTech.CardView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:translationZ="4dp">
+                        android:layout_weight="1">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -315,7 +284,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/main_font_family"
-                                android:letterSpacing="0.04"
                                 android:text="SILVER"
                                 android:textColor="@color/on_surface_variant"
                                 android:textSize="10sp"
@@ -339,21 +307,17 @@
                                 android:text="NPR / tola"
                                 android:textColor="@color/on_surface_variant"
                                 android:textSize="11sp" />
-
                         </LinearLayout>
-
                     </com.google.android.material.card.MaterialCardView>
-
                 </LinearLayout>
 
-                <!-- ══ FOREX TABLE CARD ═══════════════════════════ -->
+                <!-- Forex Table -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_forex"
                     style="@style/Widget.NightTech.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:translationZ="6dp">
+                    android:layout_marginBottom="24dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -361,53 +325,50 @@
                         android:orientation="vertical"
                         android:padding="20dp">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:layout_height="wrap_content">
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
                                 android:fontFamily="@font/main_font_family"
                                 android:text="Forex Rates"
                                 android:textColor="@color/on_surface"
-                                android:textSize="15sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/forex_see_all"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
                                 android:fontFamily="@font/main_font_family"
                                 android:text="See all"
                                 android:textColor="@color/secondary"
-                                android:textSize="13sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
 
-                        </LinearLayout>
-
-                        <!-- Table container — rows injected programmatically -->
                         <LinearLayout
                             android:id="@+id/forex_table_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:orientation="vertical" />
-
                     </LinearLayout>
-
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- ══ MARKET NEWS CARD ═══════════════════════════ -->
+                <!-- News Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_news"
                     style="@style/Widget.NightTech.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:translationZ="4dp">
+                    android:layout_marginBottom="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -421,7 +382,7 @@
                             android:fontFamily="@font/main_font_family"
                             android:text="Market Updates"
                             android:textColor="@color/on_surface"
-                            android:textSize="15sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -430,40 +391,33 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:fontFamily="@font/main_font_family"
-                            android:lineSpacingMultiplier="1.5"
                             android:text="Loading latest market updates…"
                             android:textColor="@color/on_surface_variant"
-                            android:textSize="13sp" />
-
+                            android:textSize="14sp" />
                     </LinearLayout>
-
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
-
         </androidx.core.widget.NestedScrollView>
 
-        <!-- FAB — quick currency converter -->
+        <!-- FAB -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_convert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="20dp"
+            android:layout_margin="24dp"
             android:fontFamily="@font/main_font_family"
             android:text="Convert"
             android:textStyle="bold"
             app:backgroundTint="@color/secondary"
-            app:elevation="12dp"
             app:icon="@drawable/ic_swap_horiz"
             app:iconTint="@color/on_secondary"
             app:tint="@color/on_secondary" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!-- ══════════════════════════════════════════════════════════════
-         NAVIGATION DRAWER — Sidebar
-    ══════════════════════════════════════════════════════════════════ -->
+    <!-- ══ NAVIGATION DRAWER ════════════════════════════════════════ -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="300dp"
@@ -475,7 +429,6 @@
         app:itemBackground="@drawable/nav_item_background"
         app:itemIconTint="@color/nav_item_color"
         app:itemTextColor="@color/nav_item_color"
-        app:itemTextAppearance="@style/TextAppearance.NightTech.TitleSmall"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
