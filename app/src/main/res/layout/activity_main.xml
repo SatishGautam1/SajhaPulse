@@ -3,6 +3,7 @@
     activity_main.xml
     ─────────────────────────────────────────────────────────────────────
     MainActivity layout — Night Tech / SajhaPulse
+    Updated: May 2026
     ─────────────────────────────────────────────────────────────────────
 -->
 <androidx.drawerlayout.widget.DrawerLayout
@@ -16,21 +17,18 @@
     tools:context=".ui.MainActivity"
     tools:openDrawer="start">
 
-    <!-- ══ MAIN CONTENT ════════════════════════════════════════════ -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <!-- ── AppBarLayout ──────────────────────────────────────── -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/toolbar_background"
-            app:liftOnScroll="true"
-            app:liftOnScrollTargetViewId="@id/main_scroll">
+            app:liftOnScroll="true">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/main_toolbar"
@@ -40,19 +38,17 @@
                 app:navigationIcon="@drawable/ic_menu"
                 app:navigationIconTint="@color/on_surface">
 
-                <!-- Greeting text -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="start">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/toolbar_greeting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/main_font_family"
-                        android:text="Good morning,"
+                        android:text="Namaste,"
                         android:textColor="@color/on_surface_variant"
                         android:textSize="11sp" />
 
@@ -61,19 +57,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/main_font_family"
-                        android:text="@string/app_name"
+                        android:text="SajhaPulse User"
                         android:textColor="@color/toolbar_title"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Avatar / Notification -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="8dp"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical">
 
                     <ImageButton
@@ -81,7 +75,6 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Notifications"
                         android:src="@drawable/ic_notifications"
                         app:tint="@color/on_surface_variant" />
 
@@ -90,8 +83,6 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginStart="8dp"
-                        android:contentDescription="User Profile"
-                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_account_circle"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.NightTech.Hero"
                         app:strokeColor="@color/secondary"
@@ -100,7 +91,6 @@
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- ── Scrollable Dashboard ──────────────────────────────── -->
         <androidx.core.widget.NestedScrollView
             android:id="@+id/main_scroll"
             android:layout_width="match_parent"
@@ -115,41 +105,33 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Live Rate Card -->
+                <!-- 1. KEY FEATURE: REAL-TIME NRB FOREX HERO -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_live_rate"
                     style="@style/Widget.NightTech.CardView.Hero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    app:cardCornerRadius="24dp"
-                    app:cardElevation="8dp">
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="10dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="20dp">
-
-                        <View
-                            android:id="@+id/live_dot"
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:background="@drawable/bg_live_dot"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="@+id/live_text"/>
+                        android:padding="24dp">
 
                         <TextView
-                            android:id="@+id/live_text"
+                            android:id="@+id/nrb_tag"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:fontFamily="@font/main_font_family"
-                            android:text="LIVE"
-                            android:textColor="@color/success"
+                            android:background="@drawable/bg_tag_light"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
+                            android:text="NRB OFFICIAL"
+                            android:textColor="@color/secondary"
                             android:textSize="10sp"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@id/live_dot"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -157,22 +139,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:fontFamily="@font/main_font_family"
-                            android:text="USD / NPR"
+                            android:text="USD to NPR (Selling)"
                             android:textColor="@color/on_surface_variant"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/live_dot" />
+                            app:layout_constraintTop_toBottomOf="@id/nrb_tag" />
 
                         <TextView
                             android:id="@+id/rate_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/main_font_family"
-                            android:text="—"
+                            android:text="Rs. 134.42"
                             android:textColor="@color/on_surface"
-                            android:textSize="40sp"
+                            android:textSize="36sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rate_label" />
@@ -182,7 +161,7 @@
                             style="@style/Widget.NightTech.Chip.Success"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="+0.00%"
+                            android:text="+0.12%"
                             app:layout_constraintBottom_toBottomOf="@id/rate_value"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/rate_value" />
@@ -192,9 +171,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:fontFamily="@font/main_font_family"
-                            android:text="Fetching data..."
-                            android:textColor="@color/text_tertiary"
+                            android:text="Updated --"
+                            android:textColor="@color/on_surface_variant"
                             android:textSize="11sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rate_value" />
@@ -202,13 +180,12 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Quick Stats Section -->
+                <!-- 2. KEY FEATURE: NEPAL GOLD & SILVER (FENOSGODA) -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:fontFamily="@font/main_font_family"
-                    android:text="Quick Stats"
+                    android:text="Bullion Market (Today)"
                     android:textColor="@color/on_surface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -218,9 +195,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:weightSum="2">
 
-                    <!-- Gold Card -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_gold"
                         style="@style/Widget.NightTech.CardView"
@@ -234,38 +210,30 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:padding="16dp">
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/main_font_family"
-                                android:text="GOLD"
+                                android:text="GOLD (24K)"
                                 android:textColor="@color/warning"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
-
                             <TextView
                                 android:id="@+id/gold_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:fontFamily="@font/main_font_family"
-                                android:text="—"
+                                android:text="1,52,300"
                                 android:textColor="@color/on_surface"
-                                android:textSize="22sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
-
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/main_font_family"
-                                android:text="NPR / tola"
+                                android:text="Per Tola"
                                 android:textColor="@color/on_surface_variant"
-                                android:textSize="11sp" />
+                                android:textSize="11sp"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"/>
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Silver Card -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_silver"
                         style="@style/Widget.NightTech.CardView"
@@ -279,39 +247,32 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:padding="16dp">
-
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/main_font_family"
                                 android:text="SILVER"
                                 android:textColor="@color/on_surface_variant"
                                 android:textSize="10sp"
-                                android:textStyle="bold" />
-
+                                android:textStyle="bold"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"/>
                             <TextView
                                 android:id="@+id/silver_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:fontFamily="@font/main_font_family"
-                                android:text="—"
+                                android:text="1,850"
                                 android:textColor="@color/on_surface"
-                                android:textSize="22sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
-
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/main_font_family"
-                                android:text="NPR / tola"
+                                android:text="Per Tola"
                                 android:textColor="@color/on_surface_variant"
-                                android:textSize="11sp" />
+                                android:textSize="11sp"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"/>
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
 
-                <!-- Forex Table -->
+                <!-- 3. FEATURE: CROSS-CURRENCY FOREX LIST -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_forex"
                     style="@style/Widget.NightTech.CardView"
@@ -328,28 +289,20 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerVertical="true"
-                                android:fontFamily="@font/main_font_family"
-                                android:text="Forex Rates"
+                                android:text="Major Currencies"
                                 android:textColor="@color/on_surface"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
-
                             <TextView
                                 android:id="@+id/forex_see_all"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:fontFamily="@font/main_font_family"
-                                android:text="See all"
+                                android:text="Full List"
                                 android:textColor="@color/secondary"
-                                android:textSize="14sp"
                                 android:textStyle="bold" />
                         </RelativeLayout>
 
@@ -362,7 +315,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- News Card -->
+                <!-- 4. KEY FEATURE: LOCAL MARKET NEWS (Nepali Perspective) -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_news"
                     style="@style/Widget.NightTech.CardView"
@@ -375,23 +328,19 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="20dp">
-
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/main_font_family"
-                            android:text="Market Updates"
+                            android:text="Financial Highlights"
                             android:textColor="@color/on_surface"
                             android:textSize="16sp"
-                            android:textStyle="bold" />
-
+                            android:textStyle="bold"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"/>
                         <TextView
                             android:id="@+id/news_placeholder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:fontFamily="@font/main_font_family"
-                            android:text="Loading latest market updates…"
+                            android:text="Checking NRB &amp; SEBON updates..."
                             android:textColor="@color/on_surface_variant"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -400,35 +349,28 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <!-- FAB -->
+        <!-- PRIMARY CALL TO ACTION: SMART CONVERTER -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_convert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="24dp"
-            android:fontFamily="@font/main_font_family"
             android:text="Convert"
-            android:textStyle="bold"
+            android:textColor="@color/on_secondary"
             app:backgroundTint="@color/secondary"
             app:icon="@drawable/ic_swap_horiz"
-            app:iconTint="@color/on_secondary"
-            app:tint="@color/on_secondary" />
+            app:iconTint="@color/on_secondary" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!-- ══ NAVIGATION DRAWER ════════════════════════════════════════ -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/surface"
-        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:itemBackground="@drawable/nav_item_background"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
