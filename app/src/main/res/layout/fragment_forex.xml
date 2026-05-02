@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_forex.xml — ForexFragment tab content
+    ═══════════════════════════════════════════════════════════════════
+    Sections:
+      ① Highlight Bar  — USD sell rate + EUR sell rate prominently
+      ② "As published by NRB" date + source note
+      ③ Column headers — Flag/ISO | Name | Unit | Buy | Sell
+      ④ RecyclerView   — ForexRateAdapter rows
+      ⑤ Disclaimer
+    ═══════════════════════════════════════════════════════════════════
+-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <!-- Loading indicator -->
+    <ProgressBar
+        android:id="@+id/forex_progress"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/md_theme_primary"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_forex_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/main_font_family"
+        android:textColor="@color/on_surface"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:text="Could not fetch NRB rates." />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <!-- ══════════════════════════════════════════════════════
+                  ① USD / EUR HIGHLIGHT CARD
+                 ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                app:cardBackgroundColor="@color/md_theme_primary"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeColor="#33FFFFFF"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.80"
+                        android:fontFamily="@font/main_font_family"
+                        android:letterSpacing="0.12"
+                        android:text="NRB EXCHANGE RATES (NPR)"
+                        android:textAllCaps="true"
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="10sp" />
+
+                    <!-- Two-column highlight: USD | EUR -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <!-- USD highlight -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="🇺🇸 USD / NPR"
+                                android:textColor="#AAFFFFFF"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tv_forex_usd_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="800"
+                                android:textSize="30sp"
+                                tools:text="133.90" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.60"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="selling rate"
+                                android:textColor="#FFFFFF"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                        <!-- Vertical gold divider -->
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="16dp"
+                            android:alpha="0.25"
+                            android:background="#FFD700" />
+
+                        <!-- EUR highlight -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="🇪🇺 EUR / NPR"
+                                android:textColor="#AAFFFFFF"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tv_forex_eur_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="800"
+                                android:textSize="30sp"
+                                tools:text="144.80" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.60"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="selling rate"
+                                android:textColor="#FFFFFF"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ② Published date -->
+            <TextView
+                android:id="@+id/tv_forex_published_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:alpha="0.55"
+                android:fontFamily="@font/main_font_family"
+                android:text="Fetching NRB rates…"
+                android:textColor="@color/on_surface"
+                android:textSize="11sp" />
+
+            <!-- ③ Column headers -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.2"
+                    android:alpha="0.55"
+                    android:fontFamily="@font/main_font_family"
+                    android:letterSpacing="0.06"
+                    android:text="CURRENCY"
+                    android:textColor="@color/on_surface"
+                    android:textFontWeight="700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:alpha="0.55"
+                    android:fontFamily="@font/main_font_family"
+                    android:gravity="center"
+                    android:letterSpacing="0.06"
+                    android:text="UNIT"
+                    android:textColor="@color/on_surface"
+                    android:textFontWeight="700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:alpha="0.55"
+                    android:fontFamily="@font/main_font_family"
+                    android:gravity="end"
+                    android:letterSpacing="0.06"
+                    android:text="BUY"
+                    android:textColor="@color/on_surface"
+                    android:textFontWeight="700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:alpha="0.55"
+                    android:fontFamily="@font/main_font_family"
+                    android:gravity="end"
+                    android:letterSpacing="0.06"
+                    android:text="SELL"
+                    android:textColor="@color/on_surface"
+                    android:textFontWeight="700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:alpha="0.15"
+                android:background="@color/on_surface" />
+
+            <!-- ④ Forex RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_forex_rates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                tools:itemCount="8"
+                tools:listitem="@layout/item_forex_rate" />
+
+            <!-- ⑤ Disclaimer -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:alpha="0.45"
+                android:fontFamily="@font/main_font_family"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Rates published by Nepal Rastra Bank. Actual transaction rates may vary."
+                android:textColor="@color/on_surface"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

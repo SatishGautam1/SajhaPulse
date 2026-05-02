@@ -84,6 +84,11 @@
             android:exported="false"
             android:windowSoftInputMode="stateHidden" />
 
+        <activity
+            android:name=".ui.MarketsActivity"
+            android:parentActivityName=".ui.MainActivity"
+            android:windowSoftInputMode="adjustResize" />
+
         <!-- ══════════════════════════════════════════════════════════
              FIREBASE CLOUD MESSAGING
              ══════════════════════════════════════════════════════════ -->

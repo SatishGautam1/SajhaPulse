@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_nepse.xml — NepseFragment tab content
+    ═══════════════════════════════════════════════════════════════════
+    Sections (top → bottom inside NestedScrollView):
+      ① NEPSE Index Hero Card  — value, change, market status, stats
+      ② Chip Filter Row        — All | Gainers | Losers
+      ③ Column Header Row      — Symbol | LTP | Change | Vol
+      ④ RecyclerView (stocks)  — NepseStockAdapter
+      ⑤ Disclaimer footer      — "Data for informational use only"
+    ═══════════════════════════════════════════════════════════════════
+-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <!-- Loading indicator -->
+    <ProgressBar
+        android:id="@+id/nepse_progress"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/md_theme_primary"
+        android:visibility="gone" />
+
+    <!-- Error label -->
+    <TextView
+        android:id="@+id/tv_nepse_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/main_font_family"
+        android:textColor="@color/on_surface"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:text="Failed to load data. Check connection." />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <!-- ══════════════════════════════════════════════════════
+                  ① INDEX HERO CARD
+                 ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                app:cardBackgroundColor="@color/md_theme_primary"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:strokeColor="#33FFFFFF"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Change bar accent — coloured by Java -->
+                    <View
+                        android:id="@+id/view_nepse_change_bar"
+                        android:layout_width="40dp"
+                        android:layout_height="4dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/bg_live_dot"
+                        android:backgroundTint="#4CAF50" />
+
+                    <!-- Index label + market status -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:alpha="0.80"
+                            android:fontFamily="@font/main_font_family"
+                            android:letterSpacing="0.12"
+                            android:text="NEPSE INDEX"
+                            android:textAllCaps="true"
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/tv_nepse_market_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/main_font_family"
+                            android:textFontWeight="700"
+                            android:textSize="11sp"
+                            tools:text="● OPEN"
+                            tools:textColor="#4CAF50" />
+                    </LinearLayout>
+
+                    <!-- Index value — large -->
+                    <TextView
+                        android:id="@+id/tv_nepse_index_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/main_font_family"
+                        android:letterSpacing="-0.02"
+                        android:textColor="#FFFFFF"
+                        android:textFontWeight="900"
+                        android:textSize="48sp"
+                        tools:text="2,045.63" />
+
+                    <!-- Change row: point + percent -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_nepse_index_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/main_font_family"
+                            android:textFontWeight="700"
+                            android:textSize="18sp"
+                            tools:text="▲ 24.18"
+                            tools:textColor="#4CAF50" />
+
+                        <TextView
+                            android:id="@+id/tv_nepse_index_pct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="@font/main_font_family"
+                            android:textFontWeight="400"
+                            android:textSize="14sp"
+                            tools:text="(+1.20%)"
+                            tools:textColor="#4CAF50" />
+                    </LinearLayout>
+
+                    <!-- Gold divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="14dp"
+                        android:layout_marginTop="16dp"
+                        android:alpha="0.25"
+                        android:background="#FFD700" />
+
+                    <!-- Stats row: Turnover | Trades | 52W High | 52W Low -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Turnover -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.65"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="Turnover"
+                                android:textColor="#FFFFFF"
+                                android:textSize="9sp" />
+                            <TextView
+                                android:id="@+id/tv_nepse_turnover"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="700"
+                                android:textSize="12sp"
+                                tools:text="₹ 4.2B" />
+                        </LinearLayout>
+
+                        <!-- Total Trades -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.65"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="Trades"
+                                android:textColor="#FFFFFF"
+                                android:textSize="9sp" />
+                            <TextView
+                                android:id="@+id/tv_nepse_total_trades"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="700"
+                                android:textSize="12sp"
+                                tools:text="142,880" />
+                        </LinearLayout>
+
+                        <!-- 52-Week High -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.65"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="52W High"
+                                android:textColor="#FFFFFF"
+                                android:textSize="9sp" />
+                            <TextView
+                                android:id="@+id/tv_nepse_52h"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FFD700"
+                                android:textFontWeight="700"
+                                android:textSize="12sp"
+                                tools:text="2,284.36" />
+                        </LinearLayout>
+
+                        <!-- 52-Week Low -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.65"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="52W Low"
+                                android:textColor="#FFFFFF"
+                                android:textSize="9sp" />
+                            <TextView
+                                android:id="@+id/tv_nepse_52l"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FF7070"
+                                android:textFontWeight="700"
+                                android:textSize="12sp"
+                                tools:text="1,702.11" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══════════════════════════════════════════════════════
+                  ② CHIP FILTER — All | Gainers | Losers
+                 ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_all"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:fontFamily="@font/main_font_family"
+                    android:text="All Stocks"
+                    app:checkedIconEnabled="false"
+                    app:chipBackgroundColor="@color/chip_state_color"
+                    app:chipStrokeColor="@color/chip_stroke_color"
+                    app:chipStrokeWidth="1dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_gainers"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/main_font_family"
+                    android:text="▲ Gainers"
+                    app:checkedIconEnabled="false"
+                    app:chipBackgroundColor="@color/chip_state_color"
+                    app:chipStrokeColor="@color/chip_stroke_color"
+                    app:chipStrokeWidth="1dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_losers"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/main_font_family"
+                    android:text="▼ Losers"
+                    app:checkedIconEnabled="false"
+                    app:chipBackgroundColor="@color/chip_state_color"
+                    app:chipStrokeColor="@color/chip_stroke_color"
+                    app:chipStrokeWidth="1dp" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- ══════════════════════════════════════════════════════
+                  ③ COLUMN HEADER ROW
+                 ══════════════════════════════════════════════════════ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/main_font_family"
+                    android:letterSpacing="0.06"
+                    android:text="SYMBOL / NAME"
+                    android:textColor="@color/on_surface"
+                    android:textFontWeight="700"
+                    android:textSize="10sp"
+                    android:alpha="0.55" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/main_font_family"
+                    android:gravity="end"
+                    android:letterSpacing="0.06"
+                    android:text="LTP"
+                    android:textColor="@color/on_surface"
+                    android:textFontWeight="700"
+                    android:textSize="10sp"
+                    android:alpha="0.55" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/main_font_family"
+                    android:gravity="end"
+                    android:letterSpacing="0.06"
+                    android:text="CHG%"
+                    android:textColor="@color/on_surface"
+                    android:textFontWeight="700"
+                    android:textSize="10sp"
+                    android:alpha="0.55" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/main_font_family"
+                    android:gravity="end"
+                    android:letterSpacing="0.06"
+                    android:text="VOL"
+                    android:textColor="@color/on_surface"
+                    android:textFontWeight="700"
+                    android:textSize="10sp"
+                    android:alpha="0.55" />
+            </LinearLayout>
+
+            <!-- Thin divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:alpha="0.15"
+                android:background="@color/on_surface" />
+
+            <!-- ══════════════════════════════════════════════════════
+                  ④ STOCK LIST
+                 ══════════════════════════════════════════════════════ -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_nepse_stocks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                tools:itemCount="10"
+                tools:listitem="@layout/item_stock_row" />
+
+            <!-- ⑤ Disclaimer footer -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:alpha="0.45"
+                android:fontFamily="@font/main_font_family"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Market data is for informational purposes only. Not investment advice. Data may be delayed."
+                android:textColor="@color/on_surface"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

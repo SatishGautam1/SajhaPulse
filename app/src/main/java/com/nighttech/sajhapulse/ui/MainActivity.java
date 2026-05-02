@@ -409,7 +409,10 @@ public class MainActivity extends AppCompatActivity
         View qaNews = findViewById(R.id.qa_news);
         if (qaNews != null) qaNews.setOnClickListener(v -> openSajhaPatrika());
 
-        setTileListener(R.id.qa_markets,   "Paisa & Bazaar — Coming Soon");
+        View qaMarkets = findViewById(R.id.qa_markets);
+        if (qaMarkets != null) qaMarkets.setOnClickListener(v ->
+                startActivity(new Intent(this, MarketsActivity.class)));
+
         setTileListener(R.id.qa_patro,     "Sajha Patro — Coming Soon");
         setTileListener(R.id.qa_nagarik,   "Nagarik Tools — Coming Soon");
         setTileListener(R.id.qa_emergency, "Apatkal Helplines — Coming Soon");
@@ -423,6 +426,10 @@ public class MainActivity extends AppCompatActivity
         startActivity(new Intent(this, SajhaPatrikaActivity.class));
     }
 
+    private void openMarketsActivity() {
+        startActivity(new Intent(this, MarketsActivity.class));
+    }
+
     private void setTileListener(int viewId, String message) {
         View v = findViewById(viewId);
         if (v != null) v.setOnClickListener(view ->
@@ -434,7 +441,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if      (id == R.id.nav_logout)    { signOut(); }
         else if (id == R.id.nav_patrika)   { openSajhaPatrika(); }
-        else if (id == R.id.nav_markets)   { toast("Paisa & Bazaar — Coming Soon"); }
+        else if (id == R.id.nav_markets)   { openMarketsActivity(); }   // ← fixed
         else if (id == R.id.nav_patro)     { toast("Sajha Patro — Coming Soon"); }
         else if (id == R.id.nav_nagarik)   { toast("Nagarik Tools — Coming Soon"); }
         else if (id == R.id.nav_emergency) { toast("Apatkal Helplines — Coming Soon"); }

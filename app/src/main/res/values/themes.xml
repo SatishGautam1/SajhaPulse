@@ -352,4 +352,14 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <!-- Custom Text Appearance for Market Tabs -->
+    <style name="TextAppearance.Markets.Tab" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">@font/main_font_family</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/md_theme_onSurface</item>
+        <item name="android:letterSpacing">0.05</item>
+    </style>
+
 </resources>

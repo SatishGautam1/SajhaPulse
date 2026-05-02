@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    activity_markets.xml — MarketsActivity (Paisa & Bazaar)
+    ═══════════════════════════════════════════════════════════════════
+    Structure:
+      CoordinatorLayout
+        AppBarLayout (crimson, fitsSystemWindows)
+          MaterialToolbar  ← back arrow + "Paisa & Bazaar" title
+          TabLayout        ← NEPSE | Forex | Metals tabs
+        ViewPager2         ← swipeable tab content
+    ═══════════════════════════════════════════════════════════════════
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <!-- ── AppBar ─────────────────────────────────────────────────── -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/markets_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/toolbar_background"
+        android:elevation="0dp"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/markets_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/toolbar_background"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp">
+
+            <!-- "Paisa & Bazaar" two-line title block -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.75"
+                    android:fontFamily="@font/main_font_family"
+                    android:letterSpacing="0.10"
+                    android:text="SAJHAPULSE"
+                    android:textAllCaps="true"
+                    android:textColor="@color/on_primary"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/main_font_family"
+                    android:text="Paisa &amp; Bazaar"
+                    android:textColor="@color/on_primary"
+                    android:textFontWeight="700"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <!--
+            TabLayout — sits inside AppBarLayout so it scrolls off
+            together with the toolbar when using CollapsingToolbarLayout.
+            tabIndicatorColor = gold (#FFD700) for traditional feel.
+            tabSelectedTextColor = white, tabTextColor = 70% white.
+        -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/markets_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/toolbar_background"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="#FFD700"
+            app:tabIndicatorHeight="3dp"
+            app:tabMode="fixed"
+            app:tabRippleColor="#22FFFFFF"
+            app:tabSelectedTextColor="@color/on_primary"
+            app:tabTextAppearance="@style/TextAppearance.Markets.Tab"
+            app:tabTextColor="#AAFFFFFF" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ── ViewPager2 ──────────────────────────────────────────────── -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/markets_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

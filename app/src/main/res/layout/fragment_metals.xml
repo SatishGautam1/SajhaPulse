@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_metals.xml — MetalsFragment (Gold & Silver)
+    ═══════════════════════════════════════════════════════════════════
+    Three stacked price cards:
+      • Gold (24 Carat) — primary, largest
+      • Gold (22 Carat) — secondary
+      • Silver / Chandi — tertiary, silver-toned background
+    Each card: price/tola · change vs yesterday · % change · arrow
+    Footer: NEGOSIDA attribution + date
+    ═══════════════════════════════════════════════════════════════════
+-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <ProgressBar
+        android:id="@+id/metals_progress"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/md_theme_primary"
+        android:visibility="gone" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="20dp">
+
+            <!-- ══════════════════════════════════════════════════════
+                  GOLD 24K CARD — primary / largest
+                 ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@color/md_theme_primary"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:strokeColor="#33FFD700"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="22dp">
+
+                    <!-- Icon + label row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="🟡"
+                            android:textSize="22sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="सुन — Gold 24 Carat"
+                                android:textColor="#CCFFFFFF"
+                                android:textFontWeight="700"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.65"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="per tola (11.664g)"
+                                android:textColor="#FFFFFF"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                        <!-- Arrow indicator -->
+                        <TextView
+                            android:id="@+id/tv_gold24_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/main_font_family"
+                            android:textFontWeight="700"
+                            android:textSize="22sp"
+                            tools:text="▲"
+                            tools:textColor="#FFD700" />
+                    </LinearLayout>
+
+                    <!-- Price — large -->
+                    <TextView
+                        android:id="@+id/tv_gold24_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="@font/main_font_family"
+                        android:letterSpacing="-0.02"
+                        android:textColor="#FFFFFF"
+                        android:textFontWeight="900"
+                        android:textSize="40sp"
+                        tools:text="₹ 1,38,400" />
+
+                    <!-- Change row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_gold24_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/main_font_family"
+                            android:textFontWeight="600"
+                            android:textSize="16sp"
+                            tools:text="+400"
+                            tools:textColor="#FFD700" />
+
+                        <TextView
+                            android:id="@+id/tv_gold24_pct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="@font/main_font_family"
+                            android:textSize="12sp"
+                            tools:text="(+0.29%)"
+                            tools:textColor="#FFD700" />
+
+                        <View android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.60"
+                            android:fontFamily="@font/main_font_family"
+                            android:text="vs yesterday"
+                            android:textColor="#FFFFFF"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══════════════════════════════════════════════════════
+                  GOLD 22K CARD
+                 ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="#8B1A2F"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeColor="#33FFD700"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:gravity="center"
+                        android:text="🥇"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/main_font_family"
+                            android:text="Gold 22 Carat / tola"
+                            android:textColor="#CCFFFFFF"
+                            android:textFontWeight="700"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tv_gold22_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="@font/main_font_family"
+                            android:textColor="#FFFFFF"
+                            android:textFontWeight="800"
+                            android:textSize="22sp"
+                            tools:text="₹ 1,26,950" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end|center_vertical"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_gold22_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textFontWeight="700"
+                                android:textSize="16sp"
+                                tools:text="▲"
+                                tools:textColor="#FFD700" />
+
+                            <TextView
+                                android:id="@+id/tv_gold22_change"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:fontFamily="@font/main_font_family"
+                                android:textFontWeight="600"
+                                android:textSize="14sp"
+                                tools:text="+370"
+                                tools:textColor="#FFD700" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_gold22_pct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/main_font_family"
+                            android:textSize="11sp"
+                            tools:text="(+0.29%)"
+                            tools:textColor="#FFD700" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══════════════════════════════════════════════════════
+                  SILVER CARD — silver-toned surface
+                 ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="#4A3850"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeColor="#33C0C0C0"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:gravity="center"
+                        android:text="🥈"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/main_font_family"
+                            android:text="चाँदी — Silver / tola"
+                            android:textColor="#CCFFFFFF"
+                            android:textFontWeight="700"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tv_silver_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="@font/main_font_family"
+                            android:textColor="#FFFFFF"
+                            android:textFontWeight="800"
+                            android:textSize="22sp"
+                            tools:text="₹ 1,620" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end|center_vertical"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_silver_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textFontWeight="700"
+                                android:textSize="16sp"
+                                tools:text="▲"
+                                tools:textColor="#C0C0C0" />
+
+                            <TextView
+                                android:id="@+id/tv_silver_change"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:fontFamily="@font/main_font_family"
+                                android:textFontWeight="600"
+                                android:textSize="14sp"
+                                tools:text="+20"
+                                tools:textColor="#C0C0C0" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_silver_pct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/main_font_family"
+                            android:textSize="11sp"
+                            tools:text="(+1.25%)"
+                            tools:textColor="#C0C0C0" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- NEGOSIDA attribution -->
+            <TextView
+                android:id="@+id/tv_metals_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.50"
+                android:fontFamily="@font/main_font_family"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.5"
+                android:text="Rates from Federation of Nepal Gold &amp; Silver Dealers' Association (NEGOSIDA)"
+                android:textColor="@color/on_surface"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

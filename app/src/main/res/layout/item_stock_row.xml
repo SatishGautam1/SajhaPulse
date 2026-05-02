@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_stock_row.xml — single row in NepseFragment's RecyclerView
+    Columns must match fragment_nepse.xml header weights:
+      SYMBOL / NAME  weight=2  |  LTP  weight=1  |  CHG%  weight=1  |  VOL  weight=1
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingEnd="4dp"
+    android:paddingStart="4dp">
+
+    <!-- ── SYMBOL + NAME (weight 2) ─────────────────────────────── -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_stock_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/main_font_family"
+            android:textColor="@color/md_theme_primary"
+            android:textFontWeight="700"
+            android:textSize="13sp"
+            tools:text="NABIL" />
+
+        <TextView
+            android:id="@+id/tv_stock_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.60"
+            android:fontFamily="@font/main_font_family"
+            android:maxLines="1"
+            android:textColor="@color/on_surface"
+            android:textSize="10sp"
+            tools:text="Nabil Bank Ltd…" />
+    </LinearLayout>
+
+    <!-- ── LTP (weight 1) ──────────────────────────────────────── -->
+    <TextView
+        android:id="@+id/tv_stock_ltp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/main_font_family"
+        android:gravity="end"
+        android:textColor="@color/on_surface"
+        android:textFontWeight="600"
+        android:textSize="13sp"
+        tools:text="1,205.00" />
+
+    <!-- ── CHANGE % (weight 1) ─────────────────────────────────── -->
+    <TextView
+        android:id="@+id/tv_stock_change"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/main_font_family"
+        android:gravity="end"
+        android:textFontWeight="600"
+        android:textSize="12sp"
+        tools:text="▲ 1.20%"
+        tools:textColor="#2E7D32" />
+
+    <!-- ── VOLUME (weight 1) ───────────────────────────────────── -->
+    <TextView
+        android:id="@+id/tv_stock_volume"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:alpha="0.70"
+        android:fontFamily="@font/main_font_family"
+        android:gravity="end"
+        android:textColor="@color/on_surface"
+        android:textSize="11sp"
+        tools:text="34K" />
+
+</LinearLayout>
