@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_quint"
+    android:shareInterpolator="true">
+
+    <!-- Scale from 60% to 100% around the view's own centre -->
+    <scale
+        android:duration="600"
+        android:fillAfter="true"
+        android:fromXScale="0.60"
+        android:fromYScale="0.60"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="0"
+        android:toXScale="1.00"
+        android:toYScale="1.00" />
+
+    <!-- Simultaneously fade in from 0 to fully opaque -->
+    <alpha
+        android:duration="500"
+        android:fillAfter="true"
+        android:fromAlpha="0.0"
+        android:startOffset="0"
+        android:toAlpha="1.0" />
+
+</set>

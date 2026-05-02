@@ -1,177 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- =============================================
-         NIGHT TECH PALETTE — Primary Brand Colors
-         "Deep Space Blue" Core Identity
-    ============================================= -->
+    <!-- Base Theme Colors -->
+    <color name="md_theme_primary">#DC143C</color>
+    <color name="md_theme_onPrimary">#FFFFFF</color>
+    <color name="md_theme_primaryContainer">#FFD9DE</color>
+    <color name="md_theme_onPrimaryContainer">#400010</color>
 
-    <!-- Primary Blue family -->
-    <color name="primary">#0A1628</color>
-    <!-- Deep Space Navy -->
-    <color name="primary_variant">#0D2042</color>
-    <!-- Slightly lighter Navy -->
-    <color name="primary_container">#1A3A6E</color>
-    <!-- Container / card bg -->
-    <color name="on_primary">#E8F0FF</color>
-    <!-- Text on Primary -->
-    <color name="on_primary_container">#C2D8FF</color>
-    <!-- Text in container -->
+    <color name="md_theme_secondary">#1A3A6B</color>
+    <color name="md_theme_onSecondary">#FFFFFF</color>
+    <color name="md_theme_secondaryContainer">#D3E4FF</color>
+    <color name="md_theme_onSecondaryContainer">#001C3D</color>
 
-    <!-- Accent / Secondary — Electric Cyan -->
-    <color name="secondary">#0EA5E9</color>
-    <!-- Sky Blue Accent -->
-    <color name="secondary_variant">#38BDF8</color>
-    <!-- Lighter sky tone -->
-    <color name="secondary_container">#082F49</color>
-    <!-- Dark cyan container -->
-    <color name="on_secondary">#001F33</color>
-    <color name="on_secondary_container">#7DD3FC</color>
+    <color name="md_theme_tertiary">#2D6A4F</color>
+    <color name="md_theme_onTertiary">#FFFFFF</color>
+    <color name="md_theme_tertiaryContainer">#B7F0D4</color>
+    <color name="md_theme_onTertiaryContainer">#00210F</color>
 
-    <!-- Tertiary — Electric Purple for depth -->
-    <color name="tertiary">#7C3AED</color>
-    <color name="tertiary_container">#2E1065</color>
-    <color name="on_tertiary">#FFFFFF</color>
-    <color name="on_tertiary_container">#DDD6FE</color>
+    <color name="md_theme_error">#BA1A1A</color>
+    <color name="md_theme_onError">#FFFFFF</color>
+    <color name="md_theme_errorContainer">#FFDAD6</color>
+    <color name="md_theme_onErrorContainer">#410002</color>
 
-    <!-- =============================================
-         SURFACE & BACKGROUND — 3D Depth Tinting
-         Uses surface tint layering for elevation
-    ============================================= -->
+    <color name="md_theme_background">#FFFBFF</color>
+    <color name="md_theme_onBackground">#1C1B1F</color>
+    <color name="md_theme_surface">#FFFBFF</color>
+    <color name="md_theme_onSurface">#1C1B1F</color>
+    <color name="md_theme_surfaceVariant">#F4DDDF</color>
+    <color name="md_theme_onSurfaceVariant">#534346</color>
 
-    <color name="background">#06101E</color>
-    <!-- True dark base -->
-    <color name="surface">#0C1B2E</color>
-    <!-- Base surface -->
-    <color name="surface_variant">#1A2D45</color>
-    <!-- Slightly elevated surface -->
-    <color name="surface_tint">#0EA5E9</color>
-    <!-- M3 surface tint (matches secondary) -->
+    <color name="md_theme_surfaceContainerLow">#FFF0F1</color>
+    <color name="md_theme_surfaceContainer">#FCE8EA</color>
+    <color name="md_theme_surfaceContainerHigh">#F6E2E4</color>
+    <color name="md_theme_surfaceContainerHighest">#F0DCDE</color>
 
-    <!-- Elevation tint layers (manually computed M3 overlay %) -->
-    <color name="surface_elevation_1">#0E1F34</color>
-    <!-- 5% tint overlay -->
-    <color name="surface_elevation_2">#101F36</color>
-    <!-- 8% tint overlay -->
-    <color name="surface_elevation_3">#122438</color>
-    <!-- 11% tint overlay -->
-    <color name="surface_elevation_4">#13263B</color>
-    <!-- 12% tint overlay -->
-    <color name="surface_elevation_5">#152A3F</color>
-    <!-- 14% tint overlay -->
+    <color name="md_theme_inverseSurface">#312020</color>
+    <color name="md_theme_inverseOnSurface">#FBEDEF</color>
+    <color name="md_theme_inversePrimary">#FFB3BC</color>
 
-    <color name="on_surface">#CDD8E8</color>
-    <!-- Primary text on surface -->
-    <color name="on_surface_variant">#7A94B0</color>
-    <!-- Secondary/hint text -->
+    <color name="md_theme_outline">#857376</color>
+    <color name="md_theme_outlineVariant">#D8C2C4</color>
+    <color name="md_theme_scrim">#000000</color>
+    <color name="md_theme_surfaceTint">#DC143C</color>
 
-    <!-- =============================================
-         STATE COLORS — Semantic Feedback
-    ============================================= -->
+    <!-- Aliases for Drawables -->
+    <color name="primary">@color/md_theme_primary</color>
+    <color name="secondary">@color/md_theme_secondary</color>
+    <color name="tertiary">@color/md_theme_tertiary</color>
+    <color name="error">@color/md_theme_error</color>
+    <color name="background">@color/md_theme_background</color>
+    <color name="surface">@color/md_theme_surface</color>
+    <color name="surface_variant">@color/md_theme_surfaceVariant</color>
+    <color name="outline">@color/md_theme_outline</color>
+    <color name="outline_variant">@color/md_theme_outlineVariant</color>
+    <color name="surface_tint">@color/md_theme_surfaceTint</color>
+    <color name="secondary_container">@color/md_theme_secondaryContainer</color>
 
-    <!-- Success — Emerald Green -->
-    <color name="success">#10B981</color>
-    <color name="success_container">#022C22</color>
-    <color name="on_success">#FFFFFF</color>
-    <color name="on_success_container">#6EE7B7</color>
-    <color name="success_light">#34D399</color>
+    <!-- Custom Colors -->
+    <color name="sajha_stock_gain">#1B8A4C</color>
+    <color name="sajha_stock_loss">#DC143C</color>
+    <color name="sajha_stock_neutral">#534346</color>
+    <color name="sajha_gold">#C9A84C</color>
+    <color name="sajha_silver">#9E9E9E</color>
+    <color name="sajha_nav_selected">#DC143C</color>
+    <color name="sajha_nav_unselected">#857376</color>
+    <color name="sajha_nav_indicator">#FFD9DE</color>
+    <color name="sajha_splash_background">#DC143C</color>
 
-    <!-- Warning — Amber -->
-    <color name="warning">#F59E0B</color>
-    <color name="warning_container">#3B1F00</color>
-    <color name="on_warning">#1C0F00</color>
-    <color name="on_warning_container">#FCD34D</color>
-    <color name="warning_light">#FDE68A</color>
+    <color name="success">#1B8A4C</color>
+    <color name="surface_elevation_2">#FCE8EA</color>
+    <color name="cyan_20">#3300BCD4</color>
 
-    <!-- Error — Crimson -->
-    <color name="error">#EF4444</color>
-    <color name="error_container">#450A0A</color>
-    <color name="on_error">#FFFFFF</color>
-    <color name="on_error_container">#FCA5A5</color>
+    <!-- UI Component Colors -->
+    <color name="toolbar_background">@color/md_theme_primary</color>
+    <color name="toolbar_title">@color/md_theme_onPrimary</color>
+    <color name="on_surface">@color/md_theme_onSurface</color>
+    <color name="on_surface_variant">@color/md_theme_onSurfaceVariant</color>
+    <color name="on_secondary">@color/md_theme_onSecondary</color>
 
-    <!-- Info — Cobalt -->
-    <color name="info">#3B82F6</color>
-    <color name="info_container">#1E3A8A</color>
-    <color name="on_info_container">#BFDBFE</color>
+    <!-- Semantic Colors -->
+    <color name="success_light">#B7F0D4</color>
+    <color name="rate_positive">#1B8A4C</color>
+    <color name="rate_negative">#BA1A1A</color>
+    <color name="warning">#C9A84C</color>
+    <color name="warning_light">#FFD97D</color>
+    <color name="info">#1A3A6B</color>
 
-    <!-- =============================================
-         UI CHROME & OUTLINES
-    ============================================= -->
+    <!-- Additional missing colors -->
+    <color name="surface_elevation_3">#FCE8EA</color>
+    <color name="primary_variant">#FFD9DE</color>
+    <color name="on_primary">#FFFFFF</color>
 
-    <color name="outline">#2A4160</color>
-    <!-- Card borders / dividers -->
-    <color name="outline_variant">#1A3050</color>
-    <!-- Subtle separator lines -->
-    <color name="scrim">#000000</color>
-    <!-- Modal backdrops -->
-
-    <!-- Toolbar / Status Bar -->
-    <color name="toolbar_background">#060F1C</color>
-    <!-- Darkest for toolbar -->
-    <color name="status_bar">#04080F</color>
-    <!-- Near-black status bar -->
-    <color name="toolbar_title">#E8F0FF</color>
-
-    <!-- =============================================
-         GRADIENT STOPS — Hero & Card Gradients
-    ============================================= -->
-
-    <color name="gradient_hero_start">#0A1628</color>
-    <color name="gradient_hero_mid">#0D2042</color>
-    <color name="gradient_hero_end">#081230</color>
-
-    <color name="gradient_card_start">#142240</color>
-    <color name="gradient_card_end">#0C1A30</color>
-
-    <!-- Glow / Neon accent for 3D depth highlights -->
-    <color name="glow_blue">#1A6FB5</color>
-    <color name="glow_cyan">#0891B2</color>
-    <color name="highlight_rim">#1E4D80</color>
-    <!-- Card rim highlight -->
-
-    <!-- =============================================
-         GOOGLE SIGN-IN BUTTON
-    ============================================= -->
-
-    <color name="google_btn_background">#1C2E48</color>
-    <color name="google_btn_stroke">#2A4468</color>
-    <color name="google_btn_text">#D0E4FF</color>
-    <color name="google_btn_pressed">#243552</color>
-
-    <!-- =============================================
-         RATE / BAZAR DATA COLORS
-    ============================================= -->
-
-    <color name="rate_positive">#10B981</color>
-    <!-- Price up -->
-    <color name="rate_negative">#EF4444</color>
-    <!-- Price down -->
-    <color name="rate_neutral">#94A3B8</color>
-    <!-- No change -->
-    <color name="rate_badge_bg">#0F2137</color>
-
-    <!-- =============================================
-         ALPHA UTILITY COLORS (for overlays)
-    ============================================= -->
-
-    <color name="black_10">#1A000000</color>
-    <color name="black_20">#33000000</color>
-    <color name="black_40">#66000000</color>
-    <color name="black_60">#99000000</color>
-    <color name="white_05">#0DFFFFFF</color>
-    <color name="white_10">#1AFFFFFF</color>
-    <color name="white_15">#26FFFFFF</color>
-    <color name="cyan_20">#330EA5E9</color>
-    <color name="cyan_30">#4D0EA5E9</color>
-
-    <!-- Semantic aliases for layouts -->
-    <color name="text_on_dark">#FFFFFF</color>
-    <color name="text_primary">#CDD8E8</color>
-    <color name="text_secondary">#7A94B0</color>
-    <color name="text_tertiary">#5A7490</color>
-    <color name="divider">#1A3050</color>
-    <color name="primary_light">#38BDF8</color>
-    <color name="surface_2">#101F36</color>
-    <color name="splash_background">#06101E</color>
+    <!-- Crimson Selection State -->
+    <color name="nav_item_selected_bg">#1ADC143C</color> <!-- 10% Opacity Crimson -->
+    <color name="nav_selected_text">#DC143C</color>      <!-- Solid Crimson -->
 
 </resources>

@@ -1,13 +1,29 @@
 package com.nighttech.sajhapulse;
 
 import android.app.Application;
+
 import com.google.android.material.color.DynamicColors;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
- * Main Application class for SajhaPulse.
- * This class initializes global configurations for the Night Tech ecosystem.
+ * SajhaPulseApp
+ * ─────────────────────────────────────────────────────────────────────
+ * Application class for SajhaPulse. Initialises Firebase and Material 3.
+ *
+ * BUG FIX: The original code called FirebaseDatabase.getInstance()
+ * .setPersistenceEnabled(true). This app uses Cloud Firestore, NOT the
+ * Firebase Realtime Database. Initialising Realtime Database is harmless
+ * on devices that have Realtime Database in their google-services.json,
+ * but throws IllegalStateException on clean installs / CI builds where
+ * the Realtime Database URL is absent — causing an immediate crash before
+ * SplashActivity even renders. Removed the Realtime Database call.
+ *
+ * Firestore offline persistence is enabled per-listener in DashboardActivity
+ * via the default Firestore cache settings (enabled by default in SDK ≥ 10.x).
+ * If explicit offline persistence is needed for Firestore, add:
+ *   FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+ *       .setPersistenceEnabled(true).build();
+ *   FirebaseFirestore.getInstance().setFirestoreSettings(settings);
  */
 public class SajhaPulseApp extends Application {
 
@@ -15,16 +31,10 @@ public class SajhaPulseApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // 1. Initialize Firebase Services
-        // This ensures Firebase is ready before SplashActivity starts.
+        // 1. Initialise Firebase (required before any Firebase service is used)
         FirebaseApp.initializeApp(this);
 
-        // 2. Enable Offline Persistence for Realtime Database
-        // High-utility for the Nepali market where internet connectivity can fluctuate.
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
-        // 3. Apply Material 3 Dynamic Colors
-        // This applies your professional theme and Inter font family globally.
+        // 2. Apply Material 3 Dynamic Colors globally across all Activities
         DynamicColors.applyToActivitiesIfAvailable(this);
     }
 }

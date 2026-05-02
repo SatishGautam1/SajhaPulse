@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_quint"
+    android:shareInterpolator="true">
+
+    <!-- Translate from +60dp (below) to 0 (final position) -->
+    <translate
+        android:duration="600"
+        android:fillAfter="true"
+        android:fromYDelta="60dp"
+        android:startOffset="0"
+        android:toYDelta="0dp" />
+
+    <!-- Simultaneously fade in -->
+    <alpha
+        android:duration="500"
+        android:fillAfter="true"
+        android:fromAlpha="0.0"
+        android:startOffset="0"
+        android:toAlpha="1.0" />
+
+</set>

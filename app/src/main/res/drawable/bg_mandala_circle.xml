@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_mandala_circle.xml — res/drawable/bg_mandala_circle.xml
+    Large stroke-only white circle used as a decorative mandala-inspired
+    geometric element on the DateTime Hero card background.
+    Two instances with different sizes/positions create a layered
+    temple-geometry depth effect.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@android:color/transparent" />
+    <stroke
+        android:width="2dp"
+        android:color="#FFFFFF" />
+</shape>

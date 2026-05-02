@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_icon_pill_primary.xml — res/drawable/bg_icon_pill_primary.xml
+    Soft circular container for quick-service grid icons.
+    Uses primaryContainer color (soft rose tint of crimson).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/md_theme_primaryContainer" />
+</shape>

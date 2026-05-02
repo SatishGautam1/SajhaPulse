@@ -13,6 +13,9 @@ firebaseAuth = "24.0.1"
 firebaseFirestore = "26.2.0"
 playServicesAuth = "21.5.1"
 firebaseMessaging = "25.0.1"
+glide = "4.16.0"
+coreSplashscreen = "1.0.1"
+
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -27,6 +30,9 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

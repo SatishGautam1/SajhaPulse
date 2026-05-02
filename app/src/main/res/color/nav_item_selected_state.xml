@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background when item is selected (12% opacity Crimson) -->
+    <item android:color="#1FDC143C" android:state_checked="true" />
+    <!-- Background when not selected (Transparent) -->
+    <item android:color="@android:color/transparent" />
+</selector>

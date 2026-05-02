@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_highlight_icon_bg.xml — res/drawable/bg_highlight_icon_bg.xml
+    Semi-transparent white circle used as the icon container in the
+    Daily Highlight card (crimson background context).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#33FFFFFF" />
+</shape>

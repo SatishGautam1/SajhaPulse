@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:type="radial"
+        android:gradientRadius="200%p"
+        android:centerX="0.5"
+        android:centerY="0.42"
+        android:startColor="#DC143C"
+        android:centerColor="#B0102E"
+        android:endColor="#5C0015" />
+</shape>
+
+    <!-- NOTE: Android's XML radial gradient does not support 3-stop gradients on
+         all API levels. If you need perfect control, use a custom Drawable class
+         or a LayerList:
+
+    <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+        <item>
+            <shape android:shape="rectangle">
+                <solid android:color="#5C0015" />
+            </shape>
+        </item>
+        <item>
+            <shape android:shape="oval">
+                <gradient
+                    android:type="radial"
+                    android:gradientRadius="120%p"
+                    android:centerX="0.5"
+                    android:centerY="0.42"
+                    android:startColor="#DC143C"
+                    android:endColor="#005C0015" />
+            </shape>
+        </item>
+    </layer-list>
+-->

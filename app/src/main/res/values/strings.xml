@@ -1,15 +1,481 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- APP IDENTITY -->
     <string name="app_name">SajhaPulse</string>
-    <string name="login_hero_title">Stay Updated with Real-time Rates</string>
-    <string name="login_hero_subtitle">The most accurate market and currency data for Nepal, right at your fingertips.</string>
-    <string name="login_card_title">Welcome to SajhaPulse</string>
-    <string name="login_card_subtitle">Sign in to sync your preferences and alerts across devices.</string>
-    <string name="btn_continue_google">Continue with Google</string>
-    <string name="btn_continue_guest">Continue as Guest</string>
-    <string name="login_terms_notice">By continuing, you agree to our Terms of Service and Privacy Policy.</string>
-    <string name="or">OR</string>
-    <string name="splash_tagline">Your Pulse on Nepal\'s Pulse</string>
-    <string name="app_version">v1.0.0</string>
-    <!-- Replace with your actual Web Client ID from Firebase Console -->
-    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID</string>
+    <string name="app_tagline" tools:ignore="StringEscaping">Nepal\'s All-in-One Super App</string>
+    <string name="app_tagline_ne">नेपालको सम्पूर्ण सुपर एप</string>
+    <string name="app_description">Markets, Calendar, News &amp; Daily Utilities — all in one place.</string>
+    <string name="app_version_prefix">Version</string>
+
+    <!-- BOTTOM NAVIGATION -->
+    <string name="nav_home">Home</string>
+    <string name="nav_markets">Markets</string>
+    <string name="nav_services">Services</string>
+    <string name="nav_profile">Profile</string>
+
+    <string name="a11y_nav_home">Navigate to Home screen</string>
+    <string name="a11y_nav_markets">Navigate to Markets screen</string>
+    <string name="a11y_nav_services">Navigate to Services screen</string>
+    <string name="a11y_nav_profile">Navigate to Profile screen</string>
+
+    <!-- HOME SCREEN -->
+    <string name="home_greeting_morning">सुप्रभात</string>
+    <string name="home_greeting_afternoon">नमस्ते</string>
+    <string name="home_greeting_evening">शुभ साँझ</string>
+    <string name="home_section_quick_access">Quick Access</string>
+    <string name="home_section_market_summary">Market Summary</string>
+    <string name="home_section_today">Today\'s Highlights</string>
+    <string name="home_section_news">Latest News</string>
+    <string name="home_last_updated">Last updated: %1$s</string>
+    <string name="home_pull_to_refresh">Pull down to refresh</string>
+    <string name="home_today_date">Today: %1$s</string>
+
+    <!-- MARKETS SCREEN -->
+    <string name="market_title">Markets</string>
+    <string name="market_tab_nepse">NEPSE</string>
+    <string name="market_tab_gold_silver">Gold &amp; Silver</string>
+    <string name="market_tab_forex">Forex Rates</string>
+    <string name="market_data_as_of">Data as of %1$s</string>
+    <string name="market_source">Source: %1$s</string>
+    <string name="market_source_nepse">Nepal Stock Exchange</string>
+    <string name="market_source_nrb">Nepal Rastra Bank</string>
+    <string name="market_source_fenegosida">FENEGOSIDA</string>
+
+    <!-- NEPSE -->
+    <string name="nepse_section_title">NEPSE Index</string>
+    <string name="nepse_index_label">NEPSE</string>
+    <string name="nepse_sensitive_index">Sensitive Index</string>
+    <string name="nepse_float_index">Float Index</string>
+    <string name="nepse_turnover">Turnover</string>
+    <string name="nepse_traded_shares">Shares Traded</string>
+    <string name="nepse_transactions">Total Transactions</string>
+    <string name="nepse_market_cap">Market Cap</string>
+    <string name="nepse_52_week_high">52-Week High</string>
+    <string name="nepse_52_week_low">52-Week Low</string>
+    <string name="nepse_prev_close">Prev. Close</string>
+    <string name="nepse_open">Open</string>
+    <string name="nepse_change_points">%1$.2f pts</string>
+    <string name="nepse_change_percent">%1$.2f%%</string>
+    <string name="nepse_market_open">Market Open</string>
+    <string name="nepse_market_closed">Market Closed</string>
+    <string name="nepse_market_holiday">Market Holiday</string>
+    <string name="nepse_market_hours">Sun–Thu 11:00 AM – 3:00 PM NPT</string>
+
+    <string name="nepse_col_symbol">Symbol</string>
+    <string name="nepse_col_ltp">LTP</string>
+    <string name="nepse_col_change">Change</string>
+    <string name="nepse_col_volume">Volume</string>
+    <string name="nepse_col_high">High</string>
+    <string name="nepse_col_low">Low</string>
+
+    <string name="nepse_sector_banking">Commercial Banks</string>
+    <string name="nepse_sector_development_bank">Development Banks</string>
+    <string name="nepse_sector_finance">Finance Companies</string>
+    <string name="nepse_sector_microfinance">Microfinance</string>
+    <string name="nepse_sector_insurance">Insurance</string>
+    <string name="nepse_sector_hydropower">Hydropower</string>
+    <string name="nepse_sector_manufacturing">Manufacturing &amp; Processing</string>
+    <string name="nepse_sector_hotel">Hotels &amp; Tourism</string>
+    <string name="nepse_sector_trading">Trading</string>
+    <string name="nepse_sector_others">Others</string>
+    <string name="nepse_sector_mutual_fund">Mutual Funds</string>
+    <string name="nepse_sector_debenture">Debentures &amp; Bonds</string>
+
+    <string name="nepse_portfolio_title">My Portfolio</string>
+    <string name="nepse_portfolio_total_value">Total Value</string>
+    <string name="nepse_portfolio_total_gain_loss">Overall Gain / Loss</string>
+    <string name="nepse_portfolio_add_holding">Add Holding</string>
+    <string name="nepse_portfolio_empty">No holdings added yet.\nTap + to start tracking your stocks.</string>
+    <string name="nepse_watchlist_title">Watchlist</string>
+    <string name="nepse_watchlist_add">Add to Watchlist</string>
+    <string name="nepse_watchlist_remove">Remove from Watchlist</string>
+
+    <!-- GOLD & SILVER -->
+    <string name="gold_section_title">Gold &amp; Silver Prices</string>
+    <string name="gold_fine_gold">Fine Gold (Tejabi Suna)</string>
+    <string name="gold_hallmark">Hallmark Gold (Chhapawala)</string>
+    <string name="gold_silver">Silver (Chandi)</string>
+    <string name="gold_unit_tola">Per Tola</string>
+    <string name="gold_unit_gram_10">Per 10 grams</string>
+    <string name="gold_unit_ounce">Per Ounce</string>
+    <string name="gold_currency_npr">NPR</string>
+    <string name="gold_buy_price">Buy</string>
+    <string name="gold_sell_price">Sell</string>
+    <string name="gold_source_note">Rates by FENEGOSIDA updated daily</string>
+    <string name="gold_price_format">Rs. %1$,.2f</string>
+    <string name="gold_chart_30_day">30-Day Trend</string>
+    <string name="gold_chart_3_month">3-Month Trend</string>
+    <string name="gold_chart_1_year">1-Year Trend</string>
+
+    <!-- FOREX -->
+    <string name="forex_section_title">Forex Rates</string>
+    <string name="forex_subtitle">Nepal Rastra Bank Official Rates</string>
+    <string name="forex_col_currency">Currency</string>
+    <string name="forex_col_unit">Unit</string>
+    <string name="forex_col_buy">Buy (NPR)</string>
+    <string name="forex_col_sell">Sell (NPR)</string>
+    <string name="forex_col_mid">Mid Rate</string>
+    <string name="forex_updated_daily">Rates updated every business day</string>
+    <string name="forex_nrb_note">All rates are against Nepalese Rupee (NPR)</string>
+
+    <string name="forex_currency_usd">US Dollar</string>
+    <string name="forex_currency_eur">Euro</string>
+    <string name="forex_currency_gbp">British Pound</string>
+    <string name="forex_currency_inr">Indian Rupee</string>
+    <string name="forex_currency_jpy">Japanese Yen</string>
+    <string name="forex_currency_aud">Australian Dollar</string>
+    <string name="forex_currency_cad">Canadian Dollar</string>
+    <string name="forex_currency_chf">Swiss Franc</string>
+    <string name="forex_currency_cny">Chinese Yuan</string>
+    <string name="forex_currency_sgd">Singapore Dollar</string>
+    <string name="forex_currency_qar">Qatari Riyal</string>
+    <string name="forex_currency_aed">UAE Dirham</string>
+    <string name="forex_currency_sar">Saudi Riyal</string>
+    <string name="forex_currency_myr">Malaysian Ringgit</string>
+    <string name="forex_currency_krw">South Korean Won</string>
+    <string name="forex_currency_thb">Thai Baht</string>
+    <string name="forex_currency_dkk">Danish Krone</string>
+    <string name="forex_currency_sek">Swedish Krona</string>
+    <string name="forex_currency_nok">Norwegian Krone</string>
+    <string name="forex_currency_hkd">Hong Kong Dollar</string>
+    <string name="forex_currency_kwt">Kuwaiti Dinar</string>
+    <string name="forex_currency_bhr">Bahraini Dinar</string>
+
+    <string name="forex_search_hint">Search currency…</string>
+    <string name="forex_filter_major">Major</string>
+    <string name="forex_filter_gulf">Gulf</string>
+    <string name="forex_filter_all">All</string>
+
+    <!-- CURRENCY CONVERTER -->
+    <string name="currency_converter_title">Currency Converter</string>
+    <string name="currency_converter_from_label">From</string>
+    <string name="currency_converter_to_label">To</string>
+    <string name="currency_converter_amount_hint">Enter amount</string>
+    <string name="currency_converter_result_label">Converted Amount</string>
+    <string name="currency_converter_swap_a11y">Swap currencies</string>
+    <string name="currency_converter_base_note">Using NRB mid-rate %1$s</string>
+    <string name="currency_converter_disclaimer">For reference only. Actual bank rates may differ.</string>
+    <string name="currency_converter_invalid_amount">Please enter a valid amount</string>
+    <string name="currency_converter_select_currency">Select Currency</string>
+    <string name="currency_converter_result_format">%1$s %2$,.2f = %3$s %4$,.2f</string>
+
+    <!-- SERVICES -->
+    <string name="services_title">Services</string>
+    <string name="services_section_daily_life">Daily Life</string>
+    <string name="services_section_finance">Finance</string>
+    <string name="services_section_government">Government &amp; Utilities</string>
+
+    <!-- CALENDAR -->
+    <string name="calendar_title">Nepali Calendar</string>
+    <string name="calendar_subtitle">Bikram Sambat (B.S.)</string>
+    <string name="calendar_today_bs">Today (B.S.)</string>
+    <string name="calendar_today_ad">Today (A.D.)</string>
+    <string name="calendar_convert_to_ad">Convert to A.D.</string>
+    <string name="calendar_convert_to_bs">Convert to B.S.</string>
+    <string name="calendar_select_date">Select Date</string>
+    <string name="calendar_go_to_today">Go to Today</string>
+
+    <string name="calendar_month_1">Baisakh</string>
+    <string name="calendar_month_2">Jestha</string>
+    <string name="calendar_month_3">Ashadh</string>
+    <string name="calendar_month_4">Shrawan</string>
+    <string name="calendar_month_5">Bhadra</string>
+    <string name="calendar_month_6">Ashwin</string>
+    <string name="calendar_month_7">Kartik</string>
+    <string name="calendar_month_8">Mangsir</string>
+    <string name="calendar_month_9">Poush</string>
+    <string name="calendar_month_10">Magh</string>
+    <string name="calendar_month_11">Falgun</string>
+    <string name="calendar_month_12">Chaitra</string>
+
+    <string name="calendar_month_1_ne">बैशाख</string>
+    <string name="calendar_month_2_ne">जेठ</string>
+    <string name="calendar_month_3_ne">असार</string>
+    <string name="calendar_month_4_ne">साउन</string>
+    <string name="calendar_month_5_ne">भदौ</string>
+    <string name="calendar_month_6_ne">असोज</string>
+    <string name="calendar_month_7_ne">कार्तिक</string>
+    <string name="calendar_month_8_ne">मंसिर</string>
+    <string name="calendar_month_9_ne">पुस</string>
+    <string name="calendar_month_10_ne">माघ</string>
+    <string name="calendar_month_11_ne">फाल्गुन</string>
+    <string name="calendar_month_12_ne">चैत</string>
+
+    <string name="calendar_day_sun">Sun</string>
+    <string name="calendar_day_mon">Mon</string>
+    <string name="calendar_day_tue">Tue</string>
+    <string name="calendar_day_wed">Wed</string>
+    <string name="calendar_day_thu">Thu</string>
+    <string name="calendar_day_fri">Fri</string>
+    <string name="calendar_day_sat">Sat</string>
+
+    <string name="calendar_today_label">Today</string>
+    <string name="calendar_holiday_label">Public Holiday</string>
+    <string name="calendar_festival_label">Festival</string>
+    <string name="calendar_event_label">Event</string>
+    <string name="calendar_no_events">No events today</string>
+    <string name="calendar_view_all_events">View All Events</string>
+
+    <string name="festival_dashain">Dashain</string>
+    <string name="festival_tihar">Tihar</string>
+    <string name="festival_holi">Holi</string>
+    <string name="festival_teej">Teej</string>
+    <string name="festival_shivaratri">Maha Shivaratri</string>
+    <string name="festival_indra_jatra">Indra Jatra</string>
+    <string name="festival_losar">Losar</string>
+    <string name="festival_buddha_jayanti">Buddha Jayanti</string>
+    <string name="festival_chhath">Chhath Puja</string>
+    <string name="festival_new_year_bs">Nepali New Year</string>
+    <string name="festival_constitution_day">Constitution Day</string>
+
+    <!-- NEWS FEED -->
+    <string name="news_title">News Feed</string>
+    <string name="news_tab_top">Top Stories</string>
+    <string name="news_tab_nepal">Nepal</string>
+    <string name="news_tab_business">Business</string>
+    <string name="news_tab_technology">Technology</string>
+    <string name="news_tab_sports">Sports</string>
+    <string name="news_tab_world">World</string>
+    <string name="news_tab_politics">Politics</string>
+    <string name="news_read_more">Read More</string>
+    <string name="news_share">Share Article</string>
+    <string name="news_bookmark">Bookmark</string>
+    <string name="news_bookmark_added">Article bookmarked</string>
+    <string name="news_bookmark_removed">Bookmark removed</string>
+    <string name="news_time_just_now">Just now</string>
+    <string name="news_time_minutes_ago">%1$d min ago</string>
+    <string name="news_time_hours_ago">%1$d hr ago</string>
+    <string name="news_time_days_ago">%1$d days ago</string>
+    <string name="news_source_label">Source: %1$s</string>
+    <string name="news_empty_state">No news available.\nCheck your internet connection.</string>
+    <string name="news_loading">Loading news…</string>
+    <string name="news_settings_sources">Manage News Sources</string>
+
+    <!-- UTILITY ALERTS -->
+    <string name="load_title">Loadshedding Schedule</string>
+    <string name="load_subtitle">NEA Power Outage Schedule</string>
+    <string name="load_select_group">Select Your Group</string>
+    <string name="load_group_label">Group %1$s</string>
+    <string name="load_group_hint">Enter your group (A-Q)</string>
+    <string name="load_next_outage">Next Outage</string>
+    <string name="load_no_outage_today">No loadshedding today</string>
+    <string name="load_status_active">Currently Off</string>
+    <string name="load_status_supply">Power On</string>
+    <string name="load_outage_starts_in">Outage starts in %1$s</string>
+    <string name="load_outage_ends_in">Power returns in %1$s</string>
+    <string name="load_duration_hours">%1$.1f hours</string>
+    <string name="load_weekly_schedule">Weekly Schedule</string>
+    <string name="load_source_nea">Source: NEA</string>
+    <string name="load_notification_enable">Enable Outage Alerts</string>
+    <string name="load_notification_before">Alert %1$d minutes before outage</string>
+    <string name="load_widget_title">Power Status</string>
+    <string name="load_widget_off">Off now</string>
+    <string name="load_widget_on">Power available</string>
+
+    <string name="utility_water_title">Water Supply Alert</string>
+    <string name="utility_water_scheduled">Scheduled water cut: %1$s - %2$s</string>
+    <string name="utility_water_source">Source: KUKL / NWSC</string>
+
+    <!-- PROFILE SCREEN -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_edit">Edit Profile</string>
+    <string name="profile_name_hint">Full Name</string>
+    <string name="profile_email_hint">Email Address</string>
+    <string name="profile_phone_hint">Phone Number</string>
+    <string name="profile_location_hint">District / City</string>
+    <string name="profile_save">Save Changes</string>
+    <string name="profile_section_preferences">Preferences</string>
+    <string name="profile_language">Language</string>
+    <string name="profile_language_english">English</string>
+    <string name="profile_language_nepali">नेपाली</string>
+    <string name="profile_calendar_default">Default Calendar</string>
+    <string name="profile_calendar_bs">Bikram Sambat (B.S.)</string>
+    <string name="profile_calendar_ad">Gregorian (A.D.)</string>
+    <string name="profile_theme">App Theme</string>
+    <string name="profile_theme_light">Light</string>
+    <string name="profile_theme_dark">Dark</string>
+    <string name="profile_theme_system">System Default</string>
+    <string name="profile_notifications_title">Notification Settings</string>
+    <string name="profile_notifications_market">Market Alerts</string>
+    <string name="profile_notifications_loadshed">Loadshedding Alerts</string>
+    <string name="profile_notifications_news">Breaking News</string>
+    <string name="profile_notifications_forex">Forex Rate Changes</string>
+    <string name="profile_section_about">About</string>
+    <string name="profile_about_app">About SajhaPulse</string>
+    <string name="profile_privacy_policy">Privacy Policy</string>
+    <string name="profile_terms">Terms of Service</string>
+    <string name="profile_rate_app">Rate the App</string>
+    <string name="profile_share_app">Share SajhaPulse</string>
+    <string name="profile_feedback">Send Feedback</string>
+    <string name="profile_logout">Log Out</string>
+    <string name="profile_logout_confirm">Are you sure you want to log out?</string>
+    <string name="profile_version">SajhaPulse v%1$s . Made with love in Nepal</string>
+
+    <!-- ONBOARDING -->
+    <string name="onboard_skip">Skip</string>
+    <string name="onboard_next">Next</string>
+    <string name="onboard_get_started">Get Started</string>
+
+    <string name="onboard_1_title">Nepal\'s Super App</string>
+    <string name="onboard_1_desc">Everything you need -- markets, calendar, news, and daily utilities -- in one beautiful app.</string>
+
+    <string name="onboard_2_title">Real-Time Markets</string>
+    <string name="onboard_2_desc">Track NEPSE live, monitor gold &amp; silver prices, and get official forex rates from Nepal Rastra Bank.</string>
+
+    <string name="onboard_3_title">Bikram Sambat Calendar</string>
+    <string name="onboard_3_desc">Stay connected to Nepal\'s festivals and holidays with an integrated B.S. calendar and event reminders.</string>
+
+    <string name="onboard_4_title">Never Miss a Loadshedding</string>
+    <string name="onboard_4_desc">Get smart notifications before your area\'s power goes out. Know your group, know your schedule.</string>
+
+    <!-- COMMON -->
+    <string name="common_loading">Loading…</string>
+    <string name="common_refreshing">Refreshing…</string>
+    <string name="common_retry">Retry</string>
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_close">Close</string>
+    <string name="common_done">Done</string>
+    <string name="common_save">Save</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_confirm">Confirm</string>
+    <string name="common_search">Search</string>
+    <string name="common_filter">Filter</string>
+    <string name="common_sort">Sort</string>
+    <string name="common_share">Share</string>
+    <string name="common_copy">Copy</string>
+    <string name="common_copied">Copied to clipboard</string>
+    <string name="common_settings">Settings</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+    <string name="common_see_all">See All</string>
+    <string name="common_show_less">Show Less</string>
+    <string name="common_nprs_format">NPR %1$,.2f</string>
+    <string name="common_percent_format">%1$.2f%%</string>
+    <string name="common_up_arrow">^</string>
+    <string name="common_down_arrow">v</string>
+
+    <!-- ERRORS -->
+    <string name="error_network_title">No Internet Connection</string>
+    <string name="error_network_message">Please check your connection and try again.</string>
+    <string name="error_generic_title">Something Went Wrong</string>
+    <string name="error_generic_message">An unexpected error occurred. Please try again.</string>
+    <string name="error_server_title">Server Unavailable</string>
+    <string name="error_server_message">The service is temporarily unavailable. Please try later.</string>
+    <string name="error_timeout_title">Request Timed Out</string>
+    <string name="error_timeout_message">The request took too long. Check your connection and retry.</string>
+    <string name="error_empty_state_title">Nothing Here Yet</string>
+    <string name="error_empty_state_message">Data will appear once it\'s available.</string>
+    <string name="error_market_closed">Market data is not available outside trading hours.</string>
+    <string name="error_location_permission">Location permission is needed to show your loadshedding group automatically.</string>
+    <string name="error_notification_permission">Enable notifications to receive loadshedding and market alerts.</string>
+
+    <!-- A11Y -->
+    <string name="a11y_back_button">Go back</string>
+    <string name="a11y_refresh_button">Refresh data</string>
+    <string name="a11y_nepse_chart">NEPSE index chart showing trend over selected period</string>
+    <string name="a11y_gold_price_up">Gold price increased</string>
+    <string name="a11y_gold_price_down">Gold price decreased</string>
+    <string name="a11y_stock_gain">Stock gained %1$s percent</string>
+    <string name="a11y_stock_loss">Stock lost %1$s percent</string>
+    <string name="a11y_loadshedding_on">Power is currently off in your area</string>
+    <string name="a11y_loadshedding_off">Power is currently available in your area</string>
+    <string name="a11y_calendar_today">Today in Bikram Sambat: %1$s</string>
+    <string name="a11y_currency_swap">Swap from and to currency</string>
+
+    <!-- Drawer -->
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
+    <string name="nav_utilities">Utilities</string>
+    <string name="nav_news">News Pulse</string>
+    <string name="nav_settings">Settings &amp; Support</string>
+    <string name="nav_help">Help &amp; Feedback</string>
+    <string name="nav_logout">Logout</string>
+
+    <!-- Greeting -->
+    <string name="greeting_morning">Good Morning</string>
+    <string name="greeting_afternoon">Good Afternoon</string>
+    <string name="greeting_evening">Good Evening</string>
+    <string name="greeting_night">Good Night</string>
+    <string name="greeting_namaste">Namaste!</string>
+    <string name="greeting_namaste_name">Namaste, %1$s!</string>
+
+    <!-- Section headers -->
+    <string name="section_markets">Market Snapshot</string>
+    <string name="section_quick_actions">Quick Actions</string>
+    <string name="section_daily_pulse">Daily Pulse</string>
+    <string name="section_cultural">Cultural Today</string>
+
+    <!-- Financial labels -->
+    <string name="label_nepse">NEPSE Index</string>
+    <string name="label_forex">Forex Rate</string>
+    <string name="label_usd_npr">1 USD → NPR</string>
+    <string name="label_gold_silver">Gold / Silver</string>
+
+    <!-- News -->
+    <string name="badge_news_flash">News Flash</string>
+    <string name="action_read_more">Read more →</string>
+
+    <!-- Quick actions -->
+    <string name="qa_unit_converter">Unit\nConverter</string>
+    <string name="qa_date_converter">Date\nConverter</string>
+    <string name="qa_emergency">Emergency\nContacts</string>
+    <string name="qa_qr_scanner">QR\nScanner</string>
+    <string name="qa_loadshedding">Load-\nshedding</string>
+    <string name="qa_nepali_calendar">Nepali\nCalendar</string>
+
+    <!-- Placeholders (replace with live data) -->
+    <string name="placeholder_loading">—</string>
+    <string name="placeholder_change">+0.00 (0.00%)</string>
+    <string name="placeholder_nepali_date">२०८१ मंसिर, शुक्रबार</string>
+    <string name="placeholder_tithi">द्वादशी तिथि</string>
+    <string name="placeholder_festival">No major festival today</string>
+    <string name="placeholder_headline">Loading top headline…</string>
+    <string name="placeholder_source">Source</string>
+    <string name="placeholder_time">Just now</string>
+    <string name="placeholder_user_name">User Name</string>
+    <string name="placeholder_user_email">user@email.com</string>
+    <string name="placeholder_guest">Guest User</string>
+    <string name="placeholder_guest_email">Not signed in</string>
+    <string name="placeholder_action">Action</string>
+
+    <!-- Missing Strings for content_main.xml -->
+    <string name="default_user_name">User Name</string>
+    <string name="cd_notifications">Notifications</string>
+    <string name="cd_user_avatar">User Avatar</string>
+    <string name="live_badge">LIVE</string>
+    <string name="am_label">AM</string>
+    <string name="pm_label">PM</string>
+    <string name="bs_prefix">B.S.</string>
+    <string name="ad_prefix">A.D.</string>
+    <string name="section_forex">Forex Rates</string>
+    <string name="forex_source">NRB Official Rate</string>
+    <string name="see_all_rates">See All</string>
+    <string name="loading">Loading…</string>
+    <string name="section_bullion">Gold &amp; Silver</string>
+    <string name="bullion_source">FENESOGIDA Rate</string>
+    <string name="today_label">Today</string>
+    <string name="gold_fine">Fine Gold</string>
+    <string name="gold_24k_label">24K</string>
+    <string name="per_tola">per Tola</string>
+    <string name="gold_tejabi">Tejabi Gold</string>
+    <string name="gold_22k_label">22K</string>
+    <string name="silver_label">Silver</string>
+    <string name="section_fuel">Fuel &amp; Energy</string>
+    <string name="fuel_source">NOC Official Rate</string>
+    <string name="petrol_label">Petrol</string>
+    <string name="per_litre">per Litre</string>
+    <string name="diesel_label">Diesel</string>
+    <string name="lpg_label">LPG Gas</string>
+    <string name="per_cylinder">per Cylinder</string>
+    <string name="kerosene_label">Kerosene</string>
+    <string name="section_nepse">NEPSE Snapshot</string>
+    <string name="market_closed">Market Closed</string>
+    <string name="nepse_turnover_label">Turnover</string>
+    <string name="nepse_volume_label">Volume</string>
+    <string name="nepse_transactions_label">Trans.</string>
+    <string name="fab_convert_hint">Currency Converter</string>
+    <string name="fab_convert">Convert</string>
+
 </resources>

@@ -1,159 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    activity_splash.xml
-    ─────────────────────────────────────────────────────────────────────
-    SplashActivity layout — Night Tech / SajhaPulse
-    • Minimalist centred logo with tagline
-    • Background matches @color/background (forced dark)
-    • Logo pulses via ObjectAnimator in Java (no Lottie dependency)
-    • Version badge anchored to bottom-centre
-    ─────────────────────────────────────────────────────────────────────
+    activity_splash.xml — SajhaPulse · Neo-Traditional Splash
+    ═══════════════════════════════════════════════════════════════════
+    Design Direction: "Himalayas at Dusk"
+      • Deep crimson → rich maroon radial gradient background
+      • Rotating mandala-ring geometry (3 concentric rings, ODR anim)
+      • Logo performs a 3D Y-axis flip + zoom entry (ObjectAnimator)
+      • Gold shimmer line sweeps across the logo (clip + translate)
+      • Staggered text reveal: app name fades + slides, tagline types in
+      • Particle constellation overlay (8 decorative dots, staggered pulse)
+      • "Powered by Night Tech" gold footer with letter-spaced caps
+
+    Animation choreography (driven by SplashActivity.java):
+      t=0ms    → Mandala rings begin slow rotation (looping)
+      t=0ms    → Particle dots pulse in (staggered, 80ms each)
+      t=200ms  → Logo 3D flip + scale-up (600ms)
+      t=820ms  → Gold shimmer sweeps logo (400ms)
+      t=900ms  → App name slides up + fades in (500ms)
+      t=1100ms → Tagline fades in (400ms)
+      t=1300ms → "Powered by" credit fades in (300ms)
+      t=1600ms → Navigate to next screen
+
+    Required drawables (create in res/drawable/):
+      splash_bg_gradient.xml      — radial/sweep gradient
+      splash_ring_outer.xml       — thin gold circle stroke
+      splash_ring_middle.xml      — dashed crimson circle stroke
+      splash_ring_inner.xml       — solid semi-transparent circle
+      splash_logo_bg_glow.xml     — radial white glow oval
+      splash_particle_dot.xml     — small gold circle
+      splash_shimmer_line.xml     — horizontal white gradient bar
+      splash_divider_gold.xml     — 1dp gold horizontal line
+    ═══════════════════════════════════════════════════════════════════
 -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/splash_root"
+    android:id="@+id/root_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@drawable/splash_bg_gradient"
     tools:context=".ui.SplashActivity">
 
-    <!-- ── Decorative top-right glow orb ─────────────────────────── -->
-    <View
-        android:id="@+id/splash_glow_top"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:alpha="0.18"
-        android:background="@drawable/bg_radial_glow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="-60dp"
-        android:layout_marginTop="-60dp" />
-
-    <!-- ── Decorative bottom-left glow orb ───────────────────────── -->
-    <View
-        android:id="@+id/splash_glow_bottom"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:alpha="0.12"
-        android:background="@drawable/bg_glow_circle_purple"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="-50dp"
-        android:layout_marginBottom="-50dp" />
-
-    <!-- ══════════════════════════════════════════════════════════
-         LOGO GROUP — vertically centred, horizontally centred
-    ══════════════════════════════════════════════════════════════ -->
-
-    <!-- Pulse ring 1 — largest, most transparent -->
-    <View
-        android:id="@+id/splash_ring_1"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:alpha="0"
-        android:background="@drawable/bg_pulse_ring"
-        app:layout_constraintBottom_toTopOf="@id/splash_logo_guide"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/splash_logo_guide" />
-
-    <!-- Pulse ring 2 — medium -->
-    <View
-        android:id="@+id/splash_ring_2"
-        android:layout_width="144dp"
-        android:layout_height="144dp"
-        android:alpha="0"
-        android:background="@drawable/bg_pulse_ring"
-        app:layout_constraintBottom_toTopOf="@id/splash_logo_guide"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/splash_logo_guide" />
-
-    <!-- Logo ImageView — the vector drawable -->
+    <!-- ══════════════════════════════════════════════════════════════
+         LAYER 1 — OUTER MANDALA RING
+         Thin gold stroke circle, rotates clockwise slowly.
+         320dp diameter. Pivot = centre of screen.
+         ══════════════════════════════════════════════════════════════ -->
     <ImageView
-        android:id="@+id/splash_logo"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitCenter"
-        android:src="@drawable/logo"
-        android:elevation="8dp"
-        app:layout_constraintBottom_toTopOf="@id/splash_logo_guide"
+        android:id="@+id/ring_outer"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:alpha="0.35"
+        android:contentDescription="@null"
+        android:src="@drawable/splash_ring_outer"
+        app:layout_constraintBottom_toBottomOf="@id/iv_splash_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/splash_logo_guide" />
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo" />
 
-    <!-- Invisible guideline at 42% from top — centres logo above midpoint -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/splash_logo_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.42" />
-
-    <!-- App name -->
-    <TextView
-        android:id="@+id/splash_app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="0"
-        android:fontFamily="@font/main_font_family"
-        android:letterSpacing="-0.02"
-        android:text="@string/app_name"
-        android:textColor="@color/on_surface"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
+    <!-- ══════════════════════════════════════════════════════════════
+         LAYER 2 — MIDDLE MANDALA RING
+         Dashed gold stroke, counter-rotates (anti-clockwise).
+         240dp diameter.
+         ══════════════════════════════════════════════════════════════ -->
+    <ImageView
+        android:id="@+id/ring_middle"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:alpha="0.45"
+        android:contentDescription="@null"
+        android:src="@drawable/splash_ring_middle"
+        app:layout_constraintBottom_toBottomOf="@id/iv_splash_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/splash_logo" />
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo" />
 
-    <!-- Tagline -->
-    <TextView
-        android:id="@+id/splash_tagline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="0"
-        android:fontFamily="@font/main_font_family"
-        android:letterSpacing="0.04"
-        android:text="@string/splash_tagline"
-        android:textAllCaps="true"
-        android:textColor="@color/secondary"
-        android:textSize="11sp"
-        android:textStyle="normal"
-        android:layout_marginTop="8dp"
+    <!-- ══════════════════════════════════════════════════════════════
+         LAYER 3 — INNER GLOW HALO
+         Soft radial white-to-transparent oval behind the logo.
+         180dp, alpha 0.15.
+         ══════════════════════════════════════════════════════════════ -->
+    <ImageView
+        android:id="@+id/ring_inner_glow"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:alpha="0.15"
+        android:contentDescription="@null"
+        android:src="@drawable/splash_logo_bg_glow"
+        app:layout_constraintBottom_toBottomOf="@id/iv_splash_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/splash_app_name" />
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo" />
 
-    <!-- ── Loading indicator — thin cyan line at bottom of logo group -->
+    <!-- ══════════════════════════════════════════════════════════════
+         PARTICLE CONSTELLATION — 8 gold dots scattered around logo
+         Each dot is animated in SplashActivity with staggered pulse.
+         Positions approximate a subtle constellation around the logo.
+         ══════════════════════════════════════════════════════════════ -->
+
+    <!-- Top-left cluster -->
     <View
-        android:id="@+id/splash_divider"
-        android:layout_width="40dp"
+        android:id="@+id/particle_1"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:alpha="0"
+        android:background="@drawable/splash_particle_dot"
+        app:layout_constraintEnd_toStartOf="@id/iv_splash_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo"
+        android:layout_marginEnd="48dp"
+        android:layout_marginTop="20dp" />
+
+    <View
+        android:id="@+id/particle_2"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:alpha="0"
+        android:background="@drawable/splash_particle_dot"
+        app:layout_constraintEnd_toStartOf="@id/iv_splash_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="50dp" />
+
+    <!-- Top-right cluster -->
+    <View
+        android:id="@+id/particle_3"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:alpha="0"
+        android:background="@drawable/splash_particle_dot"
+        app:layout_constraintStart_toEndOf="@id/iv_splash_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="14dp" />
+
+    <View
+        android:id="@+id/particle_4"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:alpha="0"
+        android:background="@drawable/splash_particle_dot"
+        app:layout_constraintStart_toEndOf="@id/iv_splash_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="48dp" />
+
+    <!-- Bottom clusters -->
+    <View
+        android:id="@+id/particle_5"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:alpha="0"
+        android:background="@drawable/splash_particle_dot"
+        app:layout_constraintEnd_toStartOf="@id/iv_splash_logo"
+        app:layout_constraintBottom_toBottomOf="@id/iv_splash_logo"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="18dp" />
+
+    <View
+        android:id="@+id/particle_6"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:alpha="0"
+        android:background="@drawable/splash_particle_dot"
+        app:layout_constraintStart_toEndOf="@id/iv_splash_logo"
+        app:layout_constraintBottom_toBottomOf="@id/iv_splash_logo"
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="30dp" />
+
+    <!-- Far distant dots for depth -->
+    <View
+        android:id="@+id/particle_7"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:alpha="0"
+        android:background="@drawable/splash_particle_dot"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="0dp" />
+
+    <View
+        android:id="@+id/particle_8"
+        android:layout_width="2dp"
         android:layout_height="2dp"
         android:alpha="0"
-        android:background="@color/secondary"
-        android:layout_marginTop="20dp"
+        android:background="@drawable/splash_particle_dot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo"
+        android:layout_marginEnd="36dp"
+        android:layout_marginTop="60dp" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         LOGO — 3D flip + zoom (ObjectAnimator in Java)
+         Starts: scaleX=0.3, scaleY=0.3, rotationY=90, alpha=0
+         Ends  : scaleX=1.0, scaleY=1.0, rotationY=0,  alpha=1
+         cameraDistance set in Java for realistic perspective depth.
+         ══════════════════════════════════════════════════════════════ -->
+    <ImageView
+        android:id="@+id/iv_splash_logo"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:alpha="0"
+        android:contentDescription="@string/app_name"
+        android:elevation="8dp"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@id/tv_app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/splash_tagline" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.40" />
 
-    <!-- ══════════════════════════════════════════════════════════
-         BOTTOM VERSION BADGE
-    ══════════════════════════════════════════════════════════════ -->
+    <!-- ══════════════════════════════════════════════════════════════
+         SHIMMER OVERLAY — slides across the logo after it lands
+         Clipped to logo bounds via a ClipToOutline approach.
+         A horizontal white gradient bar translates from left to right.
+         ══════════════════════════════════════════════════════════════ -->
+    <View
+        android:id="@+id/view_shimmer"
+        android:layout_width="60dp"
+        android:layout_height="140dp"
+        android:alpha="0"
+        android:background="@drawable/splash_shimmer_line"
+        android:translationX="-140dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_splash_logo"
+        app:layout_constraintStart_toStartOf="@id/iv_splash_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_splash_logo" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         GOLD DIVIDER LINE — appears under logo before text reveal
+         ══════════════════════════════════════════════════════════════ -->
+    <View
+        android:id="@+id/divider_gold"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginHorizontal="80dp"
+        android:alpha="0"
+        android:background="@drawable/splash_divider_gold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_splash_logo" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         APP NAME — slides up from +24dp + fades in
+         Starts: translationY=+24dp, alpha=0
+         Ends  : translationY=0,     alpha=1
+         ══════════════════════════════════════════════════════════════ -->
     <TextView
-        android:id="@+id/splash_version"
+        android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:alpha="0"
-        android:fontFamily="@font/main_font_family"
-        android:text="@string/app_version"
-        android:textColor="@color/on_surface_variant"
-        android:textSize="12sp"
-        android:layout_marginBottom="32dp"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.08"
+        android:text="@string/app_name"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:translationY="24dp"
+        app:layout_constraintBottom_toTopOf="@id/tv_app_tagline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_gold" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         TAGLINE — fades in after app name
+         Starts: alpha=0
+         Ends  : alpha=0.80
+         ══════════════════════════════════════════════════════════════ -->
+    <TextView
+        android:id="@+id/tv_app_tagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:alpha="0"
+        android:fontFamily="sans-serif"
+        android:letterSpacing="0.12"
+        android:text="@string/app_tagline"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_app_name"
+        app:layout_constraintVertical_bias="0" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         LOADING INDICATOR — thin gold/white bar at screen bottom
+         ══════════════════════════════════════════════════════════════ -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_splash"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:indicatorColor="#C9A84C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:trackColor="#33C9A84C"
+        app:trackThickness="2dp" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         "POWERED BY NIGHT TECH" — gold, letter-spaced, all-caps
+         Fades in last. Pinned above progress bar.
+         ══════════════════════════════════════════════════════════════ -->
+    <TextView
+        android:id="@+id/tv_powered_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:alpha="0"
+        android:fontFamily="sans-serif"
+        android:letterSpacing="0.18"
+        android:text="Powered by Night Tech"
+        android:textAllCaps="true"
+        android:textColor="#C9A84C"
+        android:textSize="9sp"
+        app:layout_constraintBottom_toTopOf="@id/progress_splash"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

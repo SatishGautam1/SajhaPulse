@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    nav_drawer_menu.xml — Side Navigation Menu
+    ═══════════════════════════════════════════════════════════════════
+    Groups:
+      Group 1 (main nav): Home, Markets, Utilities, News Pulse
+      Group 2 (support):  Settings, Help & Support
+      Group 3 (account):  Logout (red accent, no tint override needed —
+                          handled in MainActivity via setIconTintList)
+    ═══════════════════════════════════════════════════════════════════
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ── Primary Navigation ──────────────────────────────────────── -->
+    <group android:id="@+id/group_main" android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/nav_home"
+            android:checked="true" />
+
+        <item
+            android:id="@+id/nav_markets"
+            android:icon="@drawable/ic_trending"
+            android:title="@string/nav_markets" />
+
+        <item
+            android:id="@+id/nav_utilities"
+            android:icon="@drawable/ic_services"
+            android:title="@string/nav_utilities" />
+
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@drawable/ic_flame"
+            android:title="@string/nav_news" />
+
+    </group>
+
+    <!-- ── Settings & Support ──────────────────────────────────────── -->
+    <group android:id="@+id/group_support" android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/nav_settings" />
+
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_person"
+            android:title="@string/nav_help" />
+
+    </group>
+
+    <!-- ── Account Actions ─────────────────────────────────────────── -->
+    <!-- Logout uses a separate non-checkable group so it never shows
+         as "selected". Its icon tint is set to red in MainActivity. -->
+    <group android:id="@+id/group_account" android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/nav_logout" />
+
+    </group>
+
+</menu>

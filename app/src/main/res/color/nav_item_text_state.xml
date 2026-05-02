@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Text color when selected (Solid Crimson) -->
+    <item android:color="#DC143C" android:state_checked="true" />
+    <!-- Text color when not selected -->
+    <item android:color="@color/md_theme_onSurfaceVariant" />
+</selector>

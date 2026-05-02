@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.navigation.NavigationView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_view"
+    android:layout_width="320dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/md_theme_surface"
+    android:fitsSystemWindows="true"
+    app:headerLayout="@layout/nav_header_main"
+    app:menu="@menu/nav_drawer_menu"
+    app:itemShapeAppearanceOverlay="@style/ShapeAppearance.SajhaPulse.NavItem"
+    app:itemShapeFillColor="@color/nav_item_selected_state"
+    app:itemIconTint="@color/nav_item_icon_state"
+    app:itemTextColor="@color/nav_item_text_state"
+    app:itemHorizontalPadding="20dp"
+    app:itemIconPadding="14dp"
+    app:itemVerticalPadding="12dp"
+    app:dividerInsetStart="24dp"
+    app:dividerInsetEnd="24dp"
+    app:itemTextAppearance="@style/TextAppearance.SajhaPulse.LabelLarge" />

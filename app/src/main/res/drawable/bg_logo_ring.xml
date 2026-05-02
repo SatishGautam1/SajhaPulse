@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_logo_ring.xml — res/drawable/bg_logo_ring.xml
+    Thin white stroke circle (mandala-inspired heritage ring)
+    drawn around the app logo on the Login screen.
+    No fill — stroke only, 20% white alpha for subtlety.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- No fill — transparent center so logo shows through -->
+    <solid android:color="@android:color/transparent" />
+
+    <!-- Thin white stroke — heritage ring effect -->
+    <stroke
+        android:width="1.5dp"
+        android:color="#33FFFFFF" />
+
+</shape>

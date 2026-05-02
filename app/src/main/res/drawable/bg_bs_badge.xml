@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_bs_badge.xml — res/drawable/bg_bs_badge.xml
+    Very subtle gold-tinted transparent pill for the "विक्रम सम्वत्" label.
+    Gold text on a barely-visible gold-tinted stroke — temple brass aesthetic.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#1AFFD700" />
+    <stroke
+        android:width="0.5dp"
+        android:color="#55FFD700" />
+    <corners android:radius="4dp" />
+</shape>
