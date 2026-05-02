@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    content_main.xml — SajhaPulse Main Dashboard Panel
+    content_main.xml — SajhaPulse Unified Dashboard Panel
     ═══════════════════════════════════════════════════════════════════
     System Bars:
-      • Status bar  : crimson (#DC143C), WHITE icons — set via
-        SystemBarHelper.applyAppBars(). AppBarLayout with
-        fitsSystemWindows="true" absorbs the top inset so the
-        crimson toolbar sits seamlessly under the crimson status bar.
-      • Nav bar     : crimson (#DC143C), WHITE gesture handle.
-        NestedScrollView has paddingBottom to clear nav bar height.
+      Status bar  : crimson (#DC143C), WHITE icons via SystemBarHelper.
+      AppBarLayout fitsSystemWindows="true" absorbs the top inset.
+      Nav bar     : crimson. NestedScrollView paddingBottom clears it.
 
-    Design language: Modern Traditional Nepali — Paati/Dhara-inspired
-    heritage geometry layered with Material 3 surfaces and 3D depth
-    animations on the DateTime hero card.
-
-    Structure:
-      ① AppBarLayout + Toolbar (crimson, always pinned)
-      ② NestedScrollView body:
-           • DateTime Hero Card  (3D-style with layered depth)
-           • Quick Services grid (2 × 2 icon pills)
-           • Daily Highlight     (accent announcement card)
+    Scroll body sections (top → bottom):
+      ① DateTime Hero Card    — 3D entrance, live clock, dual calendar
+      ② News Carousel         — HorizontalScrollView, 3 cards + dots
+      ③ Live Ticker Card      — NEPSE / Forex marquee + stat pills
+      ④ Quick Actions Grid    — 3 × 2 Nagarik Sewa tiles
+      ⑤ Daily Highlight Card  — announcement / notification card
     ═══════════════════════════════════════════════════════════════════
 -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -34,9 +27,8 @@
 
     <!-- ══════════════════════════════════════════════════════════════
           APP BAR — Crimson, edge-to-edge.
-          fitsSystemWindows="true" here lets AppBarLayout absorb the
-          status-bar inset automatically, padding the Toolbar below the
-          crimson system status bar without any extra Java code.
+          fitsSystemWindows="true" absorbs the status-bar inset so
+          the toolbar sits flush under the crimson system bar.
          ══════════════════════════════════════════════════════════════ -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -44,9 +36,7 @@
         android:layout_height="wrap_content"
         android:background="@color/toolbar_background"
         android:elevation="0dp"
-        android:fitsSystemWindows="true"
-        app:liftOnScroll="true"
-        app:liftOnScrollTargetViewId="@id/scroll_dashboard">
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -106,7 +96,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Right-side action cluster -->
+            <!-- Right-side notification button -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,8 +134,8 @@
 
     <!-- ══════════════════════════════════════════════════════════════
           SCROLLABLE BODY
-          paddingBottom ensures content clears the crimson nav bar.
-          clipToPadding="false" allows cards to scroll under the bar.
+          paddingBottom clears the crimson nav bar.
+          clipToPadding="false" lets cards scroll underneath it.
          ══════════════════════════════════════════════════════════════ -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_dashboard"
@@ -160,32 +150,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
             android:paddingTop="12dp">
 
             <!-- ══════════════════════════════════════════════════════
                   ① DATE-TIME HERO CARD
-                  Design: Traditional Nepali "Paati" (open shrine pavilion)
-                  aesthetics — deep crimson-to-maroon gradient background,
-                  white mandala-inspired decorative geometry, Bikram Sambat
-                  given visual PRIMACY (larger, colored), AD date secondary.
-                  3D depth: achieved via layered Views with different
-                  elevations, a subtle shadow card behind the main card,
-                  and a ScaleAnimation + RotateAnimation applied in Java
-                  (see MainActivity.animateDateTimeCard()).
+                  Deep crimson background, dual BS/AD calendar,
+                  3D "lifted slab" entrance via shadow layer +
+                  animateDateTimeCard() in MainActivity.
                  ══════════════════════════════════════════════════════ -->
 
-            <!--
-                Shadow/depth layer — sits 4dp behind the main card,
-                slightly offset down-right. Same corner radius but
-                slightly larger. Gives a "lifted slab" 3D feel.
-            -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginBottom="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
                 android:paddingBottom="6dp"
                 android:paddingEnd="6dp">
 
@@ -200,7 +180,7 @@
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp" />
 
-                <!-- MAIN Hero Card (drawn on top of shadow layer) -->
+                <!-- MAIN Hero Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_datetime"
                     android:layout_width="match_parent"
@@ -214,7 +194,7 @@
                     app:strokeColor="#33FFFFFF"
                     app:strokeWidth="1dp">
 
-                    <!-- Background decorative geometry layer — Mandala arcs -->
+                    <!-- Mandala arcs — decorative geometry, top-right -->
                     <View
                         android:layout_width="200dp"
                         android:layout_height="200dp"
@@ -224,7 +204,7 @@
                         android:alpha="0.07"
                         android:background="@drawable/bg_mandala_circle" />
 
-                    <!-- Second decorative arc — bottom-left -->
+                    <!-- Mandala arc — bottom-left -->
                     <View
                         android:layout_width="120dp"
                         android:layout_height="120dp"
@@ -240,7 +220,7 @@
                         android:orientation="vertical"
                         android:padding="22dp">
 
-                        <!-- ── Top Row: Day name + LIVE badge ─────────── -->
+                        <!-- Day name + LIVE badge -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -260,17 +240,16 @@
                                 android:textSize="11sp"
                                 tools:text="SATURDAY" />
 
-                            <!-- LIVE badge — pulsing dot + label -->
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/bg_live_badge"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
+                                android:paddingBottom="3dp"
                                 android:paddingEnd="8dp"
                                 android:paddingStart="6dp"
-                                android:paddingTop="3dp"
-                                android:paddingBottom="3dp">
+                                android:paddingTop="3dp">
 
                                 <View
                                     android:id="@+id/view_live_dot"
@@ -291,11 +270,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <!-- ── Large Time Display ──────────────────────── -->
-                        <!--
-                            Time is displayed with enormous weight to own
-                            the visual hierarchy. Seconds shown small + right.
-                        -->
+                        <!-- Large time display -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -343,10 +318,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <!--
-                            Heritage rule — thin gold-tinted divider that
-                            evokes the brass/gilded details of Nepali temples.
-                        -->
+                        <!-- Gold rule divider -->
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -355,35 +327,28 @@
                             android:alpha="0.30"
                             android:background="#FFD700" />
 
-                        <!-- ── Dual Calendar Block ─────────────────────── -->
-                        <!--
-                            B.S. is PRIMARY — larger font, white color,
-                            gold label. A.D. is secondary — muted, smaller.
-                            This intentional hierarchy respects that Nepali
-                            users primarily live by the Bikram Sambat calendar.
-                        -->
+                        <!-- Dual Calendar Block -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <!-- B.S. Block (primary) -->
+                            <!-- B.S. (primary, larger) -->
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.2"
                                 android:orientation="vertical">
 
-                                <!-- Gold "B.S." badge -->
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/bg_bs_badge"
                                     android:fontFamily="@font/main_font_family"
+                                    android:paddingBottom="2dp"
                                     android:paddingEnd="6dp"
                                     android:paddingStart="6dp"
                                     android:paddingTop="2dp"
-                                    android:paddingBottom="2dp"
                                     android:text="विक्रम सम्वत्"
                                     android:textColor="#FFD700"
                                     android:textFontWeight="800"
@@ -398,7 +363,7 @@
                                     android:textColor="#FFFFFF"
                                     android:textFontWeight="800"
                                     android:textSize="18sp"
-                                    tools:text="२० बैशाख २०८३" />
+                                    tools:text="२२ जेठ २०८३" />
 
                                 <TextView
                                     android:id="@+id/tv_bs_date_latin"
@@ -410,10 +375,10 @@
                                     android:textColor="#FFFFFF"
                                     android:textFontWeight="400"
                                     android:textSize="12sp"
-                                    tools:text="20 Baishakh 2083" />
+                                    tools:text="22 Jestha 2083" />
                             </LinearLayout>
 
-                            <!-- Vertical gold rule separator -->
+                            <!-- Vertical gold rule -->
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
@@ -421,7 +386,7 @@
                                 android:alpha="0.30"
                                 android:background="#FFD700" />
 
-                            <!-- A.D. Block (secondary) -->
+                            <!-- A.D. (secondary) -->
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -450,30 +415,27 @@
                                     android:textSize="14sp"
                                     tools:text="2 May 2026" />
                             </LinearLayout>
-
                         </LinearLayout>
 
                     </LinearLayout>
-                    <!-- end card content LinearLayout -->
-
                 </com.google.android.material.card.MaterialCardView>
-                <!-- end main hero card -->
-
             </FrameLayout>
-            <!-- end 3D depth FrameLayout -->
 
             <!-- ══════════════════════════════════════════════════════
-                  ② QUICK SERVICES SECTION HEADER
+                  ② NEWS CAROUSEL — Sajha Patrika
                  ══════════════════════════════════════════════════════ -->
+
+            <!-- Section header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginTop="24dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
 
-                <!-- Crimson accent pip before section title -->
                 <View
                     android:layout_width="3dp"
                     android:layout_height="18dp"
@@ -485,213 +447,537 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/main_font_family"
-                    android:text="Quick Services"
+                    android:text="Sajha Patrika"
                     android:textColor="@color/on_surface"
                     android:textFontWeight="700"
                     android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_news_see_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:fontFamily="@font/main_font_family"
+                    android:padding="4dp"
+                    android:text="See all →"
+                    android:textColor="@color/md_theme_primary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!--
+                Carousel — paddingStart creates peek affordance so the
+                user sees the edge of the next card.
+            -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingEnd="8dp"
+                android:paddingStart="16dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- News Card 1 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/news_card_1"
+                        android:layout_width="260dp"
+                        android:layout_height="156dp"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/md_theme_surface"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp"
+                        app:rippleColor="#22DC143C"
+                        app:strokeColor="#0FDC143C"
+                        app:strokeWidth="1dp">
+
+                        <ImageView
+                            android:id="@+id/news_thumb_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@color/md_theme_primaryContainer"
+                            tools:src="@tools:sample/backgrounds/scenic" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_news_card_scrim" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <TextView
+                                android:id="@+id/news_category_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_bs_badge"
+                                android:fontFamily="@font/main_font_family"
+                                android:paddingBottom="2dp"
+                                android:paddingEnd="8dp"
+                                android:paddingStart="8dp"
+                                android:paddingTop="2dp"
+                                android:text="POLITICS"
+                                android:textColor="#FFD700"
+                                android:textFontWeight="800"
+                                android:textSize="9sp" />
+
+                            <TextView
+                                android:id="@+id/news_title_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/main_font_family"
+                                android:lineSpacingMultiplier="1.2"
+                                android:maxLines="2"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="700"
+                                android:textSize="13sp"
+                                tools:text="Nepal Rastra Bank raises repo rate to curb inflation pressure" />
+                        </LinearLayout>
+
+                        <!-- LIVE badge (shown for breaking news only) -->
+                        <LinearLayout
+                            android:id="@+id/news_live_badge_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|start"
+                            android:layout_margin="12dp"
+                            android:background="@drawable/bg_live_badge"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingBottom="3dp"
+                            android:paddingEnd="8dp"
+                            android:paddingStart="6dp"
+                            android:paddingTop="3dp"
+                            android:visibility="gone">
+
+                            <View
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bg_live_dot" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="LIVE"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="800"
+                                android:textSize="9sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- News Card 2 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/news_card_2"
+                        android:layout_width="260dp"
+                        android:layout_height="156dp"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/md_theme_surface"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp"
+                        app:rippleColor="#22DC143C"
+                        app:strokeColor="#0FDC143C"
+                        app:strokeWidth="1dp">
+
+                        <ImageView
+                            android:id="@+id/news_thumb_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@color/md_theme_primaryContainer" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_news_card_scrim" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <TextView
+                                android:id="@+id/news_category_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_bs_badge"
+                                android:fontFamily="@font/main_font_family"
+                                android:paddingBottom="2dp"
+                                android:paddingEnd="8dp"
+                                android:paddingStart="8dp"
+                                android:paddingTop="2dp"
+                                android:text="MARKETS"
+                                android:textColor="#FFD700"
+                                android:textFontWeight="800"
+                                android:textSize="9sp" />
+
+                            <TextView
+                                android:id="@+id/news_title_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/main_font_family"
+                                android:lineSpacingMultiplier="1.2"
+                                android:maxLines="2"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="700"
+                                android:textSize="13sp"
+                                tools:text="NEPSE crosses 2,100 mark for the first time this quarter" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- News Card 3 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/news_card_3"
+                        android:layout_width="260dp"
+                        android:layout_height="156dp"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/md_theme_surface"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp"
+                        app:rippleColor="#22DC143C"
+                        app:strokeColor="#0FDC143C"
+                        app:strokeWidth="1dp">
+
+                        <ImageView
+                            android:id="@+id/news_thumb_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@color/md_theme_primaryContainer" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_news_card_scrim" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <TextView
+                                android:id="@+id/news_category_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_bs_badge"
+                                android:fontFamily="@font/main_font_family"
+                                android:paddingBottom="2dp"
+                                android:paddingEnd="8dp"
+                                android:paddingStart="8dp"
+                                android:paddingTop="2dp"
+                                android:text="WEATHER"
+                                android:textColor="#FFD700"
+                                android:textFontWeight="800"
+                                android:textSize="9sp" />
+
+                            <TextView
+                                android:id="@+id/news_title_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/main_font_family"
+                                android:lineSpacingMultiplier="1.2"
+                                android:maxLines="2"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="700"
+                                android:textSize="13sp"
+                                tools:text="Pre-monsoon rains likely to hit Terai districts this week" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Carousel dot indicators -->
+            <LinearLayout
+                android:id="@+id/carousel_dots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="6dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/bg_dot_active" />
+
+                <View
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/bg_dot_inactive" />
+
+                <View
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/bg_dot_inactive" />
             </LinearLayout>
 
             <!-- ══════════════════════════════════════════════════════
-                  ③ QUICK ACCESS GRID — 2 × 2
-                  Each cell: icon pill (circle) + label beneath.
-                  Pill background is primaryContainer (soft rose/crimson).
+                  ③ LIVE TICKER CARD — NEPSE + Forex + Gold
+                  android:selected="true" is REQUIRED for marquee to
+                  scroll on non-focused views.
                  ══════════════════════════════════════════════════════ -->
 
-            <!-- Row 1 -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_live_ticker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/md_theme_primary"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="6dp"
+                app:strokeColor="#22FFFFFF"
+                app:strokeWidth="1dp">
 
-                <!-- Markets -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_nav_markets"
-                    style="@style/Widget.SajhaPulse.CardView"
-                    android:layout_width="0dp"
-                    android:layout_height="96dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <!-- Ticker header strip -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:background="#1AFFFFFF"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp"
+                        android:paddingEnd="16dp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp">
 
-                        <!-- Circular icon container -->
-                        <FrameLayout
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:background="@drawable/bg_icon_pill_primary">
-
-                            <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_trending_up"
-                                app:tint="@color/md_theme_primary" />
-                        </FrameLayout>
+                        <View
+                            android:id="@+id/ticker_live_dot"
+                            android:layout_width="7dp"
+                            android:layout_height="7dp"
+                            android:layout_marginEnd="6dp"
+                            android:background="@drawable/bg_live_dot" />
 
                         <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/main_font_family"
+                            android:letterSpacing="0.10"
+                            android:text="LIVE MARKET PULSE"
+                            android:textColor="#CCFFFFFF"
+                            android:textFontWeight="800"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tv_ticker_timestamp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:alpha="0.60"
                             android:fontFamily="@font/main_font_family"
-                            android:text="Markets"
-                            android:textColor="@color/on_surface"
-                            android:textFontWeight="600"
-                            android:textSize="12sp" />
+                            android:textColor="#FFFFFF"
+                            android:textSize="10sp"
+                            tools:text="Updated 10:45 AM" />
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
 
-                <!-- Forex -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_nav_forex"
-                    style="@style/Widget.SajhaPulse.CardView"
-                    android:layout_width="0dp"
-                    android:layout_height="96dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="true">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.20"
+                        android:background="#FFD700" />
 
+                    <!-- Marquee ticker row -->
+                    <TextView
+                        android:id="@+id/tv_live_ticker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:fadingEdgeLength="32dp"
+                        android:fontFamily="@font/main_font_family"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:paddingBottom="12dp"
+                        android:paddingEnd="24dp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:requiresFadingEdge="horizontal"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:textColor="#FFFFFF"
+                        android:textFontWeight="600"
+                        android:textSize="13sp"
+                        tools:text="📈 NEPSE: 2,045.6 (+1.2%)   💵 USD/NPR: 133.45   🟡 Gold: ₹1,38,400/tola" />
+                    <!-- Stat pills row -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:background="#12000000"
+                        android:orientation="horizontal"
+                        android:paddingBottom="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingStart="12dp"
+                        android:paddingTop="8dp">
 
-                        <FrameLayout
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:background="@drawable/bg_icon_pill_primary">
-
-                            <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_swap_horiz"
-                                app:tint="@color/md_theme_primary" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <!-- NEPSE pill -->
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="@font/main_font_family"
-                            android:text="Forex Rates"
-                            android:textColor="@color/on_surface"
-                            android:textFontWeight="600"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_ticker_pill"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
 
-            <!-- Row 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:layout_marginBottom="24dp"
-                android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="NEPSE"
+                                android:textColor="#AAFFFFFF"
+                                android:textFontWeight="700"
+                                android:textSize="9sp" />
 
-                <!-- News -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_nav_news"
-                    style="@style/Widget.SajhaPulse.CardView"
-                    android:layout_width="0dp"
-                    android:layout_height="96dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="true">
+                            <TextView
+                                android:id="@+id/tv_nepse_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="800"
+                                android:textSize="15sp"
+                                tools:text="2,045.6" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_nepse_change"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#4CAF50"
+                                android:textFontWeight="600"
+                                android:textSize="11sp"
+                                tools:text="▲ +1.2%" />
+                        </LinearLayout>
 
-                        <FrameLayout
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:background="@drawable/bg_icon_pill_primary">
-
-                            <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_language"
-                                app:tint="@color/md_theme_primary" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <!-- USD/NPR pill -->
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="@font/main_font_family"
-                            android:text="News Pulse"
-                            android:textColor="@color/on_surface"
-                            android:textFontWeight="600"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_ticker_pill"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
 
-                <!-- Utilities -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_nav_utilities"
-                    style="@style/Widget.SajhaPulse.CardView"
-                    android:layout_width="0dp"
-                    android:layout_height="96dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="true">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="USD/NPR"
+                                android:textColor="#AAFFFFFF"
+                                android:textFontWeight="700"
+                                android:textSize="9sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_usd_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FFFFFF"
+                                android:textFontWeight="800"
+                                android:textSize="15sp"
+                                tools:text="133.45" />
 
-                        <FrameLayout
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:background="@drawable/bg_icon_pill_primary">
+                            <TextView
+                                android:id="@+id/tv_usd_change"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FF5252"
+                                android:textFontWeight="600"
+                                android:textSize="11sp"
+                                tools:text="▼ −0.15" />
+                        </LinearLayout>
 
-                            <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_services"
-                                app:tint="@color/md_theme_primary" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <!-- Gold pill -->
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="@font/main_font_family"
-                            android:text="Utilities"
-                            android:textColor="@color/on_surface"
-                            android:textFontWeight="600"
-                            android:textSize="12sp" />
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_ticker_pill"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:text="GOLD/tola"
+                                android:textColor="#AAFFFFFF"
+                                android:textFontWeight="700"
+                                android:textSize="9sp" />
+
+                            <TextView
+                                android:id="@+id/tv_gold_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#FFD700"
+                                android:textFontWeight="800"
+                                android:textSize="15sp"
+                                tools:text="₹1,38,400" />
+
+                            <TextView
+                                android:id="@+id/tv_gold_change"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/main_font_family"
+                                android:textColor="#4CAF50"
+                                android:textFontWeight="600"
+                                android:textSize="11sp"
+                                tools:text="▲ +400" />
+                        </LinearLayout>
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- ══════════════════════════════════════════════════════
-                  ④ DAILY HIGHLIGHT / ANNOUNCEMENT CARD
-                  Uses secondary color (deeper red-brown) for contrast
-                  with the white card grid above it.
+                  ④ QUICK ACTIONS GRID — 3 columns × 2 rows
+                  Nagarik Sewa citizen utility tiles.
                  ══════════════════════════════════════════════════════ -->
 
             <!-- Section header -->
@@ -699,8 +985,301 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
+                android:layout_marginTop="24dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="18dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/md_theme_primary" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/main_font_family"
+                    android:text="Nagarik Sewa"
+                    android:textColor="@color/on_surface"
+                    android:textFontWeight="700"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- 3-column grid -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:rowCount="2"
+                android:useDefaultMargins="false">
+
+                <!-- Tile 1: Sajha Patrika -->
+                <LinearLayout
+                    android:id="@+id/qa_news"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="5dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_qa_tile_crimson">
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_language"
+                            app:tint="@color/md_theme_primary" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/main_font_family"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.2"
+                        android:maxLines="2"
+                        android:text="Sajha\nPatrika"
+                        android:textColor="@color/on_surface"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Tile 2: Paisa & Bazaar -->
+                <LinearLayout
+                    android:id="@+id/qa_markets"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="5dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_qa_tile_crimson">
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_trending_up"
+                            app:tint="@color/md_theme_primary" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/main_font_family"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.2"
+                        android:maxLines="2"
+                        android:text="Paisa &amp;\nBazaar"
+                        android:textColor="@color/on_surface"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Tile 3: Sajha Patro -->
+                <LinearLayout
+                    android:id="@+id/qa_patro"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="5dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_qa_tile_crimson">
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/md_theme_primary" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/main_font_family"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.2"
+                        android:maxLines="2"
+                        android:text="Sajha\nPatro"
+                        android:textColor="@color/on_surface"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Tile 4: Nagarik Tools -->
+                <LinearLayout
+                    android:id="@+id/qa_nagarik"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="5dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_qa_tile_crimson">
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_services"
+                            app:tint="@color/md_theme_primary" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/main_font_family"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.2"
+                        android:maxLines="2"
+                        android:text="Nagarik\nTools"
+                        android:textColor="@color/on_surface"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Tile 5: Apatkal (Emergency — distinct red tint) -->
+                <LinearLayout
+                    android:id="@+id/qa_emergency"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="5dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_qa_tile_emergency">
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_notifications"
+                            app:tint="#DC143C" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/main_font_family"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.2"
+                        android:maxLines="2"
+                        android:text="Apatkal\nसहायता"
+                        android:textColor="@color/on_surface"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Tile 6: Forex Rates -->
+                <LinearLayout
+                    android:id="@+id/qa_forex"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="5dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_qa_tile_crimson">
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_swap_horiz"
+                            app:tint="@color/md_theme_primary" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/main_font_family"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.2"
+                        android:maxLines="2"
+                        android:text="Forex\nRates"
+                        android:textColor="@color/on_surface"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+            </GridLayout>
+
+            <!-- ══════════════════════════════════════════════════════
+                  ⑤ DAILY HIGHLIGHT / ANNOUNCEMENT CARD
+                 ══════════════════════════════════════════════════════ -->
+
+            <!-- Section header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
 
                 <View
                     android:layout_width="3dp"
@@ -721,14 +1300,16 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_daily_pulse"
-                style="@style/Widget.SajhaPulse.CardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="@color/md_theme_primary"
                 app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
@@ -738,13 +1319,11 @@
                     android:orientation="horizontal"
                     android:padding="18dp">
 
-                    <!-- Icon container -->
                     <FrameLayout
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/bg_highlight_icon_bg">
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
@@ -784,7 +1363,6 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <!-- Chevron -->
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"

@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    nav_drawer_menu.xml — Side Navigation Menu
+    nav_drawer_menu.xml — SajhaPulse Super App Navigation Menu
     ═══════════════════════════════════════════════════════════════════
     Groups:
-      Group 1 (main nav): Home, Markets, Utilities, News Pulse
-      Group 2 (support):  Settings, Help & Support
-      Group 3 (account):  Logout (red accent, no tint override needed —
-                          handled in MainActivity via setIconTintList)
+      Group 1 (core)      : Home
+      Group 2 (services)  : Sajha Patrika, Paisa & Bazaar, Sajha Patro,
+                            Nagarik Tools
+      Group 3 (emergency) : Apatkal Helplines (non-checkable, red icon
+                            tint applied in MainActivity)
+      Group 4 (account)   : Settings, Help & Support
+      Group 5 (logout)    : Logout (non-checkable, red accent)
     ═══════════════════════════════════════════════════════════════════
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- ── Primary Navigation ──────────────────────────────────────── -->
-    <group android:id="@+id/group_main" android:checkableBehavior="single">
+    <!-- ── Core ────────────────────────────────────────────────────── -->
+    <group android:id="@+id/group_core" android:checkableBehavior="single">
 
         <item
             android:id="@+id/nav_home"
@@ -20,25 +23,71 @@
             android:title="@string/nav_home"
             android:checked="true" />
 
+    </group>
+
+    <!-- ── Nagarik Services ─────────────────────────────────────────── -->
+    <group android:id="@+id/group_services" android:checkableBehavior="single">
+
+        <!--
+            Sajha Patrika — aggregated news from Kantipur, Ratopati,
+            OnlineKhabar, Setopati, etc.
+        -->
+        <item
+            android:id="@+id/nav_patrika"
+            android:icon="@drawable/ic_language"
+            android:title="@string/nav_patrika" />
+
+        <!--
+            Paisa &amp; Bazaar — NEPSE live index, NRB Forex rates,
+            Gold &amp; Silver prices, remittance tracker.
+        -->
         <item
             android:id="@+id/nav_markets"
             android:icon="@drawable/ic_trending"
             android:title="@string/nav_markets" />
 
+        <!--
+            Sajha Patro — Bikram Sambat calendar with Tithis, festivals,
+            auspicious dates (Shubha Muhurta), public holidays.
+        -->
         <item
-            android:id="@+id/nav_utilities"
-            android:icon="@drawable/ic_services"
-            android:title="@string/nav_utilities" />
+            android:id="@+id/nav_patro"
+            android:icon="@drawable/ic_calendar"
+            android:title="@string/nav_patro" />
 
+        <!--
+            Nagarik Tools — citizen utility dashboard:
+              • AQI (Kathmandu Valley)
+              • Loadshedding schedule (NEA API)
+              • Water tanker status
+              • E-Gov portal shortcuts (Nagarikta, PAN, etc.)
+        -->
         <item
-            android:id="@+id/nav_news"
-            android:icon="@drawable/ic_flame"
-            android:title="@string/nav_news" />
+            android:id="@+id/nav_nagarik"
+            android:icon="@drawable/ic_services"
+            android:title="@string/nav_nagarik_tools" />
 
     </group>
 
-    <!-- ── Settings & Support ──────────────────────────────────────── -->
-    <group android:id="@+id/group_support" android:checkableBehavior="single">
+    <!-- ── Emergency (non-checkable, icon tinted red in MainActivity) ─ -->
+    <!--
+        Apatkal Helplines — one-tap dial:
+          • Police Control Room : 100
+          • Nepal Ambulance     : 1298
+          • Fire Brigade        : 101
+          • APF Disaster        : 1144
+    -->
+    <group android:id="@+id/group_emergency" android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_emergency"
+            android:icon="@drawable/ic_notifications"
+            android:title="@string/nav_emergency" />
+
+    </group>
+
+    <!-- ── Account &amp; Settings ────────────────────────────────────── -->
+    <group android:id="@+id/group_account" android:checkableBehavior="single">
 
         <item
             android:id="@+id/nav_settings"
@@ -52,10 +101,8 @@
 
     </group>
 
-    <!-- ── Account Actions ─────────────────────────────────────────── -->
-    <!-- Logout uses a separate non-checkable group so it never shows
-         as "selected". Its icon tint is set to red in MainActivity. -->
-    <group android:id="@+id/group_account" android:checkableBehavior="none">
+    <!-- ── Logout (non-checkable, separate group) ────────────────────── -->
+    <group android:id="@+id/group_logout" android:checkableBehavior="none">
 
         <item
             android:id="@+id/nav_logout"

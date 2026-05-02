@@ -1,52 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    nav_header_main.xml — Navigation Drawer Header
-    ══════════════════════════════════════════════════════════════════
-    Height: 200dp (standard M3 nav-drawer header)
-    background: primary_variant (slightly lighter than toolbar so the
-                header stands apart from both the status bar above and
-                the drawer items below)
-    fitsSystemWindows: handled by the parent NavigationView — the header
-                receives the top inset automatically so avatar never
-                overlaps the status bar.
+    nav_header_main.xml — SajhaPulse Navigation Drawer Header
+    ═══════════════════════════════════════════════════════════════════
+    Height:     220dp
+    Background: @color/primary (crimson)
 
-    Layout (top → bottom, pinned to bottom via ConstraintLayout bias):
-      • Decorative offset circle (top-right, overflows)
-      • LIVE dot + SajhaPulse label (top-left brand)
-      • [spacer fills middle]
-      • Avatar circle (64 dp, cyan stroke)
-      • Display name (bold white, 16sp)
-      • Email / guest tag (semi-transparent white, 12sp)
-    ══════════════════════════════════════════════════════════════════
+    Layout (top → bottom):
+      ① Decorative geometry circles (atmosphere)
+      ② Brand row: LIVE dot + SAJHAPULSE wordmark
+      ③ Avatar (60dp circular, loaded by Glide via MainActivity)
+      ④ Display name (bold 16sp)
+      ⑤ Email / "अतिथि" fallback (70% opacity 12sp)
+      ⑥ Gold divider (25% opacity)
+      ⑦ "Powered by Night Tech" footer + version tag
+
+    Constraint chain: avatar → name → email → divider → footer.
+    All items are bottom-anchored via a vertical chain so they sit
+    cleanly in the lower half of the header card.
+    ═══════════════════════════════════════════════════════════════════
 -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="220dp"
     android:background="@color/primary"
     android:padding="20dp">
 
-    <!-- Decorative circle — top-right overflow for depth -->
+    <!-- Decorative circle — top-right -->
     <View
-        android:id="@+id/header_deco"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:alpha="0.10"
+        android:id="@+id/header_deco_large"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:alpha="0.08"
         android:background="@drawable/bg_circle_primary_light"
-        android:layout_marginEnd="-32dp"
-        android:layout_marginTop="-32dp"
+        android:layout_marginEnd="-42dp"
+        android:layout_marginTop="-42dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Brand row: live dot + app name -->
+    <!-- Decorative circle — bottom-right -->
+    <View
+        android:id="@+id/header_deco_small"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:alpha="0.05"
+        android:background="@drawable/bg_circle_primary_light"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="-12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/header_divider" />
+
+    <!-- Brand row: LIVE dot + wordmark -->
     <LinearLayout
         android:id="@+id/header_brand_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -60,30 +71,34 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:fontFamily="@font/main_font_family"
-            android:letterSpacing="0.10"
+            android:letterSpacing="0.12"
             android:text="@string/app_name"
             android:textAllCaps="true"
             android:textColor="@color/success_light"
-            android:textFontWeight="700"
+            android:textFontWeight="800"
             android:textSize="10sp" />
-
     </LinearLayout>
 
-    <!-- Avatar — circular, loaded at runtime (Glide / Coil) -->
+    <!--
+        Avatar — ShapeableImageView with circle shape overlay.
+        Glide + CircleCrop() still applied in populateDrawerHeader()
+        as a belt-and-suspenders fallback.
+    -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/nav_header_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="10dp"
         android:contentDescription="@string/cd_user_avatar"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_account_circle"
-        app:strokeColor="@color/secondary"
-        app:strokeWidth="0dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle"
+        app:strokeColor="#33FFFFFF"
+        app:strokeWidth="1.5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/nav_header_name" />
 
-    <!-- Display name -->
+    <!-- Display Name -->
     <TextView
         android:id="@+id/nav_header_name"
         android:layout_width="0dp"
@@ -105,6 +120,7 @@
         android:id="@+id/nav_header_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
         android:alpha="0.70"
         android:ellipsize="end"
         android:fontFamily="@font/main_font_family"
@@ -113,6 +129,64 @@
         android:textColor="@color/on_primary"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/header_divider" />
+
+    <!-- Gold Divider -->
+    <View
+        android:id="@+id/header_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:alpha="0.25"
+        android:background="#FFD700"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_powered_by" />
+
+    <!-- "Powered by Night Tech" footer -->
+    <LinearLayout
+        android:id="@+id/tv_powered_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.55"
+            android:fontFamily="@font/main_font_family"
+            android:letterSpacing="0.06"
+            android:text="⚡ Powered by "
+            android:textColor="@color/on_primary"
+            android:textSize="10sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.80"
+            android:fontFamily="@font/main_font_family"
+            android:letterSpacing="0.10"
+            android:text="NIGHT TECH"
+            android:textAllCaps="true"
+            android:textColor="#FFD700"
+            android:textFontWeight="800"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <!-- Version tag — bottom-right -->
+    <TextView
+        android:id="@+id/tv_app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.40"
+        android:fontFamily="@font/main_font_family"
+        android:text="v1.0"
+        android:textColor="@color/on_primary"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 

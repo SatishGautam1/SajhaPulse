@@ -478,4 +478,12 @@
     <string name="fab_convert_hint">Currency Converter</string>
     <string name="fab_convert">Convert</string>
 
+    <string name="nav_patrika">Sajha Patrika</string>
+    <string name="nav_patro">Sajha Patro</string>
+    <string name="nav_nagarik_tools">Nagarik Tools</string>
+    <string name="nav_emergency">Apatkal सहायता</string>
+<!--    <string name="nav_help">Help &amp; Support</string>-->
+<!--    <string name="nav_logout">Sign Out</string>-->
+<!--    <string name="placeholder_action">Action</string>-->
+
 </resources>

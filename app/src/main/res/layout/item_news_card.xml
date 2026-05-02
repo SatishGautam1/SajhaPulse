@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_news_card.xml — Single news article card for Sajha Patrika RecyclerView.
+    Full-width card with hero image, category badge, title, timestamp, LIVE badge.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="14dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/md_theme_surface"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="3dp"
+    app:rippleColor="#22DC143C"
+    app:strokeColor="#0FDC143C"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Hero thumbnail -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp">
+
+            <ImageView
+                android:id="@+id/news_item_thumb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:src="@color/md_theme_primaryContainer" />
+
+            <!-- Gradient scrim so text is legible on any image -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_news_card_scrim" />
+
+            <!-- LIVE / BREAKING badge (top-start) -->
+            <LinearLayout
+                android:id="@+id/news_item_live_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="12dp"
+                android:background="@drawable/bg_live_badge"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="3dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="6dp"
+                android:paddingTop="3dp"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/bg_live_dot" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/main_font_family"
+                    android:text="LIVE"
+                    android:textColor="#FFFFFF"
+                    android:textFontWeight="800"
+                    android:textSize="9sp" />
+            </LinearLayout>
+
+            <!-- Category badge (bottom-start, overlaid on image) -->
+            <TextView
+                android:id="@+id/news_item_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_margin="12dp"
+                android:background="@drawable/bg_bs_badge"
+                android:fontFamily="@font/main_font_family"
+                android:paddingBottom="2dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="2dp"
+                android:textColor="#FFD700"
+                android:textFontWeight="800"
+                android:textSize="9sp"
+                tools:text="POLITICS" />
+        </FrameLayout>
+
+        <!-- Text block below image -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/news_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/main_font_family"
+                android:lineSpacingMultiplier="1.3"
+                android:maxLines="3"
+                android:textColor="@color/on_surface"
+                android:textFontWeight="700"
+                android:textSize="15sp"
+                tools:text="Nepal Rastra Bank raises repo rate to curb inflation pressure across sectors" />
+
+            <TextView
+                android:id="@+id/news_item_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:alpha="0.55"
+                android:fontFamily="@font/main_font_family"
+                android:textColor="@color/on_surface"
+                android:textSize="11sp"
+                tools:text="19 Baisakh 2083  •  10:30 AM" />
+        </LinearLayout>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

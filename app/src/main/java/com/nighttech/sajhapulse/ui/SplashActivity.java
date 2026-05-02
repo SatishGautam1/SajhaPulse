@@ -93,7 +93,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         SystemBarHelper.applyAppBars(this);
-        SystemBarHelper.applyInsetPadding(findViewById(android.R.id.content));
 
         // Enable hardware acceleration on root for 3D transforms
         getWindow().getDecorView().setLayerType(View.LAYER_TYPE_HARDWARE, null);

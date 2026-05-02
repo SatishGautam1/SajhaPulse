@@ -3,17 +3,11 @@
     activity_main.xml — ROOT shell only.
     DrawerLayout holds two children:
       [1] content_main  — full dashboard panel (first child = content)
-      [2] NavigationView — sidebar panel (second child)
+      [2] nav_drawer    — sidebar panel (second child, gravity=start)
 
-    FIX: layout_gravity MUST be set on the NavigationView's root tag
-    directly (in nav_drawer.xml), NOT on the <include> tag, because
-    Android's LayoutInflater does NOT reliably transfer layout_gravity
-    from <include> to the inflated root view for DrawerLayout children.
-
-    fitsSystemWindows="true" on DrawerLayout propagates insets to both
-    panels. CoordinatorLayout + AppBarLayout in content_main handle the
-    status bar offset for the main panel. NavigationView handles its
-    own top inset via fitsSystemWindows=true in nav_drawer.xml.
+    Nothing else lives here. All UI is in the two included files.
+    fitsSystemWindows="true" on DrawerLayout lets the system inset the
+    status-bar area; the Toolbar inside content_main gets the padding.
 -->
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,18 +15,20 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context=".ui.MainActivity">
 
-    <!-- PANEL 1 — Main dashboard content (must be first child) -->
+    <!-- PANEL 1 — Main dashboard (must be first child) -->
     <include
         layout="@layout/content_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- PANEL 2 — Navigation drawer.
-         Width and gravity are declared in nav_drawer.xml on the root
-         NavigationView so DrawerLayout can read them correctly. -->
-    <include layout="@layout/nav_drawer" />
+    <!-- PANEL 2 — Navigation drawer (must be second child, gravity=start) -->
+    <include
+        layout="@layout/nav_drawer"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

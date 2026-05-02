@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.nighttech.sajhapulse'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.nighttech.sajhapulse"
@@ -44,4 +44,11 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.ext.junit
+
+    // Image loading
+    implementation libs.glide.v507
+    annotationProcessor libs.compiler
+
+    // RecyclerView
+    implementation libs.androidx.recyclerview
 }

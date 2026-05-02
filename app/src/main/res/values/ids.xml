@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="btn_nav_markets" type="id" />
+    <item name="btn_nav_forex" type="id" />
+    <item name="btn_nav_news" type="id" />
+    <item name="btn_nav_utilities" type="id" />
+</resources>

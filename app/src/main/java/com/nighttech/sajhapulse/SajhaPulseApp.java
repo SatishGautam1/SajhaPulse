@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.google.android.material.color.DynamicColors;
 import com.google.firebase.FirebaseApp;
+import com.nighttech.sajhapulse.utils.SystemBarHelper;
 
 /**
  * SajhaPulseApp
@@ -33,7 +34,7 @@ public class SajhaPulseApp extends Application {
 
         // 1. Initialise Firebase (required before any Firebase service is used)
         FirebaseApp.initializeApp(this);
-
+        
         // 2. Apply Material 3 Dynamic Colors globally across all Activities
         DynamicColors.applyToActivitiesIfAvailable(this);
     }

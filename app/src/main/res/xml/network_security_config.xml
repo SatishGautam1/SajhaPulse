@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+        Configuration for Nepal Rastra Bank (NRB) API/Web access.
+        Enforcing HTTPS for professional security standards.
+    -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">nrb.org.np</domain>
+    </domain-config>
+</network-security-config>

@@ -39,7 +39,7 @@
     android:id="@+id/root_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_bg_gradient"
+    android:background="@color/primary"
     tools:context=".ui.SplashActivity">
 
     <!-- ══════════════════════════════════════════════════════════════
