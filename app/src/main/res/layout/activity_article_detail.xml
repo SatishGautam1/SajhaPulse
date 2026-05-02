@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     activity_article_detail.xml — Full article reader.
-    Hero image → category badge → title → timestamp → body text.
-    Crimson AppBar with back arrow.
+    Hero image → category badge → title → metadata (Author/Time/Date) → body text.
 -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,7 +30,6 @@
             app:navigationIconTint="@color/on_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Scrollable article content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -54,7 +52,6 @@
                 android:scaleType="centerCrop"
                 android:src="@color/md_theme_primaryContainer" />
 
-            <!-- Article metadata + body -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,29 +84,93 @@
                     android:lineSpacingMultiplier="1.3"
                     android:textColor="@color/on_surface"
                     android:textFontWeight="800"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     tools:text="Nepal Rastra Bank raises repo rate to curb inflation pressure" />
 
-                <!-- Timestamp -->
-                <TextView
-                    android:id="@+id/article_time"
-                    android:layout_width="wrap_content"
+                <!-- Metadata Row 1: Author and Read Time -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:alpha="0.55"
-                    android:fontFamily="@font/main_font_family"
-                    android:textColor="@color/on_surface"
-                    android:textSize="12sp"
-                    tools:text="19 Baisakh 2083  •  10:30 AM" />
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/article_author"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/main_font_family"
+                        android:textColor="@color/on_surface"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="By Satish Gautam" />
+
+                    <TextView
+                        android:id="@+id/article_read_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/main_font_family"
+                        android:textColor="@color/on_surface"
+                        android:alpha="0.6"
+                        android:textSize="11sp"
+                        tools:text="4 min read" />
+                </LinearLayout>
+
+                <!-- Metadata Row 2: BS and AD Dates -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/article_time_bs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/main_font_family"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        tools:text="१९ बैशाख २०८३" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_live_dot"
+                        android:alpha="0.3" />
+
+                    <TextView
+                        android:id="@+id/article_time_ad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/main_font_family"
+                        android:textColor="@color/on_surface"
+                        android:alpha="0.6"
+                        android:textSize="11sp"
+                        tools:text="May 2, 2026 • 10:30 AM" />
+                </LinearLayout>
 
                 <!-- Divider -->
                 <View
+                    android:id="@+id/article_divider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="16dp"
                     android:alpha="0.12"
                     android:background="@color/on_surface" />
+
+                <!-- Loading state for body text -->
+                <ProgressBar
+                    android:id="@+id/progress_article_body"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
 
                 <!-- Article body -->
                 <TextView
@@ -119,8 +180,21 @@
                     android:fontFamily="@font/main_font_family"
                     android:lineSpacingMultiplier="1.6"
                     android:textColor="@color/on_surface"
-                    android:textSize="15sp"
-                    tools:text="Full article content appears here. Admin writes this in the Firebase console or admin panel." />
+                    android:textSize="16sp"
+                    tools:text="Full article content appears here..." />
+
+                <!-- Hashtags / Tags -->
+                <TextView
+                    android:id="@+id/article_tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/main_font_family"
+                    android:textColor="@color/md_theme_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="#Nepal #Finance #NRB" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

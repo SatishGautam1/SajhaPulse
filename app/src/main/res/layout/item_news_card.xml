@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     item_news_card.xml — Single news article card for Sajha Patrika RecyclerView.
-    Full-width card with hero image, category badge, title, timestamp, LIVE badge.
+    Full-width card with hero image, category badge, title, timestamp, LIVE badge, and Read Time.
 -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -95,6 +95,7 @@
         </FrameLayout>
 
         <!-- Text block below image -->
+        <!-- Text block below image -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -114,17 +115,50 @@
                 android:textSize="15sp"
                 tools:text="Nepal Rastra Bank raises repo rate to curb inflation pressure across sectors" />
 
-            <TextView
-                android:id="@+id/news_item_time"
-                android:layout_width="wrap_content"
+            <!-- Row for Timestamp and Read Time -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
                 android:alpha="0.55"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/news_item_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/main_font_family"
+                    android:textColor="@color/on_surface"
+                    android:textSize="11sp"
+                    tools:text="19 Baisakh 2083  •  10:30 AM" />
+
+                <TextView
+                    android:id="@+id/news_item_read_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/main_font_family"
+                    android:textColor="@color/on_surface"
+                    android:textSize="11sp"
+                    android:textStyle="italic"
+                    tools:text="5 min read" />
+            </LinearLayout>
+
+            <!-- NEW: Tags TextView added here -->
+            <TextView
+                android:id="@+id/news_item_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/main_font_family"
-                android:textColor="@color/on_surface"
+                android:textColor="@color/md_theme_primary"
                 android:textSize="11sp"
-                tools:text="19 Baisakh 2083  •  10:30 AM" />
+                android:textStyle="bold"
+                tools:text="#NepalBank #Economy #NRB" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

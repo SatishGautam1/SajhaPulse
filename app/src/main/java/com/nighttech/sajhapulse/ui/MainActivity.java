@@ -29,11 +29,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+
+// ── Firestore only — Realtime Database removed ────────────────────────
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+
 import com.nighttech.sajhapulse.R;
 import com.nighttech.sajhapulse.data.models.NewsArticle;
 import com.nighttech.sajhapulse.utils.NepaliCalendarUtils;
@@ -42,7 +43,6 @@ import com.nighttech.sajhapulse.utils.SystemBarHelper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -50,11 +50,20 @@ import java.util.TimeZone;
 /**
  * MainActivity — SajhaPulse Home Dashboard.
  *
- * Key fixes in this version:
- *   • BS date uses NepaliCalendarUtils.todayBs() — accurate AD→BS conversion.
- *   • Live market fetches real NRB Forex API data via MarketDataFetcher.
- *   • News carousel is populated from Firebase Realtime Database (/news/).
- *   • AppBar is fixed (no lift-on-scroll) — scrolling body only.
+ * ── FIXES IN THIS VERSION ─────────────────────────────────────────────
+ *
+ * FIX 1 — Carousel was using Firebase Realtime Database
+ *   loadCarouselNews() was querying FirebaseDatabase (/news/).
+ *   But all data is now in Firestore. The Realtime DB query returned
+ *   nothing, and the Firestore @DocumentId annotation on NewsArticle
+ *   broke Realtime DB deserialization → crash or empty carousel.
+ *   FIXED: loadCarouselNews() now queries Firestore collection "news",
+ *          uses a ListenerRegistration (real-time), and toObject().
+ *
+ * FIX 2 — All Firebase Realtime Database imports removed
+ *   FirebaseDatabase, DataSnapshot, DatabaseError, ValueEventListener
+ *   are no longer imported or used anywhere in this file.
+ * ─────────────────────────────────────────────────────────────────────
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -88,12 +97,15 @@ public class MainActivity extends AppCompatActivity
     private ImageView        newsThumb1, newsThumb2, newsThumb3;
     private TextView         newsTitle1, newsTitle2, newsTitle3;
     private TextView         newsCat1, newsCat2, newsCat3;
-    private LinearLayout     newsLiveBadge1; // breaking badge on card 1
+    private LinearLayout     newsLiveBadge1;
 
-    // ── Firebase ──────────────────────────────────────────────────────
-    private FirebaseAuth          mAuth;
-    private ValueEventListener    carouselListener;
-    private List<NewsArticle>     carouselArticles = new ArrayList<>();
+    // ── Firebase Auth ─────────────────────────────────────────────────
+    private FirebaseAuth mAuth;
+
+    // ── Firestore carousel listener ───────────────────────────────────
+    // ListenerRegistration replaces ValueEventListener — removed in onDestroy()
+    private ListenerRegistration carouselRegistration;
+    private final List<NewsArticle> carouselArticles = new ArrayList<>();
 
     // ── Handlers ──────────────────────────────────────────────────────
     private final Handler clockHandler   = new Handler(Looper.getMainLooper());
@@ -124,15 +136,12 @@ public class MainActivity extends AppCompatActivity
         MainActivityExtensions.applyNSTGreeting(
                 tvGreetingLabel, tvGreetingName, ivGreetingIcon, mAuth.getCurrentUser());
 
-        // ── Clock + CORRECT BS calendar ──────────────────────────────
         startLiveClock();
-        updateCalendarInfo();   // uses NepaliCalendarUtils
-
-        // ── Hero card animation ───────────────────────────────────────
+        updateCalendarInfo();
         animateDateTimeCard();
         startLiveDotPulse();
 
-        // ── Live market — real NRB data ───────────────────────────────
+        // Live market ticker — fetches real NRB data
         tickerRunnable = MainActivityExtensions.startMarqueeTicker(
                 tickerHandler,
                 tvLiveTicker,
@@ -141,7 +150,7 @@ public class MainActivity extends AppCompatActivity
                 tvGoldValue,  tvGoldChange,
                 tvTickerTimestamp);
 
-        // ── News carousel from Firebase ───────────────────────────────
+        // ── News carousel — Firestore ──────────────────────────────────
         loadCarouselNews();
     }
 
@@ -154,7 +163,6 @@ public class MainActivity extends AppCompatActivity
         appBarLayout    = findViewById(R.id.app_bar);
         scrollDashboard = findViewById(R.id.scroll_dashboard);
 
-        // DateTime hero
         tvTimeMain    = findViewById(R.id.tv_time_main);
         tvAmPm        = findViewById(R.id.tv_am_pm);
         tvSeconds     = findViewById(R.id.tv_seconds);
@@ -165,12 +173,10 @@ public class MainActivity extends AppCompatActivity
         cardDatetime  = findViewById(R.id.card_datetime);
         viewLiveDot   = findViewById(R.id.view_live_dot);
 
-        // Toolbar greeting
         tvGreetingLabel = findViewById(R.id.tv_greeting_label);
         tvGreetingName  = findViewById(R.id.tv_greeting_name);
         ivGreetingIcon  = findViewById(R.id.iv_greeting_icon);
 
-        // Live Ticker
         tvLiveTicker      = findViewById(R.id.tv_live_ticker);
         tvNepseValue      = findViewById(R.id.tv_nepse_value);
         tvNepseChange     = findViewById(R.id.tv_nepse_change);
@@ -180,7 +186,6 @@ public class MainActivity extends AppCompatActivity
         tvGoldChange      = findViewById(R.id.tv_gold_change);
         tvTickerTimestamp = findViewById(R.id.tv_ticker_timestamp);
 
-        // News carousel
         newsCard1      = findViewById(R.id.news_card_1);
         newsCard2      = findViewById(R.id.news_card_2);
         newsCard3      = findViewById(R.id.news_card_3);
@@ -212,105 +217,94 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
     }
 
-    // ── BS Calendar (correct) ─────────────────────────────────────────
+    // ── BS Calendar ───────────────────────────────────────────────────
 
-    /**
-     * Converts today's AD date to Bikram Sambat using the lookup table
-     * in NepaliCalendarUtils. Replaces the old hardcoded stub.
-     */
     private void updateCalendarInfo() {
-        // AD date
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kathmandu"));
-        SimpleDateFormat adFormat =
-                new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
+        SimpleDateFormat adFormat = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
         if (tvAdDate != null) tvAdDate.setText(adFormat.format(cal.getTime()));
 
-        // BS date — accurate conversion
         int[] bs = NepaliCalendarUtils.todayBs();
-        if (tvBsDate != null)
-            tvBsDate.setText(NepaliCalendarUtils.toDevanagariDateString(bs));
-        if (tvBsDateLatin != null)
-            tvBsDateLatin.setText(NepaliCalendarUtils.toLatinDateString(bs));
+        if (tvBsDate      != null) tvBsDate.setText(NepaliCalendarUtils.toDevanagariDateString(bs));
+        if (tvBsDateLatin != null) tvBsDateLatin.setText(NepaliCalendarUtils.toLatinDateString(bs));
     }
 
-    // ── News Carousel — Firebase Realtime Database ────────────────────
+    // ── News Carousel — Firestore ─────────────────────────────────────
 
     /**
-     * Loads the 3 most recent active articles from /news/ and populates
-     * the carousel cards in content_main.xml.
-     * Uses a persistent ValueEventListener so cards update in real time
-     * whenever the admin publishes new articles.
+     * Fetches the 3 most recent active articles from Firestore and
+     * populates the carousel cards. Uses a real-time snapshot listener
+     * so cards update instantly when new articles are published.
+     *
+     * Firestore path  : /news/
+     * Filter          : isActive == true
+     * Order           : publishedAt DESC
+     * Limit           : 3
      */
     private void loadCarouselNews() {
-        Query query = FirebaseDatabase.getInstance()
-                .getReference("news")
-                .orderByChild("publishedAt")
-                .limitToLast(3);
+        Query query = FirebaseFirestore.getInstance()
+                .collection("news")
+                .orderBy("publishedAt", Query.Direction.DESCENDING)
+                .limit(10); // fetch 10, show first 3 active ones
 
-        carouselListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                carouselArticles.clear();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    NewsArticle a = child.getValue(NewsArticle.class);
-                    if (a != null && a.isActive()) {
-                        a.setId(child.getKey());
+        carouselRegistration = query.addSnapshotListener((snapshots, error) -> {
+            if (error != null || snapshots == null) return;  // keep last-shown cards on error
+
+            carouselArticles.clear();
+            for (com.google.firebase.firestore.DocumentSnapshot doc
+                    : snapshots.getDocuments()) {
+                try {
+                    NewsArticle a = doc.toObject(NewsArticle.class);
+                    if (a != null && a.isActive()) {   // filter inactive here
+                        if (a.getId() == null || a.getId().isEmpty()) a.setId(doc.getId());
                         carouselArticles.add(a);
+                        if (carouselArticles.size() == 3) break; // only need 3
                     }
-                }
-                // Reverse: newest first
-                Collections.reverse(carouselArticles);
-                bindCarouselCards();
+                } catch (Exception ignored) { /* skip malformed doc */ }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Cards keep their placeholder/tools:text on failure
-            }
-        };
-
-        query.addValueEventListener(carouselListener);
+            bindCarouselCards();
+        });
     }
 
     private void bindCarouselCards() {
-        // Helper arrays for concise binding
-        MaterialCardView[] cards   = {newsCard1,  newsCard2,  newsCard3};
-        ImageView[]        thumbs  = {newsThumb1, newsThumb2, newsThumb3};
-        TextView[]         titles  = {newsTitle1, newsTitle2, newsTitle3};
-        TextView[]         cats    = {newsCat1,   newsCat2,   newsCat3};
+        MaterialCardView[] cards  = {newsCard1,  newsCard2,  newsCard3};
+        ImageView[]        thumbs = {newsThumb1, newsThumb2, newsThumb3};
+        TextView[]         titles = {newsTitle1, newsTitle2, newsTitle3};
+        TextView[]         cats   = {newsCat1,   newsCat2,   newsCat3};
 
         for (int i = 0; i < cards.length; i++) {
             if (cards[i] == null) continue;
 
             if (i < carouselArticles.size()) {
                 NewsArticle a = carouselArticles.get(i);
+                cards[i].setVisibility(View.VISIBLE);
 
                 if (titles[i] != null) titles[i].setText(a.getTitle());
                 if (cats[i]   != null) cats[i].setText(a.getCategory());
 
-                // LIVE badge — only on card 1
+                // LIVE badge on card 1 only
                 if (i == 0 && newsLiveBadge1 != null)
-                    newsLiveBadge1.setVisibility(
-                            a.isBreaking() ? View.VISIBLE : View.GONE);
+                    newsLiveBadge1.setVisibility(a.isBreaking() ? View.VISIBLE : View.GONE);
 
                 // Thumbnail via Glide
                 if (thumbs[i] != null) {
                     String url = a.getImageUrl();
                     if (url != null && !url.isEmpty()) {
-                        Glide.with(MainActivity.this)
+                        Glide.with(this)
                                 .load(url)
                                 .placeholder(R.color.md_theme_primaryContainer)
+                                .error(R.color.md_theme_primaryContainer)
                                 .centerCrop()
                                 .into(thumbs[i]);
+                    } else {
+                        thumbs[i].setImageResource(R.color.md_theme_primaryContainer);
                     }
                 }
 
-                // Click → full article
                 final NewsArticle article = a;
                 cards[i].setOnClickListener(v -> openArticle(article));
 
             } else {
-                // No article for this slot → hide card
                 cards[i].setVisibility(View.GONE);
             }
         }
@@ -318,12 +312,15 @@ public class MainActivity extends AppCompatActivity
 
     private void openArticle(NewsArticle a) {
         Intent intent = new Intent(this, ArticleDetailActivity.class);
-        intent.putExtra("article_id",    a.getId());
-        intent.putExtra("article_title", a.getTitle());
-        intent.putExtra("article_body",  a.getBody());
-        intent.putExtra("article_image", a.getImageUrl());
-        intent.putExtra("article_cat",   a.getCategory());
-        intent.putExtra("article_time",  a.getPublishedAt());
+        intent.putExtra("article_id",        a.getId());
+        intent.putExtra("article_title",     a.getTitle());
+        intent.putExtra("article_body",      a.getBody());
+        intent.putExtra("article_image",     a.getImageUrl());
+        intent.putExtra("article_cat",       a.getCategory());
+        intent.putExtra("article_time",      a.getPublishedAt());
+        intent.putExtra("article_author",    a.getAuthorName());
+        intent.putExtra("article_tags",      a.getTags());
+        intent.putExtra("article_read_time", a.getReadTimeMin());
         startActivity(intent);
     }
 
@@ -336,8 +333,7 @@ public class MainActivity extends AppCompatActivity
         cardDatetime.setScaleY(0.88f);
         cardDatetime.setAlpha(0f);
         cardDatetime.setTranslationY(48f);
-        cardDatetime.setCameraDistance(
-                8000 * getResources().getDisplayMetrics().density);
+        cardDatetime.setCameraDistance(8000 * getResources().getDisplayMetrics().density);
 
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(cardDatetime, "scaleX",  0.88f, 1.0f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(cardDatetime, "scaleY",  0.88f, 1.0f);
@@ -388,22 +384,16 @@ public class MainActivity extends AppCompatActivity
         clockRunnable = new Runnable() {
             @Override
             public void run() {
-                Calendar cal = Calendar.getInstance(
-                        TimeZone.getTimeZone("Asia/Kathmandu"));
-
+                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kathmandu"));
                 SimpleDateFormat timeFmt = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
                 SimpleDateFormat amPmFmt = new SimpleDateFormat("a",     Locale.ENGLISH);
                 SimpleDateFormat dayFmt  = new SimpleDateFormat("EEEE",  Locale.ENGLISH);
                 SimpleDateFormat secFmt  = new SimpleDateFormat(":ss",   Locale.ENGLISH);
 
-                if (tvTimeMain != null)
-                    tvTimeMain.setText(timeFmt.format(cal.getTime()));
-                if (tvAmPm != null)
-                    tvAmPm.setText(amPmFmt.format(cal.getTime()));
-                if (tvDayName != null)
-                    tvDayName.setText(dayFmt.format(cal.getTime()).toUpperCase(Locale.ENGLISH));
-                if (tvSeconds != null)
-                    tvSeconds.setText(secFmt.format(cal.getTime()));
+                if (tvTimeMain != null) tvTimeMain.setText(timeFmt.format(cal.getTime()));
+                if (tvAmPm    != null) tvAmPm.setText(amPmFmt.format(cal.getTime()));
+                if (tvDayName != null) tvDayName.setText(dayFmt.format(cal.getTime()).toUpperCase(Locale.ENGLISH));
+                if (tvSeconds != null) tvSeconds.setText(secFmt.format(cal.getTime()));
 
                 clockHandler.postDelayed(this, 1000);
             }
@@ -416,22 +406,17 @@ public class MainActivity extends AppCompatActivity
     private void setupNavigationListeners() {
         navView.setNavigationItemSelectedListener(this);
 
-        // Quick action tiles
-        setTileListener(R.id.qa_news,      null);  // opens SajhaPatrika
+        View qaNews = findViewById(R.id.qa_news);
+        if (qaNews != null) qaNews.setOnClickListener(v -> openSajhaPatrika());
+
         setTileListener(R.id.qa_markets,   "Paisa & Bazaar — Coming Soon");
         setTileListener(R.id.qa_patro,     "Sajha Patro — Coming Soon");
         setTileListener(R.id.qa_nagarik,   "Nagarik Tools — Coming Soon");
         setTileListener(R.id.qa_emergency, "Apatkal Helplines — Coming Soon");
         setTileListener(R.id.qa_forex,     "Forex Rates — Coming Soon");
 
-        // Sajha Patrika tile opens the real activity
-        View qaNews = findViewById(R.id.qa_news);
-        if (qaNews != null) qaNews.setOnClickListener(v -> openSajhaPatrika());
-
-        // "See all" in carousel header → SajhaPatrikaActivity
         View seeAll = findViewById(R.id.tv_news_see_all);
-        if (seeAll != null)
-            seeAll.setOnClickListener(v -> openSajhaPatrika());
+        if (seeAll != null) seeAll.setOnClickListener(v -> openSajhaPatrika());
     }
 
     private void openSajhaPatrika() {
@@ -440,39 +425,35 @@ public class MainActivity extends AppCompatActivity
 
     private void setTileListener(int viewId, String message) {
         View v = findViewById(viewId);
-        if (v != null && message != null)
-            v.setOnClickListener(view ->
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
+        if (v != null) v.setOnClickListener(view ->
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.nav_logout) {
-            FirebaseAuth.getInstance().signOut();
-            Intent i = new Intent(this, LoginActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-            finish();
-        } else if (id == R.id.nav_patrika) {
-            openSajhaPatrika();
-        } else if (id == R.id.nav_markets) {
-            Toast.makeText(this, "Paisa & Bazaar — Coming Soon", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_patro) {
-            Toast.makeText(this, "Sajha Patro — Coming Soon", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_nagarik) {
-            Toast.makeText(this, "Nagarik Tools — Coming Soon", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_emergency) {
-            Toast.makeText(this, "Apatkal Helplines — Coming Soon", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_settings) {
-            Toast.makeText(this, "Settings — Coming Soon", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_help) {
-            Toast.makeText(this, "Help & Support — Coming Soon", Toast.LENGTH_SHORT).show();
-        }
-
+        if      (id == R.id.nav_logout)    { signOut(); }
+        else if (id == R.id.nav_patrika)   { openSajhaPatrika(); }
+        else if (id == R.id.nav_markets)   { toast("Paisa & Bazaar — Coming Soon"); }
+        else if (id == R.id.nav_patro)     { toast("Sajha Patro — Coming Soon"); }
+        else if (id == R.id.nav_nagarik)   { toast("Nagarik Tools — Coming Soon"); }
+        else if (id == R.id.nav_emergency) { toast("Apatkal Helplines — Coming Soon"); }
+        else if (id == R.id.nav_settings)  { toast("Settings — Coming Soon"); }
+        else if (id == R.id.nav_help)      { toast("Help & Support — Coming Soon"); }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        Intent i = new Intent(this, LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
+    }
+
+    private void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -490,13 +471,9 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
         clockHandler.removeCallbacks(clockRunnable);
         liveDotHandler.removeCallbacks(liveDotRunnable);
-        if (tickerRunnable != null) tickerHandler.removeCallbacks(tickerRunnable);
+        if (tickerRunnable  != null) tickerHandler.removeCallbacks(tickerRunnable);
 
-        // Remove Firebase listener to prevent leaks
-        if (carouselListener != null) {
-            FirebaseDatabase.getInstance()
-                    .getReference("news")
-                    .removeEventListener(carouselListener);
-        }
+        // Stop Firestore real-time listener — prevents memory leaks & billing
+        if (carouselRegistration != null) carouselRegistration.remove();
     }
 }

@@ -21,34 +21,36 @@ import java.util.TimeZone;
 /**
  * MainActivityExtensions — Drop-in static helpers for MainActivity.
  *
- * ──────────────────────────────────────────────────────────────────
- * 1. startMarqueeTicker()   — Fetches REAL NRB forex data every 60 s
- * 2. applyNSTGreeting()     — Namaste greeting by Nepal Standard Time
- * 3. populateDrawerHeader() — Firebase user → Glide avatar in drawer
- * 4. toDevanagari()         — Arabic → Devanagari numeral converter
- * 5. changeColor()          — Green/red/neutral color for delta values
- * ──────────────────────────────────────────────────────────────────
+ * ── FIX IN THIS VERSION ───────────────────────────────────────────────
  *
- * setupLiftOnScroll() has been REMOVED — AppBar is now fixed/pinned.
+ * FIX — data.goldPrice does not exist → compile error → crash
+ *   The MarketData model uses goldFinePerTola (and goldTejabi), not goldPrice.
+ *   Every reference to data.goldPrice has been replaced with
+ *   data.goldFinePerTola so the code compiles and displays correctly.
+ *
+ *   Affected locations:
+ *     • tvGoldValue.setText(data.goldPrice)  → data.goldFinePerTola
+ *     • buildTickerString() Gold/tola entry  → data.goldFinePerTola
+ *
+ * ─────────────────────────────────────────────────────────────────────
  */
 public class MainActivityExtensions {
 
     // ══════════════════════════════════════════════════════════════════
-    // 1. LIVE MARQUEE TICKER — Real NRB Forex API
+    // 1. LIVE MARQUEE TICKER — Real NRB Forex + NEPSE + Gold
     // ══════════════════════════════════════════════════════════════════
 
     /**
-     * Fetches live forex data from the official Nepal Rastra Bank API
-     * and updates the ticker + stat pills. Refreshes every 60 seconds.
-     *
-     * Returns a Runnable for onDestroy() cleanup.
+     * Fetches live market data and updates all ticker pills + marquee.
+     * Refreshes every 60 seconds automatically.
+     * Returns the Runnable so MainActivity can cancel it in onDestroy().
      */
     public static Runnable startMarqueeTicker(
-            Handler tickerHandler,
+            Handler  tickerHandler,
             TextView tvLiveTicker,
-            TextView tvNepseValue,   TextView tvNepseChange,
-            TextView tvUsdValue,     TextView tvUsdChange,
-            TextView tvGoldValue,    TextView tvGoldChange,
+            TextView tvNepseValue,    TextView tvNepseChange,
+            TextView tvUsdValue,      TextView tvUsdChange,
+            TextView tvGoldValue,     TextView tvGoldChange,
             TextView tvTickerTimestamp) {
 
         final Runnable[] ref = {null};
@@ -56,18 +58,20 @@ public class MainActivityExtensions {
         ref[0] = new Runnable() {
             @Override
             public void run() {
-                // Show loading state
+                // Loading state while fetch runs
                 if (tvUsdValue != null) tvUsdValue.setText("…");
 
                 MarketDataFetcher.fetch(new MarketDataFetcher.Callback() {
+
                     @Override
                     public void onResult(MarketDataFetcher.MarketData data) {
+
                         // ── USD/NPR pill ──────────────────────────────
                         if (tvUsdValue != null)
                             tvUsdValue.setText(data.usdDisplay);
                         if (tvUsdChange != null) {
-                            tvUsdChange.setText(data.usdChange.isEmpty()
-                                    ? "NRB Rate" : data.usdChange);
+                            // usdChange is not populated by NRB API — show label instead
+                            tvUsdChange.setText("NRB Rate");
                             tvUsdChange.setTextColor(Color.parseColor("#AAFFFFFF"));
                         }
 
@@ -82,8 +86,9 @@ public class MainActivityExtensions {
                         }
 
                         // ── Gold pill ─────────────────────────────────
+                        // FIX: was data.goldPrice — field is goldFinePerTola
                         if (tvGoldValue != null)
-                            tvGoldValue.setText(data.goldPrice);
+                            tvGoldValue.setText(data.goldFinePerTola);
                         if (tvGoldChange != null) {
                             tvGoldChange.setText(data.goldChange);
                             tvGoldChange.setTextColor(data.goldUp
@@ -91,10 +96,11 @@ public class MainActivityExtensions {
                                     : Color.parseColor("#FF5252"));
                         }
 
-                        // ── Marquee string ────────────────────────────
+                        // ── Scrolling marquee string ──────────────────
                         String marquee = buildTickerString(data);
                         if (tvLiveTicker != null) {
                             tvLiveTicker.setText(marquee);
+                            // Reset marquee scroll
                             tvLiveTicker.setSelected(false);
                             tvLiveTicker.setSelected(true);
                         }
@@ -115,7 +121,6 @@ public class MainActivityExtensions {
 
                     @Override
                     public void onError(String message) {
-                        // Fallback: show error state in pill
                         if (tvUsdValue  != null) tvUsdValue.setText("N/A");
                         if (tvUsdChange != null) tvUsdChange.setText("No network");
                         if (tvLiveTicker != null)
@@ -133,15 +138,16 @@ public class MainActivityExtensions {
     }
 
     /**
-     * Builds the full scrolling marquee string from real NRB data.
+     * Builds the full scrolling marquee string.
+     * FIX: was data.goldPrice — now correctly uses data.goldFinePerTola.
      */
     private static String buildTickerString(MarketDataFetcher.MarketData d) {
-        return "💵 USD/NPR: " + d.usdDisplay
-                + "   |   🇪🇺 EUR/NPR: " + d.eurBuy
-                + "   |   🇬🇧 GBP/NPR: " + d.gbpBuy
-                + "   |   🇮🇳 INR/NPR: " + d.inrBuy + " (per 100)"
-                + "   |   📈 NEPSE: "    + d.nepseIndex
-                + "   |   🟡 Gold/tola: " + d.goldPrice
+        return "💵 USD/NPR: "    + d.usdDisplay
+                + "   |   🇪🇺 EUR/NPR: "  + d.eurBuy
+                + "   |   🇬🇧 GBP/NPR: "  + d.gbpBuy
+                + "   |   🇮🇳 INR/NPR: "  + d.inrBuy + " (per 100)"
+                + "   |   📈 NEPSE: "      + d.nepseIndex
+                + "   |   🟡 Gold/tola: "  + d.goldFinePerTola   // ← FIX
                 + "        ";
     }
 
@@ -151,18 +157,13 @@ public class MainActivityExtensions {
     // ══════════════════════════════════════════════════════════════════
 
     public static String[] getNSTGreeting() {
-        Calendar cal = Calendar.getInstance(
-                TimeZone.getTimeZone("Asia/Kathmandu"));
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kathmandu"));
         int hour = cal.get(Calendar.HOUR_OF_DAY);
 
-        if (hour >= 5 && hour < 12)
-            return new String[]{"शुभ प्रभात",  "Subha Prabhāt", "morning"};
-        else if (hour >= 12 && hour < 17)
-            return new String[]{"शुभ दिन",     "Subha Din",     "afternoon"};
-        else if (hour >= 17 && hour < 20)
-            return new String[]{"शुभ सन्ध्या", "Subha Sandhyā", "evening"};
-        else
-            return new String[]{"शुभ रात्री",  "Subha Rātri",   "night"};
+        if      (hour >=  5 && hour < 12) return new String[]{"शुभ प्रभात",  "Subha Prabhāt", "morning"};
+        else if (hour >= 12 && hour < 17) return new String[]{"शुभ दिन",     "Subha Din",     "afternoon"};
+        else if (hour >= 17 && hour < 20) return new String[]{"शुभ सन्ध्या", "Subha Sandhyā", "evening"};
+        else                               return new String[]{"शुभ रात्री",  "Subha Rātri",   "night"};
     }
 
     public static void applyNSTGreeting(
@@ -171,11 +172,11 @@ public class MainActivityExtensions {
             ImageView  ivGreetingIcon,
             FirebaseUser user) {
 
-        String[] parts   = getNSTGreeting();
-        String nepaliLine = parts[0];
-        String iconKey    = parts[2];
+        String[] parts  = getNSTGreeting();
+        String nepali   = parts[0];
+        String iconKey  = parts[2];
 
-        if (tvGreetingLabel != null) tvGreetingLabel.setText(nepaliLine);
+        if (tvGreetingLabel != null) tvGreetingLabel.setText(nepali);
 
         if (ivGreetingIcon != null) {
             int iconRes = "night".equals(iconKey)
@@ -189,18 +190,17 @@ public class MainActivityExtensions {
                 && !user.getDisplayName().isEmpty()) {
             firstName = user.getDisplayName().split(" ")[0];
         }
-        if (tvGreetingName != null)
-            tvGreetingName.setText("नमस्ते, " + firstName);
+        if (tvGreetingName != null) tvGreetingName.setText("नमस्ते, " + firstName);
     }
 
 
     // ══════════════════════════════════════════════════════════════════
-    // 3. DRAWER HEADER — Firebase + Glide
+    // 3. DRAWER HEADER — Firebase user + Glide avatar
     // ══════════════════════════════════════════════════════════════════
 
     public static void populateDrawerHeader(
             android.content.Context context,
-            View headerView,
+            View         headerView,
             FirebaseUser user) {
 
         if (headerView == null) return;
