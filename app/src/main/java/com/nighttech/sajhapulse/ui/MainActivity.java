@@ -36,6 +36,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 
 import com.nighttech.sajhapulse.R;
+import com.nighttech.sajhapulse.auth.LoginActivity;
 import com.nighttech.sajhapulse.data.models.NewsArticle;
 import com.nighttech.sajhapulse.utils.NepaliCalendarUtils;
 import com.nighttech.sajhapulse.utils.SystemBarHelper;

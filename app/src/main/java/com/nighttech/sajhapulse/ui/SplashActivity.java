@@ -8,8 +8,6 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -22,6 +20,7 @@ import androidx.core.splashscreen.SplashScreen;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.nighttech.sajhapulse.R;
+import com.nighttech.sajhapulse.auth.LoginActivity;
 import com.nighttech.sajhapulse.utils.SystemBarHelper;
 
 /**

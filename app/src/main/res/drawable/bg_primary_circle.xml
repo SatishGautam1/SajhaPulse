@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    drawable/bg_primary_circle.xml
+    ─────────────────────────────────────────────────────────────────
+    Full-circle background used for icon containers and decorative
+    circle elements throughout the app.
+
+    Used in:
+      • nav_header_main.xml  — decorative top-right overflow circle
+      • content_main.xml     — cultural widget icon background (FrameLayout)
+
+    Colour: primary_container (#1A3A6E) — mid-navy, slightly lighter
+    than the surface so the circle has subtle depth without being bright.
+    ─────────────────────────────────────────────────────────────────
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <solid android:color="@color/primary_container" />
+
+</shape>

@@ -1,4 +1,4 @@
-package com.nighttech.sajhapulse.ui;
+package com.nighttech.sajhapulse.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +27,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.nighttech.sajhapulse.ui.MainActivity;
 import com.nighttech.sajhapulse.utils.SystemBarHelper;
 
 /**

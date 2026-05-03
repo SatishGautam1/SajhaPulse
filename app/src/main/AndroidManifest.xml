@@ -60,7 +60,7 @@
              Not exported — only reachable from SplashActivity.
              ══════════════════════════════════════════════════════════ -->
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".auth.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
